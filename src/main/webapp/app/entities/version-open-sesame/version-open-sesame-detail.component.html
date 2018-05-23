@@ -1,0 +1,43 @@
+
+<div *ngIf="version">
+    <h2><span>Version</span> {{version.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Createdon</span></dt>
+        <dd>
+            <span>{{version.createdon | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Createdby</span></dt>
+        <dd>
+            <span>{{version.createdby}}</span>
+        </dd>
+        <dt><span>File</span></dt>
+        <dd>
+            <div *ngIf="version.file">
+                <a (click)="openFile(version.fileContentType, version.file)">open</a>
+                {{version.fileContentType}}, {{byteSize(version.file)}}
+            </div>
+        </dd>
+        <dt><span>Document</span></dt>
+        <dd>
+            <div *ngIf="version.documentId">
+                <a [routerLink]="['/document-open-sesame', version.documentId]">{{version.documentId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'version-open-sesame/'+ version.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

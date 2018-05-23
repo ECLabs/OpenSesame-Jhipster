@@ -1,0 +1,112 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDocumentLabel">Create or edit a Document</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!document.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="document.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="document.name" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdon">Createdon</label>
+            <div class="input-group">
+                <input id="field_createdon" type="text" class="form-control" name="createdon" ngbDatepicker  #createdonDp="ngbDatepicker" [(ngModel)]="document.createdon"
+                />
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="createdonDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdby">Createdby</label>
+            <input type="text" class="form-control" name="createdby" id="field_createdby"
+                [(ngModel)]="document.createdby" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_file">File</label>
+            <div>
+                <div *ngIf="document.file" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(document.fileContentType, document.file)">open</a><br>
+                    <span class="pull-left">{{document.fileContentType}}, {{byteSize(document.file)}}</span>
+                    <button type="button" (click)="document.file=null;document.fileContentType=null;"
+                            class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_file" (change)="setFileData($event, document, 'file', false)"/>
+            </div>
+            <input type="hidden" class="form-control" name="file" id="field_file"
+                [(ngModel)]="document.file" />
+            <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                [(ngModel)]="document.fileContentType" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_duedate">Duedate</label>
+            <div class="input-group">
+                <input id="field_duedate" type="text" class="form-control" name="duedate" ngbDatepicker  #duedateDp="ngbDatepicker" [(ngModel)]="document.duedate"
+                />
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="duedateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_currstate">Currstate</label>
+            <select class="form-control" name="currstate" [(ngModel)]="document.currstate" id="field_currstate" >
+                <option value="CREATED">CREATED</option>
+                <option value="AUTHOR">AUTHOR</option>
+                <option value="TE1">TE1</option>
+                <option value="CR">CR</option>
+                <option value="SIO">SIO</option>
+                <option value="ER">ER</option>
+                <option value="RO">RO</option>
+                <option value="TE2">TE2</option>
+                <option value="GRAPHICS">GRAPHICS</option>
+                <option value="PCO">PCO</option>
+                <option value="DONE">DONE</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_laststate">Laststate</label>
+            <select class="form-control" name="laststate" [(ngModel)]="document.laststate" id="field_laststate" >
+                <option value="CREATED">CREATED</option>
+                <option value="AUTHOR">AUTHOR</option>
+                <option value="TE1">TE1</option>
+                <option value="CR">CR</option>
+                <option value="SIO">SIO</option>
+                <option value="ER">ER</option>
+                <option value="RO">RO</option>
+                <option value="TE2">TE2</option>
+                <option value="GRAPHICS">GRAPHICS</option>
+                <option value="PCO">PCO</option>
+                <option value="DONE">DONE</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_currversion">Currversion</label>
+            <select class="form-control" id="field_currversion" name="currversion" [(ngModel)]="document.currversionId">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="versionOption.id" *ngFor="let versionOption of currversions; trackBy: trackVersionById">{{versionOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

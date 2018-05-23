@@ -1,0 +1,71 @@
+<div>
+    <h2>
+        <span>Versions</span>
+        <button class="btn btn-primary float-right jh-create-entity create-version-open-sesame" [routerLink]="['/', { outlets: { popup: ['version-open-sesame-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Version
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="versions">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Createdon</span></th>
+            <th><span>Createdby</span></th>
+            <th><span>File</span></th>
+            <th><span>Document</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let version of versions ;trackBy: trackId">
+                <td><a [routerLink]="['../version-open-sesame', version.id ]">{{version.id}}</a></td>
+                <td>{{version.createdon | date:'mediumDate'}}</td>
+                <td>{{version.createdby}}</td>
+                <td>
+                    <a *ngIf="version.file" (click)="openFile(version.fileContentType, version.file)">open</a>
+                    <span *ngIf="version.file">{{version.fileContentType}}, {{byteSize(version.file)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="version.documentId">
+                        <a [routerLink]="['../document-open-sesame', version.documentId  ]" >{{version.documentId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../version-open-sesame', version.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'version-open-sesame/'+ version.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'version-open-sesame/'+ version.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+
+<div *ngIf="document">
+    <h2><span>Document</span> {{document.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{document.name}}</span>
+        </dd>
+        <dt><span>Createdon</span></dt>
+        <dd>
+            <span>{{document.createdon | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Createdby</span></dt>
+        <dd>
+            <span>{{document.createdby}}</span>
+        </dd>
+        <dt><span>File</span></dt>
+        <dd>
+            <div *ngIf="document.file">
+                <a (click)="openFile(document.fileContentType, document.file)">open</a>
+                {{document.fileContentType}}, {{byteSize(document.file)}}
+            </div>
+        </dd>
+        <dt><span>Duedate</span></dt>
+        <dd>
+            <span>{{document.duedate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Currstate</span></dt>
+        <dd>
+            <span>{{document.currstate}}</span>
+        </dd>
+        <dt><span>Laststate</span></dt>
+        <dd>
+            <span>{{document.laststate}}</span>
+        </dd>
+        <dt><span>Currversion</span></dt>
+        <dd>
+            <div *ngIf="document.currversionId">
+                <a [routerLink]="['/version-open-sesame', document.currversionId]">{{document.currversionId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'document-open-sesame/'+ document.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

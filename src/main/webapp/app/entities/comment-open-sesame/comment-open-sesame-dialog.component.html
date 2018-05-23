@@ -1,0 +1,52 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCommentLabel">Create or edit a Comment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!comment.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="comment.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdon">Createdon</label>
+            <div class="input-group">
+                <input id="field_createdon" type="text" class="form-control" name="createdon" ngbDatepicker  #createdonDp="ngbDatepicker" [(ngModel)]="comment.createdon"
+                />
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="createdonDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_comment">Comment</label>
+            <textarea class="form-control" name="comment" id="field_comment"
+                [(ngModel)]="comment.comment" ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdby">Createdby</label>
+            <input type="text" class="form-control" name="createdby" id="field_createdby"
+                [(ngModel)]="comment.createdby" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_document">Document</label>
+            <select class="form-control" id="field_document" name="document" [(ngModel)]="comment.documentId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="documentOption.id" *ngFor="let documentOption of documents; trackBy: trackDocumentById">{{documentOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

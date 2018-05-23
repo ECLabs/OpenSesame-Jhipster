@@ -1,0 +1,68 @@
+<div>
+    <h2>
+        <span>Histories</span>
+        <button class="btn btn-primary float-right jh-create-entity create-history-open-sesame" [routerLink]="['/', { outlets: { popup: ['history-open-sesame-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new History
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="histories">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Createdon</span></th>
+            <th><span>Description</span></th>
+            <th><span>Createdfor</span></th>
+            <th><span>Document</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let history of histories ;trackBy: trackId">
+                <td><a [routerLink]="['../history-open-sesame', history.id ]">{{history.id}}</a></td>
+                <td>{{history.createdon | date:'mediumDate'}}</td>
+                <td>{{history.description}}</td>
+                <td>{{history.createdfor}}</td>
+                <td>
+                    <div *ngIf="history.documentId">
+                        <a [routerLink]="['../document-open-sesame', history.documentId  ]" >{{history.documentId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../history-open-sesame', history.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'history-open-sesame/'+ history.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'history-open-sesame/'+ history.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

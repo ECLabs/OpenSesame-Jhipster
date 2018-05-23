@@ -1,0 +1,56 @@
+entity Document {
+	id Long
+	name String
+    created_on LocalDate
+    created_by String
+    file Blob
+    due_date LocalDate
+    curr_state Status
+    last_state Status
+}
+
+enum Status {
+    CREATED, AUTHOR, TE1, CR, SIO, ER, RO, TE2, GRAPHICS, PCO, DONE
+  }
+
+
+entity History {
+	id Long
+	created_on LocalDate
+    description String
+    created_for String
+}
+
+entity Comment {
+	id Long
+	created_on LocalDate
+    comment TextBlob
+    created_by String
+}
+
+entity Version {
+	id Long
+	created_on LocalDate
+    created_by String
+    file Blob
+}
+
+relationship OneToOne {
+	Document{curr_version} to Version
+}
+
+relationship OneToMany {
+	Document to History{document},
+    Document to Comment{document}, 
+    Document to Version{document} 
+}
+ 
+ 
+paginate Document with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl  
+// Set an angular suffix
+angularSuffix * with OpenSesame

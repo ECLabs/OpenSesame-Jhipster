@@ -1,0 +1,40 @@
+
+<div *ngIf="history">
+    <h2><span>History</span> {{history.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Createdon</span></dt>
+        <dd>
+            <span>{{history.createdon | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{history.description}}</span>
+        </dd>
+        <dt><span>Createdfor</span></dt>
+        <dd>
+            <span>{{history.createdfor}}</span>
+        </dd>
+        <dt><span>Document</span></dt>
+        <dd>
+            <div *ngIf="history.documentId">
+                <a [routerLink]="['/document-open-sesame', history.documentId]">{{history.documentId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'history-open-sesame/'+ history.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,71 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "currversion",
+            "otherEntityName": "version",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "document"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "history",
+            "otherEntityName": "history",
+            "otherEntityRelationshipName": "document"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "comment",
+            "otherEntityName": "comment",
+            "otherEntityRelationshipName": "document"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "version",
+            "otherEntityName": "version",
+            "otherEntityRelationshipName": "document"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdon",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "createdby",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "file",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "duedate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "currstate",
+            "fieldType": "Status",
+            "fieldValues": "CREATED,AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
+        },
+        {
+            "fieldName": "laststate",
+            "fieldType": "Status",
+            "fieldValues": "CREATED,AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
+        }
+    ],
+    "changelogDate": "20180523205535",
+    "entityTableName": "document",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "OpenSesame"
+}

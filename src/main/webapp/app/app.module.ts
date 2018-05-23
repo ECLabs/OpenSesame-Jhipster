@@ -14,6 +14,7 @@ import { OpenSesameSharedModule, UserRouteAccessService } from './shared';
 import { OpenSesameAppRoutingModule} from './app-routing.module';
 import { OpenSesameHomeModule } from './home/home.module';
 import { OpenSesameAdminModule } from './admin/admin.module';
+import { OpenSesameDirectorModule } from './director/director.module';
 import { OpenSesameAccountModule } from './account/account.module';
 import { OpenSesameEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -36,6 +37,7 @@ import {
         OpenSesameHomeModule,
         OpenSesameAdminModule,
         OpenSesameAccountModule,
+        OpenSesameDirectorModule,
         OpenSesameEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],

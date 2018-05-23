@@ -1,0 +1,65 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myVersionLabel">Create or edit a Version</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!version.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="version.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdon">Createdon</label>
+            <div class="input-group">
+                <input id="field_createdon" type="text" class="form-control" name="createdon" ngbDatepicker  #createdonDp="ngbDatepicker" [(ngModel)]="version.createdon"
+                />
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="createdonDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createdby">Createdby</label>
+            <input type="text" class="form-control" name="createdby" id="field_createdby"
+                [(ngModel)]="version.createdby" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_file">File</label>
+            <div>
+                <div *ngIf="version.file" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(version.fileContentType, version.file)">open</a><br>
+                    <span class="pull-left">{{version.fileContentType}}, {{byteSize(version.file)}}</span>
+                    <button type="button" (click)="version.file=null;version.fileContentType=null;"
+                            class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_file" (change)="setFileData($event, version, 'file', false)"/>
+            </div>
+            <input type="hidden" class="form-control" name="file" id="field_file"
+                [(ngModel)]="version.file" />
+            <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                [(ngModel)]="version.fileContentType" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_document">Document</label>
+            <select class="form-control" id="field_document" name="document" [(ngModel)]="version.documentId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="documentOption.id" *ngFor="let documentOption of documents; trackBy: trackDocumentById">{{documentOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
