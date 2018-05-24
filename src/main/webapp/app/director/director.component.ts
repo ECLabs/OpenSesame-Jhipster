@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
+import { Options } from 'fullcalendar';
+import { CalendarComponent } from 'ng-fullcalendar';
 
 import { Account, LoginModalService, Principal } from '../shared';
 
@@ -15,6 +17,8 @@ import { Account, LoginModalService, Principal } from '../shared';
 export class DirectorComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    calendarOptions: Options;
+    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
     constructor(
         private principal: Principal,
@@ -28,6 +32,15 @@ export class DirectorComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+        this.calendarOptions = {
+        editable: true,
+        eventLimit: false,
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay,listMonth'
+        }
+      };
     }
 
     registerAuthenticationSuccess() {
