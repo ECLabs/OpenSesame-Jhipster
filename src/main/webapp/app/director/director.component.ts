@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
-import { Options } from 'fullcalendar';
 import { CalendarComponent } from 'ng-fullcalendar';
+import { Options } from 'fullcalendar';
 
-import { Account, LoginModalService, Principal } from '../shared';
+
+import { Account, LoginModalService, Principal} from '../shared';
 
 @Component({
     selector: 'jhi-director',
@@ -34,6 +35,7 @@ export class DirectorComponent implements OnInit {
         this.registerAuthenticationSuccess();
         this.calendarOptions = {
         editable: true,
+        droppable: true, // this allows things to be dropped onto the calendar
         eventLimit: false,
         header: {
           left: 'prev,next today',
