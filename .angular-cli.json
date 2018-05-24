@@ -20,8 +20,17 @@
         "styles": [
             "content/css/vendor.css",
             "content/css/global.css"
+            "../node_modules/bootstrap/dist/css/bootstrap.css",
+            "../node_modules/fullcalendar/dist/fullcalendar.min.css"
         ],
-        "scripts": []
+        "scripts": [
+            "../node_modules/jquery/dist/jquery.js",
+            "../node_modules/jquery-ui/dist/jquery-ui.min.js",
+            "../node_modules/bootstrap/dist/js/bootstrap.js",
+            "../node_modules/moment/min/moment.min.js",
+            "../node_modules/fullcalendar/dist/fullcalendar.min.js",
+            "../node_modules/fullcalendar-scheduler/dist/scheduler.min.js"
+        ]
     }],
     "lint": [{
             "project": "../../../tsconfig.json"

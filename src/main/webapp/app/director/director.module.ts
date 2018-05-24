@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FullCalendarModule } from 'ng-fullcalendar';
-import { AngularDraggableModule } from 'angular2-draggable';
+import { EventService } from './event.service';
 
 import { OpenSesameSharedModule } from '../shared';
 
@@ -11,7 +11,6 @@ import { DIRECTOR_ROUTE, DirectorComponent } from './';
     imports: [
         OpenSesameSharedModule,
         FullCalendarModule,
-        AngularDraggableModule,
         RouterModule.forChild([ DIRECTOR_ROUTE ])
     ],
     declarations: [
@@ -19,8 +18,7 @@ import { DIRECTOR_ROUTE, DirectorComponent } from './';
     ],
     entryComponents: [
     ],
-    providers: [
-    ],
+    providers: [ EventService ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenSesameDirectorModule {}
