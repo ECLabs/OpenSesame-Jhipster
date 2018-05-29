@@ -17,6 +17,7 @@ import { OpenSesameAdminModule } from './admin/admin.module';
 import { OpenSesameDirectorModule } from './director/director.module';
 import { OpenSesameAccountModule } from './account/account.module';
 import { OpenSesameEntityModule } from './entities/entity.module';
+import { OpenSesameDocModule } from './doc-temp/doc.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {
@@ -39,6 +40,7 @@ import {
         OpenSesameAccountModule,
         OpenSesameDirectorModule,
         OpenSesameEntityModule,
+        OpenSesameDocModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
