@@ -1,11 +1,11 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
-  }
+}
 
-  #external-events { 
+#external-events {
     z-index: 2;
     top: 20px;
     left: 20px;
@@ -13,24 +13,51 @@ html, body {
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
-  }
+}
 
-  .demo-topbar + #external-events { /* will get stripped out */
+.demo-topbar+#external-events {
+    /* will get stripped out */
     top: 60px;
-  }
+}
 
-  #external-events .fc-event {
+#external-events .fc-event {
     margin: 1em 0;
     cursor: move;
-  }
+}
 
-  #calendar-container {
+#calendar-container {
     position: relative;
     z-index: 1;
     margin-left: 200px;
-  }
+}
 
-  #calendar {
+#calendar {
     max-width: 900px;
     margin: 20px auto;
-  }
+}
+
+#legendContainer {
+    margin-top: 20%;
+    background-color: white;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    float: right;
+    display: inline-block;
+}
+
+#legendContainer ul li{
+  font-size: 0.7em;
+}
+
+.fc-event{
+  height:40px;
+}
+
+.fc-event span{
+  margin-top: 10px;
+  margin-right: 3px;
+}
