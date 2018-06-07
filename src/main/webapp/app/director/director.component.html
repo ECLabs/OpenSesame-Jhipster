@@ -1,17 +1,40 @@
 <div class="row">
     <div class="col-md-3">
-      <h3>Documents</h3>
-      <div id='external-events'>
- 
-    <div class='fc-event'>Document 1</div>
-    <div class='fc-event'>Document 2</div>
-    <div class='fc-event'>Document 3</div>
-    <div class='fc-event'>Document 4</div>
-    <div class='fc-event'>Document 5</div>
-  </div>
+        <h3>Documents </h3>
+        <div id='external-events'>
+            <!-- use color='color' to choose what color the draggable will display on the calendar -->
+            <div class='fc-event'>Document 1 <span class="dot" color="green" style="background-color:green"></span></div>
+            <div class='fc-event'>Document 2 <span class="dot" color="blue" style="background-color:blue"></div>
+            <div class='fc-event'>Document 3 <span class="dot" color="violet" style="background-color:violet"></div>
+            <div class='fc-event'>Document 4 <span class="dot" color="purple" style="background-color:purple"></div>
+            <div class='fc-event'>Document 5 <span class="dot" color="yellow" style="background-color:yellow"></div>
+        </div>
+
+
+        <div id="legendContainer">
+            <button type="button" class="btn btn-outline-primary btn-block" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Legend
+</button>
+
+            <div id="collapseExample" [ngbCollapse]="!isCollapsed">
+                <div class="card card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Author <span class="dot" style="background-color:blue"></span></li>
+                        <li class="list-group-item">Tech Editor <span class="dot" style="background-color:red"></span> </li>
+                        <li class="list-group-item">Content Reviewer <span class="dot" style="background-color:green"></span></li>
+                        <li class="list-group-item">Senior Intel Officer  <span class="dot" style="background-color:yellow"></span></li>
+                        <li class="list-group-item">Executive Reviewer  <span class="dot" style="background-color:violet"></span></li>
+                        <li class="list-group-item">Read Off  <span class="dot" style="background-color:purple"></span></li>
+                        <li class="list-group-item"><div class="row"><div class="col-md-9"><p>Tech Editor</p><p>Graphics</p><p>PCO</p></div>  <div class="col-md-3"><span class="dot" style="background-color:grey"></span></div></div></li>
+                        <li class="list-group-item">Done  <span class="dot" style="background-color:black"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
+
     <div class='col-md-9'>
-      <h3>Schedule</h3>
-      <div id='calendar'></div>
+        <h3>Schedule</h3>
+        <div id='calendar'></div>
     </div>
 </div>
