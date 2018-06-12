@@ -39,7 +39,7 @@ export class DirectorComponent implements OnInit {
         $('#external-events .fc-event').each(function() {
               // store data so the calendar knows to render an event upon drop
               $(this).data('event', {
-                title: $.trim($(this).text()), // use the element's text as the event title
+                title: $.trim($(this).find('.title').text()), // use the element's text as the event title
                 stick: true, // maintain when user navigates (see docs on the renderEvent method)
                 color: $(this).find('span').attr('color') // use the element's color value as the color of task
               });
