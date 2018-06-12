@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import * as $ from 'jquery';
 
 import 'jqueryui';
-
 import 'fullcalendar';
 import { Account, LoginModalService, Principal } from '../shared';
 
@@ -14,8 +13,8 @@ import { Account, LoginModalService, Principal } from '../shared';
     styleUrls: [
         'director.css'
 
-    ]
-
+    ],
+    providers: [NgbPopoverConfig]
 })
 export class DirectorComponent implements OnInit {
     account: Account;
@@ -24,8 +23,11 @@ export class DirectorComponent implements OnInit {
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private config: NgbPopoverConfig
     ) {
+      config.placement = 'right';
+      config.triggers = 'hover';
     }
 
     ngOnInit() {
@@ -79,5 +81,9 @@ export class DirectorComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    getContent() {
+        return ['Created on: ', 'Created by: ', 'Due Date: ', 'Current State: ', 'Last State: ', 'Version: ', 'Comments: '];
     }
 }

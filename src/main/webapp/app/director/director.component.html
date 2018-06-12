@@ -3,7 +3,8 @@
         <h3>Documents </h3>
         <div id='external-events'>
             <!-- use color='color' to choose what color the draggable will display on the calendar -->
-            <div class='fc-event'>Document 1 <span class="dot" color="green" style="background-color:green"></span></div>
+            <ng-template #popContent><p *ngFor="let content of getContent()">{{content}}</p></ng-template>
+            <div class='fc-event'><a [ngbPopover]="popContent" >Document 1 </a><span class="dot" color="green" style="background-color:green"></span></div>
             <div class='fc-event'>Document 2 <span class="dot" color="blue" style="background-color:blue"></div>
             <div class='fc-event'>Document 3 <span class="dot" color="violet" style="background-color:violet"></div>
             <div class='fc-event'>Document 4 <span class="dot" color="purple" style="background-color:purple"></div>

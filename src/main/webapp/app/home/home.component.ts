@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { NgbModalRef, NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginModalService, Principal } from '../shared';
 
@@ -14,13 +15,15 @@ import { Account, LoginModalService, Principal } from '../shared';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    closeResult: string;
 
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
-    ) {
-    }
+        private eventManager: JhiEventManager,
+        private modalService: NgbModal,
+        private router: Router,
+    ) { }
 
     ngOnInit() {
         this.principal.identity().then((account) => {
@@ -44,4 +47,14 @@ export class HomeComponent implements OnInit {
     login() {
         this.modalRef = this.loginModalService.open();
     }
+
+    open(content) {
+        this.modalRef = this.modalService.open(content, {});
+    }
+
+    redirect() {
+      this.modalRef.close();
+      this.router.navigate(['doc']);
+    }
+
 }

@@ -61,3 +61,7 @@ html, body {
   margin-top: 10px;
   margin-right: 3px;
 }
+
+.popover-header{
+  background-color: blue;
+}

@@ -1,32 +1,67 @@
-<div class='row' [hidden]="!isAuthenticated()">
-	<div class='col-md-6'>
-		<h2>Your Documents</h2>
-		<ul class="list-group">
-			<li class="list-group-item">Not Implemented</li>
-		</ul>
+<div [hidden]="!isAuthenticated()">
+	<div class="row" style="margin-bottom:20px">
+		<div class="col-mid-12">
+			<h2>John Doe <small>Tech Editor</small></h2>
+		</div>
 	</div>
-	<div class='col-md-6'>
-		<h2>Recent Documents in Review Process</h2>
-		<ul class="list-group">
-			<li class="list-group-item">Not Implemented</li>
-		</ul>
+	<div class="row">
+		<div class='col-md-6'>
+			<h2>Your Documents</h2>
+			<ul class="list-group" id="your-documents">
+				<li class="list-group-item" (click)="open(content)">Task 1</li>
+				<li class="list-group-item" (click)="open(content)">Task 3</li>
+				<li class="list-group-item" (click)="open(content)">Task 12</li>
+				<li class="list-group-item" (click)="open(content)">Task 23</li>
+			</ul>
+		</div>
+		<div class='col-md-6'>
+			<h2>Recent Documents in Review Process</h2>
+			<ul class="list-group">
+				<li class="list-group-item">Not Implemented</li>
+			</ul>
+		</div>
 	</div>
 </div>
 
+
 <div [hidden]="isAuthenticated()">
-	<div id="loginContainer">
-		<div id="seal" class="container" style="margin-bottom:40px;">
-			<div class="col-sm-11" align="center" style="margin-bottom:20px">
-				<h1 style='color:white;'>Open <b>Sesame</b></h1>
-			</div>
-			<div class="col-sm-11" align="center">
-				<span class="hipster img-fluid rounded"></span>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8" style="margin-top:30px;">
+			<div id="loginContainer">
+				<span class="hipster2 img-fluid rounded"></span>
+				<h1 style='color:#0e9aaa'>pen<b>Sesame</b></h1>
+				<button style="margin-top:80px; margin-left:20px" align="center" (click)="login()" class="btn btn-outline-dark btn-lg">Sign In</button>
 			</div>
 		</div>
-		<div class="col-sm-12" align="center">
-			<p class="lead">
-				<div style="width:30%" (click)="login()" class="btn btn-light btn-lg btn-block">Sign In</div>
-			</p>
-		</div>
+		<div class="col-sm-2"></div>
 	</div>
+
 </div>
+
+
+<!-- Modal to display task info-->
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+		<h4 class="modal-title">Task Name</h4>
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+	</div>
+	<div class="modal-body">
+		<p>Created on: </p>
+		<p>Created by: </p>
+		<p>Due Date: </p>
+		<p>Current State: </p>
+		<p>Last State: </p>
+		<p>Version: </p>
+		<p>Comments:</p>
+		<p></p>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+		<button type="button" class="btn btn-outline-primary" (click)="redirect()">Edit</button>
+	</div>
+</ng-template>
