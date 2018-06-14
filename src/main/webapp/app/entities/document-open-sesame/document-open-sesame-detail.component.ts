@@ -16,9 +16,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     document: DocumentOpenSesame;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
-	private window: WindowRef;
-	private docxJS: any;
-	private files: any;
+    private window: WindowRef;
+    private docxJS: any;
+    private files: any;
+
     constructor(
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
@@ -38,38 +39,37 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         this.documentService.find(id)
             .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
                 this.document = documentResponse.body;
-				this.window = new WindowRef();
-				
-				// this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
-				
-				const docxJS = new this.window.nativeWindow.DocxJS();
-				const fileURL = `${this.document.file}`;
-			 
-				const bs = atob(fileURL);
-				        const buffer = new ArrayBuffer(bs.length);
-				        const ba = new Uint8Array(buffer);
-				        for (var i = 0; i < bs.length; i++) {
-				            ba[i] = bs.charCodeAt(i);
-				        }
-				        const file = new Blob([ba], { type: this.document.fileContentType });
-						
-						
-				            //File Parsing
-				            docxJS.parse(
-				                file,
-				                function () {
-				                    //After Rendering
-				                    docxJS.render($('#docxjs-wrapper')[0], function (result) {
-				                        if (result.isError) {
-				                            console.log(result.msg);
-				                        } else {
-				                            console.log("Success Render");
-				                        }
-				                    });
-				                }, function (e) {
-				                    console.log("Error!", e);
-				                }
-				            );
+                this.window = new WindowRef();
+
+                // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
+
+                const docxJS = new this.window.nativeWindow.DocxJS();
+                const fileURL = `${this.document.file}`;
+
+                const bs = atob(fileURL);
+                const buffer = new ArrayBuffer(bs.length);
+                const ba = new Uint8Array(buffer);
+                for (let i = 0; i < bs.length; i++) {
+                    ba[i] = bs.charCodeAt(i);
+                }
+                const file = new Blob([ba], { type: this.document.fileContentType });
+
+                // File Parsing
+                docxJS.parse(
+                    file,
+                    function() {
+                        // After Rendering
+                        docxJS.render($('#docxjs-wrapper')[0], function(result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log('Success Render');
+                            }
+                        });
+                    }, function(e) {
+                        console.log('Error!', e);
+                    }
+                );
             });
     }
     byteSize(field) {

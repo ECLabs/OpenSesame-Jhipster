@@ -41,7 +41,7 @@ export class DirectorComponent implements OnInit {
               $(this).data('event', {
                 title: $.trim($(this).find('.title').text()), // use the element's text as the event title
                 stick: true, // maintain when user navigates (see docs on the renderEvent method)
-                color: $(this).find('span').attr('color') // use the element's color value as the color of task
+                color: $(this).find('span').attr('color'), // use the element's color value as the color of task
               });
               // make the event draggable using jQuery UI
              $(this).draggable({
@@ -64,6 +64,8 @@ export class DirectorComponent implements OnInit {
               center: 'title',
               right: 'month,basicWeek,basicDay'
             },
+            eventTextColor: 'white',
+            
         });
     }
 

@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { DirectorComponent } from './';
+import { DirectorComponent, DirectorEventsComponent } from './';
 
 export const DIRECTOR_ROUTE: Route = {
     path: 'director',
