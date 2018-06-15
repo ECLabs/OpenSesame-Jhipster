@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import * as $ from 'jquery';
 
 import 'jqueryui';
-
 import 'fullcalendar';
 import { Account, LoginModalService, Principal } from '../shared';
 
@@ -14,8 +13,8 @@ import { Account, LoginModalService, Principal } from '../shared';
     styleUrls: [
         'director.css'
 
-    ]
-
+    ],
+    providers: [NgbPopoverConfig]
 })
 export class DirectorComponent implements OnInit {
     account: Account;
@@ -24,8 +23,11 @@ export class DirectorComponent implements OnInit {
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private config: NgbPopoverConfig
     ) {
+      config.placement = 'right';
+      config.triggers = 'hover';
     }
 
     ngOnInit() {
@@ -37,9 +39,9 @@ export class DirectorComponent implements OnInit {
         $('#external-events .fc-event').each(function() {
               // store data so the calendar knows to render an event upon drop
               $(this).data('event', {
-                title: $.trim($(this).text()), // use the element's text as the event title
+                title: $.trim($(this).find('.title').text()), // use the element's text as the event title
                 stick: true, // maintain when user navigates (see docs on the renderEvent method)
-                color: $(this).find('span').attr('color') // use the element's color value as the color of task
+                color: $(this).find('span').attr('color'), // use the element's color value as the color of task
               });
               // make the event draggable using jQuery UI
              $(this).draggable({
@@ -62,6 +64,8 @@ export class DirectorComponent implements OnInit {
               center: 'title',
               right: 'month,basicWeek,basicDay'
             },
+            eventTextColor: 'white',
+            
         });
     }
 
@@ -79,5 +83,9 @@ export class DirectorComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    getContent() {
+        return ['Created on: ', 'Created by: ', 'Due Date: ', 'Current State: ', 'Last State: ', 'Version: ', 'Comments: '];
     }
 }

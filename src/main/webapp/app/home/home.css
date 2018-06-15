@@ -4,41 +4,55 @@ Main page styles
 
 .hipster {
     display: inline-block;
-    width: 600px;
-    height: 600px;
-    background: url("../../content/images/DIAseal.png") no-repeat center top;
+    float:left;
+    width: 400px;
+    height: 400px;
+    background: url("../../content/images/logo.svg") no-repeat center top;
     background-size: contain;
 }
 
+.hipster2 {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    background: url("../../content/images/logo2.svg") no-repeat center top;
+    background-size: contain;
+}
 
-#seal{
+#seal {
     width: 400px;
     height: 400px;
 }
-#seal img{
+
+#seal img {
     /* margin-left: 30%; */
-    margin-bottom: 10%;
+    margin-bottom: 40%;
 }
 
 #loginContainer {
     border-radius: 5px;
-    background-color: #0157ae;
     width: 100%;
+    padding: 10px;
     height: 100%;
+    margin-left: 30%;
 }
 
+#your-documents li {
+    cursor: pointer;
+}
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
-only screen and (                min-resolution: 192dpi),
-only screen and (                min-resolution: 2dppx) {
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and ( min--moz-device-pixel-ratio: 2), only screen and ( -o-min-device-pixel-ratio: 2/1), only screen and ( min-device-pixel-ratio: 2), only screen and ( min-resolution: 192dpi), only screen and ( min-resolution: 2dppx) {
     .hipster {
-        background: url("../../content/images/DIAseal.png") no-repeat center top;
+        background: url("../../content/images/logo2.svg") no-repeat center top;
         background-size: contain;
     }
 }

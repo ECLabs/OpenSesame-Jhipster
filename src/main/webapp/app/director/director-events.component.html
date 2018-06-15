@@ -1,0 +1,57 @@
+<ng-template #popContent>
+    <p *ngFor="let content of getContent()">{{content}}</p>
+</ng-template>
+
+<div class="fc-events-lg">
+    <div class='fc-event'> <b class="title">Document 1</b> <span class="dot" color="green" style="background-color:green"></span>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Created On: </td>
+                    <td>Due Date: </td>  margin-bottom: 10px;
+                </tr>
+                <tr>
+                    <td>Created by: </td>
+                    <td>Current State: </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class='fc-event'> <b class="title">Document 2</b> <span class="dot" color="red" style="background-color:red"></span>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Created On: </td>
+                    <td>Due Date: </td>
+                </tr>
+                <tr>
+                    <td>Created by: </td>
+                    <td>Current State: </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class='fc-event'> <b class="title">Document 3</b> <span class="dot" color="blue" style="background-color:blue"></span>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Created On: </td>
+                    <td>Due Date: </td>
+                </tr>
+                <tr>
+                    <td>Created by: </td>
+                    <td>Current State: </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="fc-events-sm">
+    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 1 </a><span class="dot" color="green" style="background-color:green"></span></div>
+    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 2 </a><span class="dot" color="red" style="background-color:red"></span></div>
+    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 3 </a><span class="dot" color="blue" style="background-color:blue"></span></div>
+</div>
