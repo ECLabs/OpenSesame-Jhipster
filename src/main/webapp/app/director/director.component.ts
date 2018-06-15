@@ -65,7 +65,6 @@ export class DirectorComponent implements OnInit {
               right: 'month,basicWeek,basicDay'
             },
             eventTextColor: 'white',
-            
         });
     }
 

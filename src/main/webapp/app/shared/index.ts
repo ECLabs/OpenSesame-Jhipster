@@ -13,6 +13,8 @@ export * from './tracker/tracker.service';
 export * from './login/login.component';
 export * from './login/login-modal.service';
 export * from './login/login.service';
+export * from './document-preview/document-preview.service';
+export * from './document-preview/document-preview.component';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './user/user.service';
