@@ -59,11 +59,6 @@ export class DirectorComponent implements OnInit {
             drop(date, jsEvent) {
                 console.log(date, jsEvent);
             },
-            eventClick(event) {
-                containerEl.on('dblclick', '.fc-content', function() {
-                    containerEl.fullCalendar('removeEvents', event._id);
-                });
-            },
             eventLimit: false,
             header: {
                 left: 'prev,next today',
