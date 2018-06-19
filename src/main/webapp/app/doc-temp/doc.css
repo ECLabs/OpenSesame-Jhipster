@@ -6,7 +6,7 @@ Main page styles
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .hipster {
-    display: inline-block;
+    display:  inline-block;
     width: 347px;
     height: 497px;
     background: url("../../content/images/logo.svg") no-repeat center top;

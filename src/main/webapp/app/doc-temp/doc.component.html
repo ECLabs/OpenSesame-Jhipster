@@ -2,42 +2,42 @@
 
 <!-- Header -->
 	<header>
-			<div class="innertube">
+			<div id="innertube" class="innertube">
 				<div style="left:60px; top:25px; font: 14px/1 'Open Sans', sans-serif;" class='col-md-9'>
-					<h1><b>Title</b></h1>
+					<h1><b>Document 1</b></h1>
 				</div>
 				<div style="left:60px; top:25px; font: 14px/1 'Open Sans', sans-serif;" class='col-md-9'>
-					<h2>Due Date</h2>
+					<h2>June 28, 2018</h2>
 				</div>
 			</div>
 	</header>
 
 <!-- Progressbar -->
 	<div style="left:150px; top:1px;" class='col-md-9'>
-		<div class="container">
-			<ul class="progressbar">
-				<li class="completed" >
+		<div ng-app="progressbar" class="container">
+			<ul ng-controller="myCtrl" class="progressbar">
+				<li id="author" class="active" >
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Author">Author</a>
 				</li>
-				<li class="active">
+				<li id="te" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Tech Editor">TE</a>
 				</li>
-				<li class="none">
+				<li id="cr" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Content Reviewer">CR</a>
 				</li>
-				<li class="none">
+				<li id="sio" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Senior Intel Officer">SIO</a>
 				</li>
-				<li class="none">
+				<li id="er" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Executive Reviewer">ER</a>
 				</li>
-				<li class="none">
+				<li id="ro" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Read Off">RO</a>
 				</li>
-				<li class="none">
+				<li id="pco" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Tech Editor/Graphics/PCO">TE | GFX | PCO</a>
 				</li>
-				<li class="none">
+				<li id="done" class="none">
 					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Done">Done</a>
 				</li>
 			</ul>
@@ -61,7 +61,7 @@
 					<div class="container">
 						<div class="dialogbox">
 							<div class="body">
-        				<span>I just made a comment about this document. - Author</span>
+        				<span><b>Author</b>: I just made a comment about this document.</span>
       				</div>
 						</div>
 					</div>
@@ -80,10 +80,13 @@
 		</div>
 		<!-- Approve and Deny Buttons -->
 		<div class="rightcolumn">
-			<button class="btn2" type="submit" form="#">Approve</button>
-			<button class="btn3" type="submit" form="#">Deny</button>
+			<button (click)="approve()" class="btn2">Approve</button>
+			<button (click)="deny()" class="btn3">Deny</button>
 		</div>
 	</div>
 </body>
+
+
+
 
 </div>
