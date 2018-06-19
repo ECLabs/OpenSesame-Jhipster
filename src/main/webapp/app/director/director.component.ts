@@ -58,6 +58,17 @@ export class DirectorComponent implements OnInit {
             drop(date, jsEvent) {
                 console.log(date, jsEvent);
             },
+            eventDragStop(event, jsEvent) {
+                console.log(event.end.toString());
+                $('#external-events .fc-event:contains()').find('.due-date').html(event.end.toString());
+            },
+            eventResize(event, delta, revertFunc, jsEvent) {
+                const parentEvent = $('#external-events .fc-event').filter(function() {
+                    return $(this).text().includes($(jsEvent.target).text().trim());
+                })[0];
+                const newDate = event.end.toString().split('2018')[0].trim();
+                console.log($(parentEvent).find('.due-date'));
+            },
             eventLimit: false,
             header: {
               left: 'prev,next today',
@@ -65,7 +76,6 @@ export class DirectorComponent implements OnInit {
               right: 'month,basicWeek,basicDay'
             },
             eventTextColor: 'white',
-            
         });
     }
 
