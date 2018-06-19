@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef, NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import * as $ from 'jquery';
 
@@ -50,22 +50,22 @@ export class DirectorComponent implements OnInit {
                 revertDuration: 0  //  original position after the drag
               });
             });
+
         const containerEl: JQuery = $('#calendar');
 
         containerEl.fullCalendar({
-          editable: true,
+            editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             drop(date, jsEvent) {
                 console.log(date, jsEvent);
             },
             eventLimit: false,
             header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,basicWeek,basicDay'
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
             },
             eventTextColor: 'white',
-            
         });
     }
 

@@ -3,22 +3,8 @@
 </ng-template>
 
 <div class="fc-events-lg">
-    <div class='fc-event'> <b class="title">Document 1</b> <span class="dot" color="green" style="background-color:green"></span>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Created On: </td>
-                    <td>Due Date: </td>  margin-bottom: 10px;
-                </tr>
-                <tr>
-                    <td>Created by: </td>
-                    <td>Current State: </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class='fc-event'> <b class="title">Document 2</b> <span class="dot" color="red" style="background-color:red"></span>
+    <div class='fc-event'>
+        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 1</a> <span class="dot" color="green" style="background-color:green"></span>
         <table class="table">
             <tbody>
                 <tr>
@@ -33,7 +19,24 @@
         </table>
     </div>
 
-    <div class='fc-event'> <b class="title">Document 3</b> <span class="dot" color="blue" style="background-color:blue"></span>
+    <div class='fc-event'>
+        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 2</a> <span class="dot" color="red" style="background-color:red"></span>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Created On: </td>
+                    <td>Due Date: </td>
+                </tr>
+                <tr>
+                    <td>Created by: </td>
+                    <td>Current State: </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class='fc-event'>
+        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 3</a> <span class="dot" color="blue" style="background-color:blue"></span>
         <table class="table">
             <tbody>
                 <tr>

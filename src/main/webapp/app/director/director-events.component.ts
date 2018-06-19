@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
-import * as $ from 'jquery';
 
-import 'jqueryui';
-import 'fullcalendar';
-import { Account, LoginModalService, Principal } from '../shared';
+import { Account, DocumentModalService } from '../shared';
 
 @Component({
     selector: 'jhi-director-events',
@@ -22,10 +18,8 @@ export class DirectorEventsComponent {
     modalRef: NgbModalRef;
 
     constructor(
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private config: NgbPopoverConfig
+        private config: NgbPopoverConfig,
+        private documentModalSerivce: DocumentModalService,
     ) {
         config.placement = 'right';
         config.triggers = 'hover';
@@ -33,5 +27,9 @@ export class DirectorEventsComponent {
 
     getContent() {
         return ['Created on: ', 'Created by: ', 'Due Date: ', 'Current State: ', 'Last State: ', 'Version: ', 'Comments: '];
+    }
+
+    openDocPreview(document) {
+        this.modalRef = this.documentModalSerivce.open(document.target.innerText);
     }
 }
