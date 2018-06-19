@@ -52,22 +52,26 @@ export class DirectorComponent implements OnInit {
             });
         const containerEl: JQuery = $('#calendar');
 
+        const getParentEvent = function(event) {
+            return $('#external-events .fc-event').filter(function() {
+                return $(this).text().includes($(event.target).text().trim());
+            })[0];
+        };
+
         containerEl.fullCalendar({
           editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             drop(date, jsEvent) {
-                console.log(date, jsEvent);
+                const parentEvent = getParentEvent(jsEvent);
+                const newDate = new Date(date.year(), date.month(), date.date()).toLocaleDateString();
+                $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate}`;
             },
-            eventDragStop(event, jsEvent) {
-                console.log(event.end.toString());
-                $('#external-events .fc-event:contains()').find('.due-date').html(event.end.toString());
-            },
-            eventResize(event, delta, revertFunc, jsEvent) {
-                const parentEvent = $('#external-events .fc-event').filter(function() {
-                    return $(this).text().includes($(jsEvent.target).text().trim());
-                })[0];
-                const newDate = event.end.toString().split('2018')[0].trim();
-                console.log($(parentEvent).find('.due-date'));
+            eventAfterRender(event, element) {
+                if (event.end) {
+                    const parentEvent = getParentEvent(element);
+                    const newDate = new Date(event.end.toString()).toLocaleDateString();
+                    $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate}`;
+                }
             },
             eventLimit: false,
             header: {
