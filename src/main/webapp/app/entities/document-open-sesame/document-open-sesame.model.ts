@@ -1,7 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export const enum Status {
-    'CREATED',
+export enum Status {
     'AUTHOR',
     'TE1',
     'CR',
@@ -9,8 +8,6 @@ export const enum Status {
     'ER',
     'RO',
     'TE2',
-    'GRAPHICS',
-    'PCO',
     'DONE'
 }
 

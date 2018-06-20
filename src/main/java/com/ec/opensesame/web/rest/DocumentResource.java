@@ -7,6 +7,7 @@ import com.ec.opensesame.web.rest.util.HeaderUtil;
 import com.ec.opensesame.web.rest.util.PaginationUtil;
 import com.ec.opensesame.service.dto.DocumentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import com.ec.opensesame.domain.enumeration.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -108,6 +109,53 @@ public class DocumentResource {
         log.debug("REST request to get Document : {}", id);
         DocumentDTO documentDTO = documentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(documentDTO));
+    }
+
+
+    /**
+     * POST  /documents/:id/approve : approve the "id" document to whatever is next.
+     *
+     * @param id the id of the documentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the documentDTO, or with status 404 (Not Found)
+     */
+    @PostMapping("/documents/{id}/approve")
+    @Timed
+    public ResponseEntity<DocumentDTO> approveDocument(@PathVariable Long id) {
+        log.debug("REST request to get Document : {}", id);
+        DocumentDTO documentDTO = documentService.findOne(id);
+        //Will have to make sure that this doesn't cycle back to AUTHOR once done
+        Status nextVal = documentDTO.getCurrstate().getNext();
+        if(documentDTO.getCurrstate() != documentDTO.getLaststate()){
+          nextVal = documentDTO.getLaststate();
+        }
+
+        if(nextVal != null){
+            documentDTO.setCurrstate(nextVal);
+            documentDTO.setLaststate(nextVal);
+            DocumentDTO result = documentService.save(documentDTO);
+            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(documentDTO));
+    }
+
+
+    /**
+     * POST  /documents/:id/deny : approve the "id" document to whatever is next.
+     *
+     * @param id the id of the documentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the documentDTO, or with status 404 (Not Found)
+     */
+    @PostMapping("/documents/{id}/deny")
+    @Timed
+    public ResponseEntity<DocumentDTO> denyDocument(@PathVariable Long id,@RequestBody String status) {
+        log.debug("REST request to get Document : {}", id);
+        DocumentDTO documentDTO = documentService.findOne(id);
+        //In a real system, we would make sure that this isn't a bad enum value
+        Status val = Status.get(status);
+        documentDTO.setCurrstate(val);
+        DocumentDTO result = documentService.save(documentDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+
     }
 
     /**
