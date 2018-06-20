@@ -35,38 +35,6 @@ export class DirectorComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-
-        $('#external-events .fc-event').each(function() {
-              // store data so the calendar knows to render an event upon drop
-              $(this).data('event', {
-                title: $.trim($(this).find('.title').text()), // use the element's text as the event title
-                stick: true, // maintain when user navigates (see docs on the renderEvent method)
-                color: $(this).find('span').attr('color'), // use the element's color value as the color of task
-              });
-              // make the event draggable using jQuery UI
-             $(this).draggable({
-                zIndex: 999,
-                revert: true,      // will cause the event to go back to its
-                revertDuration: 0  //  original position after the drag
-              });
-            });
-        const containerEl: JQuery = $('#calendar');
-
-        containerEl.fullCalendar({
-          editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar
-            drop(date, jsEvent) {
-                console.log(date, jsEvent);
-            },
-            eventLimit: false,
-            header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,basicWeek,basicDay'
-            },
-            eventTextColor: 'white',
-            
-        });
     }
 
     registerAuthenticationSuccess() {
