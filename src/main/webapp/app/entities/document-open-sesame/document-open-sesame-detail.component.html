@@ -1,60 +1,114 @@
 
 <div *ngIf="document">
-    <h2><span>Document</span> {{document.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-	<div id="docxjs-wrapper" style="width:100%;height:400px;background:green;"></div>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Name</span></dt>
-        <dd>
-            <span>{{document.name}}</span>
-        </dd>
-        <dt><span>Createdon</span></dt>
-        <dd>
-            <span>{{document.createdon | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span>Createdby</span></dt>
-        <dd>
-            <span>{{document.createdby}}</span>
-        </dd>
-        <dt><span>File</span></dt>
-        <dd>
-            <div *ngIf="document.file">
-                <a (click)="openFile(document.fileContentType, document.file)">open</a>
-                {{document.fileContentType}}, {{byteSize(document.file)}}
-            </div>
-        </dd>
-        <dt><span>Duedate</span></dt>
-        <dd>
-            <span>{{document.duedate | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span>Currstate</span></dt>
-        <dd>
-            <span>{{document.currstate}}</span>
-        </dd>
-        <dt><span>Laststate</span></dt>
-        <dd>
-            <span>{{document.laststate}}</span>
-        </dd>
-        <dt><span>Currversion</span></dt>
-        <dd>
-            <div *ngIf="document.currversionId">
-                <a [routerLink]="['/version-open-sesame', document.currversionId]">{{document.currversionId}}</a>
-            </div>
-        </dd>
-    </dl>
+  <div [hidden]="!isAuthenticated()">
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'document-open-sesame/'+ document.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
+
+
+  <!-- Header -->
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+    <div class='page-header'>
+        <div class='btn-toolbar pull-right'>
+          <div [hidden]="isDone()" class='btn-group mr-2' role="group">
+              <button (click)="approve()" type='button' class='btn btn-success'>Approve</button>
+          </div>
+          <div [hidden]="denyShow(0)" class='btn-group mr-2' role="group">
+            <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle>Deny</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button *ngFor='let value of enumValues; let i = index;' (click)='deny(value)' [hidden]="denyShow(i)" class="dropdown-item" >{{statusDictionary(value)}}</button>
+      </div>
+    </div>
+  </div>
+          </div>
+        </div>
+         <h2>{{document.name}}</h2>
+
+    </div>
+</div>
+  </div>
+
+  <!-- Progressbar -->
+  <div class=''>
+  	<div  class='col-md-12'>
+  		<div ng-app="progressbar" class="container">
+  			<ul ng-controller="myCtrl" class="progressbar">
+  				<li id="author" [ngClass]="progress('AUTHOR')">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='AUTHOR' title="Author">Author</a>
+  				</li>
+  				<li id="te" [ngClass]="progress('TE1')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='TE1' title="Tech Editor">TE</a>
+  				</li>
+  				<li id="cr" [ngClass]="progress('CR')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='CR' title="Content Reviewer">CR</a>
+  				</li>
+  				<li id="sio"  [ngClass]="progress('SIO')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='SIO' title="Senior Intel Officer">SIO</a>
+  				</li>
+  				<li id="er" [ngClass]="progress('ER')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='ER' title="Executive Reviewer">ER</a>
+  				</li>
+  				<li id="ro" [ngClass]="progress('RO')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='RO' title="Read Off">RO</a>
+  				</li>
+  				<li id="pco" [ngClass]="progress('TE2')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='TE2' title="Tech Editor/Graphics/PCO">TE | GFX | PCO</a>
+  				</li>
+  				<li id="done" [ngClass]="progress('DONE')" class="none">
+  					<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-id='DONE' title="Done">Done</a>
+  				</li>
+  			</ul>
+  		</div>
+  	</div>
+
+  </div>
+
+    <div class='row'>
+      <div  class='col-md-10 offset-md-1'>
+          <div id="docxjs-wrapper" style="width:100%;height:400px;background:green;"></div>
+      </div>
+
+    </div>
+
+  <!-- Tabs and Buttons -->
+
+  	<div  class="row">
+    	<div  class='col-md-8 offset-md-2'>
+  			<main>
+  				<!-- Tab Names -->
+  				<input id="tab1" type="radio" name="tabs" checked>
+    			<label for="tab1">Comments</label>
+
+    			<input id="tab2" type="radio" name="tabs">
+    			<label for="tab2">History</label>
+  				<!-- First Tab contents -->
+    			<section id="content1">
+  					<div class="container">
+  						<div class="dialogbox">
+  							<div class="body">
+          				<span><b>Author</b>: I just made a comment about this document.</span>
+        				</div>
+  						</div>
+  					</div>
+  					<textarea rows="3" cols="50" name="comment" form="#"></textarea>
+  					<br><br>
+  					<button class="btn" type="submit" form="#">Submit</button>
+    			</section>
+
+  				<!-- Second Tab Contents -->
+    			<section id="content2">
+      			<p>
+  						Document: Not Implemented
+      			</p>
+    			</section>
+  			</main>
+  		</div>
+
+
+
+  </div>
+
+
 </div>
