@@ -25,7 +25,7 @@
 
 </ng-template> -->
 
-<div class="fc-events-lg">
+
     <h2>Database Items</h2>
     <ng-container *ngFor="let document of documents; let last = last">
         <div class='fc-event' id="{{document.currstate}}">
@@ -38,10 +38,6 @@
                     <span class="dot" color="white" style=""></span>
                 </div>
             </div>
-            <div class="col-md-3 float-right">
-                <span class="dot" color="white" style=""></span>
-            </div>
-        </div>
         <table class="table">
             <div class="fc-events-lg">
                 <thead>
@@ -82,7 +78,8 @@
                 </tbody>
             </div>
         </table>
-    </div>
+      </div>
+
     <span *ngIf='last'>{{loadEvents()}}</span>
 </ng-container>
 
