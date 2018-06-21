@@ -12,7 +12,7 @@
             </dd>
             <dt><span>Created On</span></dt>
             <dd>
-                <span>{{document.createdon}}</span>
+                <span>{{document.createdon | date: 'EEE MMM dd yyyy'}}</span>
             </dd>
             <dt><span>Created By</span></dt>
             <dd>
@@ -27,7 +27,7 @@
             </dd>
             <dt><span>Due Date</span></dt>
             <dd>
-                <span>{{document.duedate}}</span>
+                <span>{{document.duedate | date: 'EEE MMM dd yyyy'}}</span>
             </dd>
             <dt><span>Current State</span></dt>
             <dd>

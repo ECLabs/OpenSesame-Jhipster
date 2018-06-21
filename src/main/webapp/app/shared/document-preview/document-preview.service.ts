@@ -16,6 +16,9 @@ export class DocumentModalService {
         }
         this.isOpen = true;
         const modalRef = this.modalService.open(JhiDocumentModalComponent, { size: 'lg' });
+        for (let key in document) {
+            if (!document[key] && !(key === 'duedate' || key == 'createdon' )) document[key] = 'N/A';
+        }
         modalRef.componentInstance.document = document;
         modalRef.result.then((result) => {
             this.isOpen = false;
