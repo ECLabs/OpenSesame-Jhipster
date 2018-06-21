@@ -70,7 +70,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     isAuthor(){
-      return this.document.currstate.toString() == "AUTHOR";
+      return this.document.currstate.toString() == "AUTHOR" && this.document.laststate.toString() == "AUTHOR";
     }
 
     deny(val:any){
