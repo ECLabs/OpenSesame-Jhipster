@@ -71,6 +71,7 @@ export class DirectorEventsComponent implements OnInit {
                 revert: true,      // will cause the event to go back to its
                 revertDuration: 0  //  original position after the drag
             });
+
             /*document color keying*/
             const currState = $(this).attr('id');
             switch (currState) {
@@ -126,10 +127,14 @@ export class DirectorEventsComponent implements OnInit {
                 return $(this).text().trim().includes(event[0].innerText.trim());
             })[0];
         };
+        const all_events = this.getEvents();
 
         containerEl.fullCalendar({
-          editable: true,
+            editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
+            events(start, end, timezone, callback) { //renders the calendar with all events available in database
+                callback(all_events);
+            },
             eventAfterRender(event, element) {
                 const parentEvent = getParentEvent(element);
                 let newDate;
@@ -143,17 +148,75 @@ export class DirectorEventsComponent implements OnInit {
 
                 $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
             },
+            drop() {
+                $(this).draggable('disable');
+                $(this).css('background-color', '#99ff99');
+            },
+
             displayEventEnd: true,
             eventLimit: false,
             header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,basicWeek,basicDay'
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
             },
             eventTextColor: 'white',
         });
     }
     openDocPreview(document) {
         this.modalRef = this.documentModalSerivce.open(document.target.innerText);
+    }
+
+    getEvents() {
+        let events = [];
+        for (let document of this.documents) {
+            events.push({
+                title: document.name,
+                start: document.createdon,
+                end: document.duedate,
+                color: this.getColor(document.currstate),
+            });
+        }
+        return events;
+    }
+
+    private getColor(currstate) {
+        let color = '';
+        switch (currstate) {
+            case 'CREATED':
+                color = 'green';
+                break;
+            case 'AUTHOR':
+                color = 'blue';
+                break;
+            case 'TE1':
+                color = 'red';
+                break;
+            case 'CR':
+                color = 'peru';
+                break;
+            case 'SIO':
+                color = 'aqua';
+                break;
+            case 'ER':
+                color = 'violet';
+                break;
+            case 'RO':
+                color = 'purple';
+                break;
+            case 'TE2':
+                color = 'grey';
+                break;
+            case 'GRAPHICS':
+                color = 'grey';
+                break;
+            case 'PCO':
+                color = 'grey';
+                break;
+            case 'DONE':
+                color = 'black';
+                break;
+        }
+        return color;
     }
 }

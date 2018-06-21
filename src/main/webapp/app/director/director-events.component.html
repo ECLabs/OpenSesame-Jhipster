@@ -1,4 +1,4 @@
-<ng-template #documentsTemp let-document="curr_doc">
+<!-- <ng-template #documentsTemp let-document="curr_doc">
     <div class='fc-event' id="{{document.currstate}}">
         <div class="row">
             <div class="col-md-8">
@@ -22,21 +22,22 @@
     </div>
 
 
-</ng-template>
+</ng-template> -->
 
-<div class="fc-events-lg">
-    <h2>Database Items</h2>
-    <ng-container *ngFor="let document of documents; let last = last">
-        <div class='fc-event' id="{{document.currstate}}">
-            <div class="row">
-                <div class="col-md-9">
-                    <a class="title" (click)="openDocPreview($event)" title="Preview Document">{{document.name}}</a>
-                </div>
-                <div class="col-md-3 float-right">
-                    <span class="dot" color="white" style=""></span>
-                </div>
+
+<h2>Database Items</h2>
+<ng-container *ngFor="let document of documents; let last = last">
+    <div class='fc-event' id="{{document.currstate}}">
+        <div class="row">
+            <div class="col-md-9">
+                <a class="title" (click)="openDocPreview($event)" title="Preview Document">{{document.name}}</a>
             </div>
-            <table class="table">
+            <div class="col-md-3 float-right">
+                <span class="dot" color="white" style=""></span>
+            </div>
+        </div>
+        <table class="table">
+            <div class="fc-events-lg">
                 <thead>
                     <tr>
                         <th>Created On</th>
@@ -53,19 +54,33 @@
                         <td>{{document.currstate}}</td>
                     </tr>
                 </tbody>
-            </table>
-        </div>
-        <span *ngIf='last'>{{loadEvents()}}</span>
-    </ng-container>
-</div>
+            </div>
+            <div class="fc-events-sm">
+                <tbody>
+                    <tr>
+                        <th>Created on</th>
+                        <td>{{document.createdon | date: 'EEE MMM dd yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Due</th>
+                        <td class="due-date">{{document.duedate | date: 'EEE MMM dd yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Created by</th>
+                        <td>{{document.createdby}} </td>
+                    </tr>
+                    <tr>
+                        <th>Currstate</th>
+                        <td>{{document.currstate}}</td>
+                    </tr>
+                </tbody>
+            </div>
+        </table>
+    </div>
+    <span *ngIf='last'>{{loadEvents()}}</span>
+</ng-container>
 
 
-<div class="fc-events-sm">
-    <ng-container *ngFor="let document of documents; let last = last">
-        <ng-container *ngTemplateOutlet="documentsTemp; context:{curr_doc:document}"></ng-container>
-        <span *ngIf='last'>{{loadEvents()}}</span>
-    </ng-container>
-</div>
 
 <div>
 
