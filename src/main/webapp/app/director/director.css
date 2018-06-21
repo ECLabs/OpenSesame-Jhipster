@@ -14,7 +14,7 @@ html, body {
     z-index: 2;
     top: 20px;
     left: 20px;
-    width: 80%;
+    width: 100%;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
@@ -47,10 +47,6 @@ html, body {
 }
 
 
-#legendContainer ul li{
-  font-size: 0.7em;
-}
-
 .fc-event{
   height: auto;
   color: #0d2242;
@@ -75,20 +71,45 @@ Legend
 #legendContainer {
     margin-top: 20%;
     background-color: white;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    z-index: 100;
+}
+
+#legendContainer ul li{
+  font-size: 0.7em;
+}
+
+#legendContainer .card{
+  width: auto;
+}
+
+.list-inline {
+  display:flex;
+}
+
+.list-inline li {
+  flex: 1;
+  text-align: left;
 }
 
 .dot {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    margin-bottom: 20px;
-    float: right;
-    margin-right:20px;
+    margin-right:5px;
+    margin-bottom: 7px;
     display: block;
 }
 
 
-@media only screen and (max-width: 1080px){
+.title{
+  font-size: 14px;
+}
+
+
+@media only screen and (max-width: 1500px){
   .fc-events-lg{
     display: none;
   }
@@ -97,7 +118,7 @@ Legend
   }
 }
 
-@media only screen and (min-width: 1080px){
+@media only screen and (min-width: 1500px){
   .fc-events-lg{
     display: block;
   }
