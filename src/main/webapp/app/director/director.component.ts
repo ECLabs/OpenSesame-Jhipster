@@ -50,8 +50,6 @@ export class DirectorComponent implements OnInit {
                 revertDuration: 0  //  original position after the drag
               });
             });
-
-        
     }
 
     registerAuthenticationSuccess() {
