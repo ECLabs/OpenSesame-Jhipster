@@ -11,20 +11,34 @@
     <div class="container">
     <div class='page-header'>
         <div class='btn-toolbar pull-right'>
-          <div [hidden]="isDone()" class='btn-group mr-2' role="group">
-              <button (click)="approve()" type='button' class='btn btn-success'>Approve</button>
+          <div  class='btn-group mr-2' role="group">
+            <button class='btn btn-warning' (click)="openFile(document.fileContentType, document.file)"> <span class="fa fa-download"></span>&nbsp;<span>Download</button>
           </div>
-          <div [hidden]="denyShow(0)" class='btn-group mr-2' role="group">
+          <div  class='btn-group mr-2' role="group">
+                <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'document-open-sesame/'+ document.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+           <span class="fa fa-pencil"></span>&nbsp;<span> Update</span>
+        </button>
+          </div>
+          <div class='btn-group mr-2' role="group">
+              <button  [disabled]="isDone()" (click)="approve()" type='button' class='btn btn-success'>Approve</button>
+          </div>
+          <div  class='btn-group mr-2' role="group">
             <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle>Deny</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button *ngFor='let value of enumValues; let i = index;' (click)='deny(value)' [hidden]="denyShow(i)" class="dropdown-item" >{{statusDictionary(value)}}</button>
-      </div>
-    </div>
+            <button [hidden]='isAuthor()' [disabled]="denyShow(0)" class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle>Deny</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button *ngFor='let value of enumValues; let i = index;' (click)='deny(value)' [hidden]="denyShow(i)" class="dropdown-item" >{{statusDictionary(value)}}</button>
+            </div>
+          </div>
   </div>
           </div>
         </div>
          <h2>{{document.name}}</h2>
+         <h4 *ngIf="!document.duedate">Due Date Not Set</h4>
+          <h4 *ngIf="document.duedate">Due Date - {{document.duedate | date:'mediumDate'}}</h4>
 
     </div>
 </div>
@@ -79,12 +93,21 @@
   			<main>
   				<!-- Tab Names -->
   				<input id="tab1" type="radio" name="tabs" checked>
-    			<label for="tab1">Comments</label>
+    			<label for="tab1">History</label>
 
     			<input id="tab2" type="radio" name="tabs">
-    			<label for="tab2">History</label>
+    			<label for="tab2">Comments</label>
   				<!-- First Tab contents -->
+
+
+  				<!-- Second Tab Contents -->
     			<section id="content1">
+      			<p>
+  						Document: Not Implemented
+      			</p>
+    			</section>
+
+          <section id="content2">
   					<div class="container">
   						<div class="dialogbox">
   							<div class="body">
@@ -94,14 +117,7 @@
   					</div>
   					<textarea rows="3" cols="50" name="comment" form="#"></textarea>
   					<br><br>
-  					<button class="btn" type="submit" form="#">Submit</button>
-    			</section>
-
-  				<!-- Second Tab Contents -->
-    			<section id="content2">
-      			<p>
-  						Document: Not Implemented
-      			</p>
+  					<button class="btn btn-primary" type="submit" form="#">Submit</button>
     			</section>
   			</main>
   		</div>
