@@ -25,6 +25,7 @@ export class DirectorEventsComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     documents: DocumentOpenSesame[];
+    duedates = {};
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -51,6 +52,9 @@ export class DirectorEventsComponent implements OnInit {
 
     private onSuccess(data, headers) {
         this.documents = data;
+        data.forEach((doc) => {
+            this.duedates[doc.id] = doc.duedate;
+        });
     }
 
     ngOnInit() {
@@ -130,19 +134,30 @@ export class DirectorEventsComponent implements OnInit {
         containerEl.fullCalendar({
           editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            eventAfterRender(event, element) {
-                const parentEvent = getParentEvent(element);
-                let newDate;
+            eventAfterRender: function(event: any, element) {
+                let dueDate;
 
                 if (!event.end) {
-                    const date = new Date(event.start.toString());
-                    newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                    const date = new Date(event.start);
+                    dueDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
                 } else {
-                    newDate = new Date(event.end.toString());
+                    dueDate = new Date(event.end);
                 }
 
-                $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
-            },
+                const document = JSON.parse($(getParentEvent(element)).find('#document-id')[0].innerText);
+                document.duedate = {
+                    day: dueDate.getDate(),
+                    month: dueDate.getMonth() + 1,
+                    year: dueDate.getFullYear()
+                };
+                this.duedates[document.id] = dueDate;
+
+                this.documentService
+                    .update(document)
+                    .subscribe((res: HttpResponse<DocumentOpenSesame>) => {
+                        
+                    });
+            }.bind(this),
             displayEventEnd: true,
             eventLimit: false,
             header: {
@@ -154,6 +169,6 @@ export class DirectorEventsComponent implements OnInit {
         });
     }
     openDocPreview(document) {
-        this.modalRef = this.documentModalSerivce.open(document.target.innerText);
+        this.modalRef = this.documentModalSerivce.open(document);
     }
 }

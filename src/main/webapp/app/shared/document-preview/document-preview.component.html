@@ -1,42 +1,45 @@
 <div id="doc-preview">
-    <a id="document-preview" href="#/doc" (click)="activeModal.dismiss()" title="View Document">{{docName}} PREVIEW</a>
+    <a id="document-preview" href="#/document-open-sesame/{{document.id}}" (click)="activeModal.dismiss()" title="View Document">{{document.name}} PREVIEW</a>
     <button aria-label="Close" style="position:absolute;right:10px;" class="close" type="button" (click)="activeModal.dismiss()"><span aria-hidden="true">x</span></button>
     <div id="document-info">
-        <h2 style="margin-top:12px">{{docName}}</h2>
+        <h2 style="margin-top:12px">{{document.name}}</h2>
         <hr style="margin:10px 0;">
         <jhi-alert-error></jhi-alert-error>
         <dl class="row-md jh-entity-details">
             <dt><span>Name</span></dt>
             <dd>
-                <span>DOCNAME</span>
+                <span>{{document.name}}</span>
             </dd>
             <dt><span>Created On</span></dt>
             <dd>
-                <span>CREATEDON</span>
+                <span>{{document.createdon | date: 'EEE MMM dd yyyy'}}</span>
             </dd>
             <dt><span>Created By</span></dt>
             <dd>
-                <span>CREATEDBY</span>
+                <span>{{document.createdby}}</span>
             </dd>
             <dt><span>File</span></dt>
             <dd>
-                <span>FILE</span>
+                <div *ngIf="document.file">
+                    Size: {{byteSize(document.file)}}
+                    <a (click)="openFile(document.fileContentType, document.file)">open</a>
+                </div>
             </dd>
             <dt><span>Due Date</span></dt>
             <dd>
-                <span>DUEDATE</span>
+                <span>{{document.duedate | date: 'EEE MMM dd yyyy'}}</span>
             </dd>
             <dt><span>Current State</span></dt>
             <dd>
-                <span>CURRENTSTATE</span>
+                <span>{{document.currstate}}</span>
             </dd>
             <dt><span>Last State</span></dt>
             <dd>
-                <span>LASTSTATE</span>
+                <span>{{document.laststate}}</span>
             </dd>
             <dt><span>Current Version</span></dt>
             <dd>
-                <span>CURRENTVERSION</span>
+                <span>{{document.currversionId}}</span>
             </dd>
         </dl>
     </div>
