@@ -151,6 +151,7 @@ export class DirectorEventsComponent implements OnInit {
             drop() {
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
+                
             },
 
             displayEventEnd: true,
