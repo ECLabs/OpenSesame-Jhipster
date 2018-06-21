@@ -26,6 +26,7 @@ export class DirectorEventsComponent implements OnInit {
     modalRef: NgbModalRef;
     documents: DocumentOpenSesame[];
     duedates = {};
+    loaded = false;
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -62,6 +63,7 @@ export class DirectorEventsComponent implements OnInit {
     }
 
     loadEvents() {
+      //alert("123");
         $('#external-events .fc-event').each(function() {
             // store data so the calendar knows to render an event upon drop
             $(this).data('event', {
@@ -165,7 +167,8 @@ export class DirectorEventsComponent implements OnInit {
             drop() {
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
-                containerEl.fullCalendar('renderEvent',$(this).data('event'));
+                // containerEl.fullCalendar('addEventSource', $(this).data('event'));
+                // containerEl.fullCalendar('rerenderEvents');
             },
             displayEventEnd: true,
             eventLimit: false,
@@ -176,6 +179,7 @@ export class DirectorEventsComponent implements OnInit {
             },
             eventTextColor: 'white',
         });
+          this.loaded = true;
     }
     openDocPreview(document) {
         this.modalRef = this.documentModalSerivce.open(document.target.innerText);
@@ -186,7 +190,8 @@ export class DirectorEventsComponent implements OnInit {
         for (let document of this.documents) {
             events.push({
                 title: document.name,
-                start: document.duedate,
+                start: document.createdon,
+                end: document.duedate,
                 color: this.getColor(document.currstate),
                 stick: true,
             });
