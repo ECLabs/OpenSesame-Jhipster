@@ -54,6 +54,9 @@ public class DocumentResource {
         if (documentDTO.getId() != null) {
             throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        documentDTO.setLaststate(Status.AUTHOR);
+        documentDTO.setCurrstate(Status.AUTHOR);
+        
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
