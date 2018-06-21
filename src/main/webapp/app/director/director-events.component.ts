@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as $ from 'jquery';
 import 'jqueryui';
 import 'fullcalendar';
-import { Account, LoginModalService, Principal } from '../shared';
+import { Account, LoginModalService, Principal, DocumentModalService } from '../shared';
 
 @Component({
     selector: 'jhi-director-events',
@@ -31,7 +31,8 @@ export class DirectorEventsComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private config: NgbPopoverConfig
+        private config: NgbPopoverConfig,
+        private documentModalSerivce: DocumentModalService,
     ) {
         config.placement = 'right';
         config.triggers = 'hover';
@@ -120,20 +121,39 @@ export class DirectorEventsComponent implements OnInit {
             }
         });
         const containerEl: JQuery = $('#calendar');
+        const getParentEvent = function(event) {
+            return $('#external-events .fc-event').filter(function() {
+                return $(this).text().trim().includes(event[0].innerText.trim());
+            })[0];
+        };
 
         containerEl.fullCalendar({
-            editable: true,
+          editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            drop(date, jsEvent) {
-                console.log(date, jsEvent);
+            eventAfterRender(event, element) {
+                const parentEvent = getParentEvent(element);
+                let newDate;
+
+                if (!event.end) {
+                    const date = new Date(event.start.toString());
+                    newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                } else {
+                    newDate = new Date(event.end.toString());
+                }
+
+                $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
             },
+            displayEventEnd: true,
             eventLimit: false,
             header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,basicWeek,basicDay'
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,basicWeek,basicDay'
             },
             eventTextColor: 'white',
         });
+    }
+    openDocPreview(document) {
+        this.modalRef = this.documentModalSerivce.open(document.target.innerText);
     }
 }

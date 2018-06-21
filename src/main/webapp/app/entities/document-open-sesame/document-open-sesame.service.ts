@@ -5,7 +5,7 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
-import { DocumentOpenSesame } from './document-open-sesame.model';
+import { DocumentOpenSesame, Status} from './document-open-sesame.model';
 import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<DocumentOpenSesame>;
@@ -32,6 +32,16 @@ export class DocumentOpenSesameService {
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<DocumentOpenSesame>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    approve(id: number): Observable<EntityResponseType> {
+      return this.http.post<DocumentOpenSesame>(`${this.resourceUrl}/${id}/approve`, {}, { observe: 'response' })
+          .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    deny(id: number, status: string): Observable<EntityResponseType> {
+      return this.http.post<DocumentOpenSesame>(`${this.resourceUrl}/${id}/deny`, status, { observe: 'response' })
+          .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<DocumentOpenSesame[]>> {

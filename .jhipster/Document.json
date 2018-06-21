@@ -53,12 +53,12 @@
         {
             "fieldName": "currstate",
             "fieldType": "Status",
-            "fieldValues": "CREATED,AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
+            "fieldValues": "AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
         },
         {
             "fieldName": "laststate",
             "fieldType": "Status",
-            "fieldValues": "CREATED,AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
+            "fieldValues": "AUTHOR,TE1,CR,SIO,ER,RO,TE2,GRAPHICS,PCO,DONE"
         }
     ],
     "changelogDate": "20180523205535",

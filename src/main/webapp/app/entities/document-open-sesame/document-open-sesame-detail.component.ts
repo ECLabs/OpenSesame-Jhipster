@@ -3,36 +3,131 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
-import { WindowRef } from '../../shared';
-import { DocumentOpenSesame } from './document-open-sesame.model';
+import { WindowRef , Account, Principal} from '../../shared';
+import { DocumentOpenSesame, Status } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
+
+
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
-    templateUrl: './document-open-sesame-detail.component.html'
+    templateUrl: './document-open-sesame-detail.component.html',
+    styleUrls: [
+      "doc.css"
+    ]
 })
-export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 
+
+export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
+    account: Account;
     document: DocumentOpenSesame;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
     private docxJS: any;
     private files: any;
+    private order: any[];
+    private test: any;
+    private enumValues:Array<string>=   Object.keys(Status)
+      .map((k: any) => Status[k])
+      .filter((v: any) => typeof v === 'string');
+    private enumDictionary:any = {
+      "AUTHOR" : "Author",
+      "TE1" : "Tech Edit",
+      "CR" : "Content Reviewer",
+      "SIO" : "Senior Intel Officer",
+      "ER" : "Executive Reviewer",
+      "RO" : "Read Off",
+      "TE2": "TE|GFX|PCO",
+      "DONE": "Done"
+    };
 
     constructor(
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
+        private principal: Principal,
         private documentService: DocumentOpenSesameService,
         private route: ActivatedRoute
     ) {
     }
 
+
+
+    approve(){
+      this.documentService.approve(this.document.id)
+          .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
+              this.document = documentResponse.body;
+          });
+
+    }
+
+    statusDictionary(status:string){
+      return this.enumDictionary[status];
+    }
+
+    isDone(){
+      return this.document.currstate.toString() == "DONE";
+    }
+
+    deny(val:any){
+      this.documentService.deny(this.document.id, val)
+          .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
+              this.document = documentResponse.body;
+          });
+    }
+    denyShow(dIndex:number){
+      let index = this.enumValues.indexOf(this.document.currstate.toString());
+      if(dIndex >= index){
+        return true;
+      }
+      return false;
+    }
+
+    progress(progress:string) {
+
+      let cssClasses = {};
+      let index = this.enumValues.indexOf(this.document.currstate.toString());
+      let lastIndex = this.enumValues.indexOf(this.document.laststate.toString());
+      let progressIndex = this.enumValues.indexOf(progress);
+
+      if(index != lastIndex && progressIndex == lastIndex){
+          return {"last": true}
+      }
+
+      if(index > progressIndex || this.document.currstate.toString() == "DONE"){
+        return {"completed": true}
+      }
+      else if(index == progressIndex){
+        return {"active": true}
+      }
+      return {"none": true}
+    }
+
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+
+      this.principal.identity().then((account) => {
+          this.account = account;
+      });
+      var that = this.order;
+      this.subscription = this.route.params.subscribe((params) => {
+          this.load(params['id']);
+      });
+
+      this.registerChangeInDocuments();
+
+      this.registerAuthenticationSuccess();
+    }
+
+    registerAuthenticationSuccess() {
+        this.eventManager.subscribe('authenticationSuccess', (message) => {
+            this.principal.identity().then((account) => {
+                this.account = account;
+            });
         });
-        this.registerChangeInDocuments();
+    }
+
+    isAuthenticated() {
+        return this.principal.isAuthenticated();
     }
 
     load(id) {
@@ -40,6 +135,8 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
                 this.document = documentResponse.body;
                 this.window = new WindowRef();
+
+
 
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
 
@@ -72,6 +169,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                 );
             });
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }

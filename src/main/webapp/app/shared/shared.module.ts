@@ -15,6 +15,8 @@ import {
     Principal,
     JhiTrackerService,
     HasAnyAuthorityDirective,
+    DocumentModalService,
+    JhiDocumentModalComponent
 } from './';
 
 @NgModule({
@@ -24,9 +26,11 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
+        JhiDocumentModalComponent,
         HasAnyAuthorityDirective
     ],
     providers: [
+        DocumentModalService,
         LoginService,
         LoginModalService,
         AccountService,
@@ -38,9 +42,13 @@ import {
         UserService,
         DatePipe
     ],
-    entryComponents: [JhiLoginModalComponent],
+    entryComponents: [
+        JhiLoginModalComponent,
+        JhiDocumentModalComponent
+    ],
     exports: [
         OpenSesameSharedCommonModule,
+        JhiDocumentModalComponent,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
         DatePipe
