@@ -10,13 +10,13 @@ export class DocumentModalService {
         private modalService: NgbModal
     ) {}
 
-    open(docName): NgbModalRef {
+    open(document): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
         const modalRef = this.modalService.open(JhiDocumentModalComponent, { size: 'lg' });
-        modalRef.componentInstance.docName = docName;
+        modalRef.componentInstance.document = document;
         modalRef.result.then((result) => {
             this.isOpen = false;
         }, (reason) => {

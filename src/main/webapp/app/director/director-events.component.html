@@ -1,8 +1,9 @@
 <ng-template #documentsTemp let-document="curr_doc">
     <div class='fc-event' id="{{document.currstate}}">
+        <div hidden id="document.id">{{document.id}}</div>
         <div class="row">
             <div class="col-md-8">
-                <a class="title" (click)="openDocPreview($event)" title="Preview Document" class="title">{{document.name}}</a>
+                <a class="title" (click)="openDocPreview(document)" title="Preview Document" class="title">{{document.name}}</a>
             </div>
             <div class="col-md-4 float-right">
                 <span class="dot" color="white" style=""></span>
@@ -28,9 +29,10 @@
     <h2>Database Items</h2>
     <ng-container *ngFor="let document of documents; let last = last">
         <div class='fc-event' id="{{document.currstate}}">
+            <div hidden id="document-id">{{document.id}}</div>
             <div class="row">
                 <div class="col-md-9">
-                    <a class="title" (click)="openDocPreview($event)" title="Preview Document">{{document.name}}</a>
+                    <a class="title" (click)="openDocPreview(document)" title="Preview Document">{{document.name}}</a>
                 </div>
                 <div class="col-md-3 float-right">
                     <span class="dot" color="white" style=""></span>

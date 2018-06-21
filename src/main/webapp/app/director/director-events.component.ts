@@ -131,17 +131,17 @@ export class DirectorEventsComponent implements OnInit {
           editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             eventAfterRender(event, element) {
-                const parentEvent = getParentEvent(element);
-                let newDate;
+                // const parentEvent = getParentEvent(element);
+                // let newDate;
 
-                if (!event.end) {
-                    const date = new Date(event.start.toString());
-                    newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-                } else {
-                    newDate = new Date(event.end.toString());
-                }
+                // if (!event.end) {
+                //     const date = new Date(event.start.toString());
+                //     newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                // } else {
+                //     newDate = new Date(event.end.toString());
+                // }
 
-                $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
+                // $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
             },
             displayEventEnd: true,
             eventLimit: false,
@@ -154,6 +154,6 @@ export class DirectorEventsComponent implements OnInit {
         });
     }
     openDocPreview(document) {
-        this.modalRef = this.documentModalSerivce.open(document.target.innerText);
+        this.modalRef = this.documentModalSerivce.open(document);
     }
 }
