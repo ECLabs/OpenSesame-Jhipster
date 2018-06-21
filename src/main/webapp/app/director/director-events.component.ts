@@ -136,9 +136,9 @@ export class DirectorEventsComponent implements OnInit {
         containerEl.fullCalendar({
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            events(start, end, timezone, callback) { //renders the calendar with all events available in database
-                callback(all_events);
-            },
+            // events(start, end, timezone, callback) { //renders the calendar with all events available in database
+            //     callback(all_events);
+            // },
             eventAfterRender: function(event: any, element) {
                 let dueDate;
 
@@ -148,7 +148,6 @@ export class DirectorEventsComponent implements OnInit {
                 } else {
                     dueDate = new Date(event.end);
                 }
-
                 const document = JSON.parse($(getParentEvent(element)).find('#document-id')[0].innerText);
                 document.duedate = {
                     day: dueDate.getDate(),
@@ -157,12 +156,17 @@ export class DirectorEventsComponent implements OnInit {
                 };
                 this.duedates[document.id] = dueDate;
 
-                this.documentService
-                    .update(document)
-                    .subscribe((res: HttpResponse<DocumentOpenSesame>) => {
-
-                    });
+                // this.documentService
+                //     .update(document)
+                //     .subscribe((res: HttpResponse<DocumentOpenSesame>) => {
+                //
+                //     });  /*bug with updating documents with db fields that don't exist*/
             }.bind(this),
+            drop() {
+                $(this).draggable('disable');
+                $(this).css('background-color', '#99ff99');
+                containerEl.fullCalendar('renderEvent',$(this).data('event'));
+            },
             displayEventEnd: true,
             eventLimit: false,
             header: {
@@ -182,9 +186,9 @@ export class DirectorEventsComponent implements OnInit {
         for (let document of this.documents) {
             events.push({
                 title: document.name,
-                start: document.createdon,
-                end: document.duedate,
+                start: document.duedate,
                 color: this.getColor(document.currstate),
+                stick: true,
             });
         }
         return events;
