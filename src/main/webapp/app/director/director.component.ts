@@ -51,38 +51,7 @@ export class DirectorComponent implements OnInit {
               });
             });
 
-        const containerEl: JQuery = $('#calendar');
-        const getParentEvent = function(event) {
-            return $('#external-events .fc-event').filter(function() {
-                return $(this).text().trim().includes(event[0].innerText.trim());
-            })[0];
-        };
-
-        containerEl.fullCalendar({
-          editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar
-            eventAfterRender(event, element) {
-                const parentEvent = getParentEvent(element);
-                let newDate;
-
-                if (!event.end) {
-                    const date = new Date(event.start.toString());
-                    newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-                } else {
-                    newDate = new Date(event.end.toString());
-                }
-
-                $(parentEvent).find('.due-date')[0].innerHTML = `Due: ${newDate.toLocaleDateString()}`;
-            },
-            displayEventEnd: true,
-            eventLimit: false,
-            header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,basicWeek,basicDay'
-            },
-            eventTextColor: 'white',
-        });
+        
     }
 
     registerAuthenticationSuccess() {
