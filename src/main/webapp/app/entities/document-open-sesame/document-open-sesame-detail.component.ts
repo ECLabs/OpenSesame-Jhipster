@@ -69,6 +69,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       return this.document.currstate.toString() == "DONE";
     }
 
+    isAuthor(){
+      return this.document.currstate.toString() == "AUTHOR";
+    }
+
     deny(val:any){
       this.documentService.deny(this.document.id, val)
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
@@ -76,6 +80,9 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           });
     }
     denyShow(dIndex:number){
+      if(this.document.currstate != this.document.laststate)
+        return true;
+
       let index = this.enumValues.indexOf(this.document.currstate.toString());
       if(dIndex >= index){
         return true;

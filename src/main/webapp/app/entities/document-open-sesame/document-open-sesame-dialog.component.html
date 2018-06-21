@@ -17,7 +17,7 @@
             <input type="text" class="form-control" name="name" id="field_name"
                 [(ngModel)]="document.name" />
         </div>
-        <div class="form-group">
+        <div [hidden]="true" class="form-group">
             <label class="form-control-label" for="field_createdon">Createdon</label>
             <div class="input-group">
                 <input id="field_createdon" type="text" class="form-control" name="createdon" ngbDatepicker  #createdonDp="ngbDatepicker" [(ngModel)]="document.createdon"
@@ -27,7 +27,7 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div  [hidden]="true" class="form-group">
             <label class="form-control-label" for="field_createdby">Createdby</label>
             <input type="text" class="form-control" name="createdby" id="field_createdby"
                 [(ngModel)]="document.createdby" />
@@ -60,10 +60,9 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div  [hidden]="true" class="form-group">
             <label class="form-control-label" for="field_currstate">Currstate</label>
             <select class="form-control" name="currstate" [(ngModel)]="document.currstate" id="field_currstate" >
-                <option value="CREATED">CREATED</option>
                 <option value="AUTHOR">AUTHOR</option>
                 <option value="TE1">TE1</option>
                 <option value="CR">CR</option>
@@ -76,10 +75,9 @@
                 <option value="DONE">DONE</option>
             </select>
         </div>
-        <div class="form-group">
+        <div  [hidden]="true" class="form-group">
             <label class="form-control-label" for="field_laststate">Laststate</label>
             <select class="form-control" name="laststate" [(ngModel)]="document.laststate" id="field_laststate" >
-                <option value="CREATED">CREATED</option>
                 <option value="AUTHOR">AUTHOR</option>
                 <option value="TE1">TE1</option>
                 <option value="CR">CR</option>
@@ -93,7 +91,7 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div  [hidden]="true" class="form-group">
             <label class="form-control-label" for="field_currversion">Currversion</label>
             <select class="form-control" id="field_currversion" name="currversion" [(ngModel)]="document.currversionId">
                 <option [ngValue]="null"></option>
