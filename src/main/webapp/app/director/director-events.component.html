@@ -1,60 +1,73 @@
-<ng-template #popContent>
-    <p *ngFor="let content of getContent()">{{content}}</p>
+<ng-template #documentsTemp let-document="curr_doc">
+    <div class='fc-event' id="{{document.currstate}}">
+        <div class="row">
+            <div class="col-md-8">
+                <a class="title" (click)="openDocPreview($event)" title="Preview Document" class="title">{{document.name}}</a>
+            </div>
+            <div class="col-md-4 float-right">
+                <span class="dot" color="white" style=""></span>
+            </div>
+        </div>
+        <ul class='list-group'>
+            <li class='list-group-item'>
+                Created: {{document.createdon | date: 'MMM dd yyyy'}}
+            </li>
+            <li class='list-group-item'>
+                Due: {{document.duedate | date: 'MMM dd yyyy'}}
+            </li>
+            <li class='list-group-item'> By: {{document.createdby}} </li>
+            <li class='list-group-item'> Currstate: {{document.currstate}}</li>
+
+        </ul>
+    </div>
+
+
 </ng-template>
 
 <div class="fc-events-lg">
-    <div class='fc-event'>
-        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 1</a> <span class="dot" color="green" style="background-color:green"></span>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Created On: </td>
-                    <td class="due-date">Due: </td>
-                </tr>
-                <tr>
-                    <td>Created by: </td>
-                    <td>Current State: </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class='fc-event'>
-        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 2</a> <span class="dot" color="red" style="background-color:red"></span>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Created On: </td>
-                    <td class="due-date">Due: </td>
-                </tr>
-                <tr>
-                    <td>Created by: </td>
-                    <td>Current State: </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class='fc-event'>
-        <a class="title" (click)="openDocPreview($event)" title="Preview Document">Document 3</a> <span class="dot" color="blue" style="background-color:blue"></span>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Created On: </td>
-                    <td class="due-date">Due: </td>
-                </tr>
-                <tr>
-                    <td>Created by: </td>
-                    <td>Current State: </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h2>Database Items</h2>
+    <ng-container *ngFor="let document of documents; let last = last">
+        <div class='fc-event' id="{{document.currstate}}">
+            <div class="row">
+                <div class="col-md-9">
+                    <a class="title" (click)="openDocPreview($event)" title="Preview Document">{{document.name}}</a>
+                </div>
+                <div class="col-md-3 float-right">
+                    <span class="dot" color="white" style=""></span>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Created On</th>
+                        <th>Due Date</th>
+                        <th>Created By</th>
+                        <th>Current State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{document.createdon | date: 'EEE MMM dd yyyy'}}</td>
+                        <td class="due-date">{{document.duedate | date: 'EEE MMM dd yyyy'}}</td>
+                        <td>{{document.createdby}} </td>
+                        <td>{{document.currstate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span *ngIf='last'>{{loadEvents()}}</span>
+    </ng-container>
 </div>
 
 
 <div class="fc-events-sm">
-    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 1 </a><span class="dot" color="green" style="background-color:green"></span></div>
-    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 2 </a><span class="dot" color="red" style="background-color:red"></span></div>
-    <div class='fc-event'><a [ngbPopover]="popContent"><b class="title">Document 3 </a><span class="dot" color="blue" style="background-color:blue"></span></div>
+    <ng-container *ngFor="let document of documents; let last = last">
+        <ng-container *ngTemplateOutlet="documentsTemp; context:{curr_doc:document}"></ng-container>
+        <span *ngIf='last'>{{loadEvents()}}</span>
+    </ng-container>
+</div>
+
+<div>
+
+
 </div>
