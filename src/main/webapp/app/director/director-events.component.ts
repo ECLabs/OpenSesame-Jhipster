@@ -75,9 +75,9 @@ export class DirectorEventsComponent implements OnInit {
                 revert: true,      // will cause the event to go back to its
                 revertDuration: 0  //  original position after the drag
             });
-            if($(this).find($('.due-date')).text()){ //has due date
-              $(this).draggable('disable');
-              $(this).css('background-color', '#99ff99');
+            if ($(this).find($('.due-date')).text()) { //has due date
+                $(this).draggable('disable');
+                $(this).css('background-color', '#99ff99');
             }
 
             /*document color keying*/
@@ -168,15 +168,12 @@ export class DirectorEventsComponent implements OnInit {
                     this.documentService
                         .update(document)
                         .subscribe((res: HttpResponse<DocumentOpenSesame>) => {
-
-                        });  /*bug with updating documents with db fields that don't exist*/
+                        });
                 }
             }.bind(this),
             drop() {
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
-                //containerEl.fullCalendar('addEventSource', $(this).data('event'));
-                //containerEl.fullCalendar('rerenderEvents');
             },
             displayEventEnd: true,
             eventLimit: false,
