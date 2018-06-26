@@ -78,6 +78,9 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { //has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
+            } else {
+                $(this).draggable('enable');
+                $(this).css('background-color', 'white');
             }
 
             /*document color keying*/
@@ -136,17 +139,42 @@ export class DirectorEventsComponent implements OnInit {
             })[0];
         };
 
-        var _this = this;
         containerEl.fullCalendar({
             displayEventTime: false,
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            events: function(start, end, timezone, callback) { //renders the calendar with all events available in database
-                let all_events = _this.getEvents(start.month(), end.month());
-                console.log(all_events);
+            events: (start, end, timezone, callback) => { //renders the calendar with all events available in database
+                let all_events = this.getEvents(start.month(), end.month());
                 callback(all_events);
             },
-            eventAfterRender: function(event: any, element) {
+            eventRender: (event, element) => {
+                const icon = $('<i class="fa fa-times icon"></i>');
+                
+                icon.css({
+                    'position': 'absolute',
+                    'right': 0,
+                    'color': 'white',
+                    'top': '1px',
+                    'display': 'none'
+                });
+
+                icon.on('click', () => {  
+                    let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
+                    this.duedates[document.id] = '';
+                    document.duedate = null;
+                    this.documentService.update(document).subscribe(() => {});
+                    containerEl.fullCalendar('removeEvents', event._id);
+                });
+
+                element.mouseenter(function() {
+                    icon.show();
+                }).mouseleave(function() {
+                    icon.hide();
+                });
+
+                element.find('.fc-content').append(icon);
+            },
+            eventAfterRender: (event: any, element) => {
                 let dueDate;
 
                 if (!event.end) {
@@ -155,6 +183,7 @@ export class DirectorEventsComponent implements OnInit {
                 } else {
                     dueDate = new Date(event.end);
                 }
+                
                 let document = ($(getParentEvent(element)).find('#document-id').text());
                 if (document) {
                     let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
@@ -167,10 +196,9 @@ export class DirectorEventsComponent implements OnInit {
 
                     this.documentService
                         .update(document)
-                        .subscribe((res: HttpResponse<DocumentOpenSesame>) => {
-                        });
+                        .subscribe((res: HttpResponse<DocumentOpenSesame>) => {});
                 }
-            }.bind(this),
+            },
             drop() {
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
@@ -186,7 +214,7 @@ export class DirectorEventsComponent implements OnInit {
         });
     }
     openDocPreview(document) {
-        this.modalRef = this.documentModalSerivce.open(document.target.innerText);
+        this.modalRef = this.documentModalSerivce.open(document);
     }
 
     getEvents(start, end) {
