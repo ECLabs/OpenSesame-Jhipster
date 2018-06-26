@@ -86,7 +86,7 @@ Legend
 
 .list-inline li {
     flex: 1;
-    text-align: left;
+    text-align: center;
 }
 
 .dot {
@@ -102,9 +102,7 @@ Legend
     font-size: 14px;
 }
 
-.table td {
-    word-break: break-all;
-}
+
 
 @media only screen and (max-width: 1500px) {
     .fc-events-lg {
