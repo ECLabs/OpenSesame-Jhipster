@@ -148,15 +148,14 @@ export class DirectorEventsComponent implements OnInit {
                 callback(all_events);
             },
             eventRender: (event, element) => {
-                const icon = $('<i class="fa fa-times icon"></i>');
+                const icon = $('<div><i class="fa fa-times icon" style="margin-right:2%;"></i></div>');
                 
                 icon.css({
-                    'position': 'absolute',
-                    'right': 0,
                     'color': 'white',
-                    'top': '1px',
-                    'display': 'none'
-                });
+                    'border-right': '1px solid white',
+                    'display': 'inline',
+                    'height': '100%',
+                }).hide();
 
                 icon.on('click', () => {  
                     let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
@@ -172,7 +171,7 @@ export class DirectorEventsComponent implements OnInit {
                     icon.hide();
                 });
 
-                element.find('.fc-content').append(icon);
+                element.find('.fc-content').prepend(icon);
             },
             eventAfterRender: (event: any, element) => {
                 let dueDate;
