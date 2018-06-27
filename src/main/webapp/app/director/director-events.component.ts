@@ -148,7 +148,7 @@ export class DirectorEventsComponent implements OnInit {
                 callback(all_events);
             },
             eventRender: (event, element) => {
-                const icon = $('<div><i class="fa fa-times icon" style="margin-right:2%;"></i></div>');
+                const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
                 
                 icon.css({
                     'color': 'white',
