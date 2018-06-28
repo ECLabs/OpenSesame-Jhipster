@@ -1,15 +1,14 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
 import { DocumentOpenSesame } from '../entities/document-open-sesame/document-open-sesame.model';
 import { DocumentOpenSesameService } from '../entities/document-open-sesame/document-open-sesame.service';
-import { Subscription } from 'rxjs/Subscription';
 
 import * as $ from 'jquery';
+import * as moment from 'moment';
 import 'jqueryui';
 import 'fullcalendar';
-import { Account, LoginModalService, Principal, DocumentModalService } from '../shared';
+import { Account, DocumentModalService } from '../shared';
 
 @Component({
     selector: 'jhi-director-events',
@@ -29,15 +28,8 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private config: NgbPopoverConfig,
         private documentModalSerivce: DocumentModalService,
-    ) {
-        config.placement = 'right';
-        config.triggers = 'hover';
-    }
+    ) {}
 
     getContent() {
         return ['Created on: ', 'Created by: ', 'Due Date: ', 'Current State: ', 'Last State: ', 'Version: ', 'Comments: '];
@@ -46,15 +38,12 @@ export class DirectorEventsComponent implements OnInit {
     loadAll() {
         this.documentService.query({
         }).subscribe(
-            (res: HttpResponse<DocumentOpenSesame[]>) => this.onSuccess(res.body, res.headers)
-            );
-    }
-
-    private onSuccess(data, headers) {
-        this.documents = data;
-        data.forEach((doc) => {
-            this.duedates[doc.id] = doc.duedate;
-        });
+            (res: HttpResponse<DocumentOpenSesame[]>) => {
+                this.documents = res.body;
+                res.body.forEach(({ id, duedate }) => {
+                    this.duedates[id] = duedate;
+                });
+            });
     }
 
     ngOnInit() {
@@ -75,7 +64,7 @@ export class DirectorEventsComponent implements OnInit {
                 revert: true,      // will cause the event to go back to its
                 revertDuration: 0  //  original position after the drag
             });
-            if ($(this).find($('.due-date')).text()) { //has due date
+            if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
             } else {
@@ -135,7 +124,7 @@ export class DirectorEventsComponent implements OnInit {
         const containerEl: JQuery = $('#calendar');
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
-                return $(this).text().trim().includes(event[0].innerText.trim());
+                return $(this).text().trim().includes(event.text());
             })[0];
         };
 
@@ -143,10 +132,7 @@ export class DirectorEventsComponent implements OnInit {
             displayEventTime: false,
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            events: (start, end, timezone, callback) => { //renders the calendar with all events available in database
-                let all_events = this.getEvents(start.month(), end.month());
-                callback(all_events);
-            },
+            events: this.getEvents(),
             eventRender: (event, element) => {
                 const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
                 
@@ -157,11 +143,12 @@ export class DirectorEventsComponent implements OnInit {
                     'height': '100%',
                 }).hide();
 
+                // Attach remove icon with click event handler on event render
                 icon.on('click', () => {  
                     let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
                     this.duedates[document.id] = '';
                     document.duedate = null;
-                    this.documentService.update(document).subscribe(() => {});
+                    this.documentService.update(document).subscribe();
                     containerEl.fullCalendar('removeEvents', event._id);
                 });
 
@@ -174,28 +161,22 @@ export class DirectorEventsComponent implements OnInit {
                 element.find('.fc-content').prepend(icon);
             },
             eventAfterRender: (event: any, element) => {
-                let dueDate;
+                const object = $(getParentEvent(element)).find('#document-id');
 
-                if (!event.end) {
-                    const date = new Date(event.start);
-                    dueDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-                } else {
-                    dueDate = new Date(event.end);
-                }
+                if (object.length !== 0) {
+                    const document = JSON.parse(object.text());
+                    if (!event.end) {
+                        event.end = moment(event.start).add(1, 'day');
+                    }
                 
-                let document = ($(getParentEvent(element)).find('#document-id').text());
-                if (document) {
-                    let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
                     document.duedate = {
-                        day: dueDate.getDate(),
-                        month: dueDate.getMonth() + 1,
-                        year: dueDate.getFullYear()
-                    };
-                    this.duedates[document.id] = dueDate;
+                        year: event.end.year(),
+                        month: event.end.month() + 1,
+                        day: event.end.date() - 1,   
+                    }
 
-                    this.documentService
-                        .update(document)
-                        .subscribe((res: HttpResponse<DocumentOpenSesame>) => {});
+                    this.duedates[document.id] = event.end;
+                    this.documentService.update(document).subscribe();
                 }
             },
             drop() {
@@ -212,18 +193,22 @@ export class DirectorEventsComponent implements OnInit {
             eventTextColor: 'white',
         });
     }
+
     openDocPreview(document) {
         this.modalRef = this.documentModalSerivce.open(document);
     }
 
-    getEvents(start, end) {
+    getEvents() {
         let events = [];
-        for (let document of this.documents) {
+        for (const document of this.documents) {
+            const duedate = new Date(document.duedate);
             events.push({
                 title: document.name,
-                start: document.duedate,
+                start: '2018-06-05',
+                end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
                 color: this.getColor(document.currstate),
-                stick: true,
+                editable: true,
+                allDay: true
             });
         }
         return events;
