@@ -124,18 +124,19 @@ export class DirectorEventsComponent implements OnInit {
 
                 if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    if (!event.end) {
-                        event.end = moment(event.start).add(1, 'day');
-                    }
-                
-                    document.duedate = {
-                        year: event.end.year(),
-                        month: event.end.month() + 1,
-                        day: event.end.date() - 1,   
-                    }
+                    const newDueDate = moment(event.start).add(1, 'day');
+                    const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                    this.duedates[document.id] = event.end;
-                    this.documentService.update(document).subscribe();
+                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
+                        document.duedate = {
+                            year: event.start.year(),
+                            month: event.start.month() + 1,
+                            day: event.start.date(),   
+                        }
+    
+                        this.duedates[document.id] = newDueDate;
+                        this.documentService.update(document).subscribe();
+                    }
                 }
             },
             drop() {
@@ -160,11 +161,9 @@ export class DirectorEventsComponent implements OnInit {
     getEvents() {
         let events = [];
         for (const document of this.documents) {
-            const duedate = new Date(document.duedate);
             events.push({
                 title: document.name,
-                start: moment(document.duedate),
-                end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
+                start: document.duedate,
                 color: this.getColor(document.currstate),
                 eventStartEditable: true,
                 allDay: true
