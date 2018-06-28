@@ -76,7 +76,7 @@ export class DirectorEventsComponent implements OnInit {
             /* document color keying */
             const currState = $(this).attr('id');
             const color = __this.getColor(currState);
-            $(this).find('span.dot').attr('color', `${color}`);
+            $(this).find('span.dot').attr('color', color);
             $(this).find('span.dot').attr('style', `background-color:${color}`);
         });
 
@@ -89,7 +89,7 @@ export class DirectorEventsComponent implements OnInit {
 
         containerEl.fullCalendar({
             displayEventTime: false,
-            editable: true,
+            eventStartEditable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             events: this.getEvents(),
             eventRender: (event, element) => {
@@ -166,7 +166,7 @@ export class DirectorEventsComponent implements OnInit {
                 start: moment(document.duedate),
                 end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
                 color: this.getColor(document.currstate),
-                editable: true,
+                eventStartEditable: true,
                 allDay: true
             });
         }
