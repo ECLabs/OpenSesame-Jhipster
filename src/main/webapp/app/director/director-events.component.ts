@@ -163,7 +163,7 @@ export class DirectorEventsComponent implements OnInit {
             const duedate = new Date(document.duedate);
             events.push({
                 title: document.name,
-                start: '2018-06-05',
+                start: moment(document.duedate),
                 end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
                 color: this.getColor(document.currstate),
                 editable: true,
