@@ -51,6 +51,7 @@ export class DirectorEventsComponent implements OnInit {
     }
 
     loadEvents() {
+        const __this = this;
         $('#external-events .fc-event').each(function() {
             // store data so the calendar knows to render an event upon drop
             $(this).data('event', {
@@ -72,55 +73,13 @@ export class DirectorEventsComponent implements OnInit {
                 $(this).css('background-color', 'white');
             }
 
-            /*document color keying*/
+            /* document color keying */
             const currState = $(this).attr('id');
-            switch (currState) {
-                case 'CREATED':
-                    $(this).find('span.dot').attr('color', 'green');
-                    $(this).find('span.dot').attr('style', 'background-color:green');
-                    break;
-                case 'AUTHOR':
-                    $(this).find('span.dot').attr('color', 'blue');
-                    $(this).find('span.dot').attr('style', 'background-color:blue');
-                    break;
-                case 'TE1':
-                    $(this).find('span.dot').attr('color', 'red');
-                    $(this).find('span.dot').attr('style', 'background-color:red');
-                    break;
-                case 'CR':
-                    $(this).find('span.dot').attr('color', 'peru');
-                    $(this).find('span.dot').attr('style', 'background-color:peru');
-                    break;
-                case 'SIO':
-                    $(this).find('span.dot').attr('color', 'aqua');
-                    $(this).find('span.dot').attr('style', 'background-color:aqua');
-                    break;
-                case 'ER':
-                    $(this).find('span.dot').attr('color', 'violet');
-                    $(this).find('span.dot').attr('style', 'background-color:violet');
-                    break;
-                case 'RO':
-                    $(this).find('span.dot').attr('color', 'purple');
-                    $(this).find('span.dot').attr('style', 'background-color:purple');
-                    break;
-                case 'TE2':
-                    $(this).find('span.dot').attr('color', 'grey');
-                    $(this).find('span.dot').attr('style', 'background-color:grey');
-                    break;
-                case 'GRAPHICS':
-                    $(this).find('span.dot').attr('color', 'grey');
-                    $(this).find('span.dot').attr('style', 'background-color:grey');
-                    break;
-                case 'PCO':
-                    $(this).find('span.dot').attr('color', 'grey');
-                    $(this).find('span.dot').attr('style', 'background-color:grey');
-                    break;
-                case 'DONE':
-                    $(this).find('span.dot').attr('color', 'black');
-                    $(this).find('span.dot').attr('style', 'background-color:black');
-                    break;
-            }
+            const color = __this.getColor(currState);
+            $(this).find('span.dot').attr('color', `${color}`);
+            $(this).find('span.dot').attr('style', `background-color:${color}`);
         });
+
         const containerEl: JQuery = $('#calendar');
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
@@ -214,7 +173,7 @@ export class DirectorEventsComponent implements OnInit {
         return events;
     }
 
-    private getColor(currstate) {
+    getColor(currstate) {
         let color = '';
         switch (currstate) {
             case 'CREATED':
