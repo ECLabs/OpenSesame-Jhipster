@@ -42,7 +42,6 @@
             <div class="fc-events-lg">
                 <thead>
                     <tr>
-                        <th>Created On</th>
                         <th>Due Date</th>
                         <th>Created By</th>
                         <th>Current State</th>
@@ -50,8 +49,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{document.createdon | date: 'EEE MMM dd yyyy'}}</td>
-                        <td class="due-date">{{duedates[document.id] | date: 'EEE MMM dd yyyy'}}</td>
+                        <td class="due-date">{{duedates[document.id] | date: 'EE MMM d yyyy'}}</td>
                         <td>{{document.createdby}} </td>
                         <td>{{document.currstate}}</td>
                     </tr>
@@ -60,12 +58,8 @@
             <div class="fc-events-sm">
                 <tbody>
                     <tr>
-                        <th>Created on</th>
-                        <td>{{document.createdon | date: 'EEE MMM dd yyyy'}}</td>
-                    </tr>
-                    <tr>
                         <th>Due</th>
-                        <td class="due-date">{{document.duedate | date: 'EEE MMM dd yyyy'}}</td>
+                        <td class="due-date">{{duedates[document.id] | date: 'EE MMM d yyyy'}}</td>
                     </tr>
                     <tr>
                         <th>Created by</th>
