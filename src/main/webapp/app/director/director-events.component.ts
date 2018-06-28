@@ -127,6 +127,7 @@ export class DirectorEventsComponent implements OnInit {
                     const newDueDate = moment(event.start).add(1, 'day');
                     const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
+                    // Checks if the new due date is different from the old one to prevent unecessary updates
                     if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
                         document.duedate = {
                             year: event.start.year(),
@@ -134,7 +135,10 @@ export class DirectorEventsComponent implements OnInit {
                             day: event.start.date(),   
                         }
     
+                        // Change local duedate to for document
+                        // Local due date object prevents entire re-render of the page on a due date change
                         this.duedates[document.id] = newDueDate;
+                        // Change due date in database
                         this.documentService.update(document).subscribe();
                     }
                 }
