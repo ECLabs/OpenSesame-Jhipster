@@ -63,10 +63,10 @@ public class DocumentResourceIntTest {
     private static final LocalDate DEFAULT_DUEDATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DUEDATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Status DEFAULT_CURRSTATE = Status.CREATED;
+    private static final Status DEFAULT_CURRSTATE = Status.CR;
     private static final Status UPDATED_CURRSTATE = Status.AUTHOR;
 
-    private static final Status DEFAULT_LASTSTATE = Status.CREATED;
+    private static final Status DEFAULT_LASTSTATE = Status.CR;
     private static final Status UPDATED_LASTSTATE = Status.AUTHOR;
 
     @Autowired

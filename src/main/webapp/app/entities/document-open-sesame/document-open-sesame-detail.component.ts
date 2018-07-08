@@ -6,6 +6,9 @@ import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 import { WindowRef , Account, Principal} from '../../shared';
 import { DocumentOpenSesame, Status } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
+import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+
+import { DenyModalService } from '../../shared';
 
 
 
@@ -14,13 +17,15 @@ import { DocumentOpenSesameService } from './document-open-sesame.service';
     templateUrl: './document-open-sesame-detail.component.html',
     styleUrls: [
       "doc.css"
-    ]
+    ],
+    providers: [NgbPopoverConfig]
 })
 
 
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
+    modalRef: NgbModalRef;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
@@ -47,7 +52,8 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private dataUtils: JhiDataUtils,
         private principal: Principal,
         private documentService: DocumentOpenSesameService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private denyModalSerivce: DenyModalService
     ) {
     }
 
@@ -78,6 +84,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
+      this.modalRef = this.denyModalSerivce.open();
     }
     denyShow(dIndex:number){
       if(this.document.currstate != this.document.laststate)
