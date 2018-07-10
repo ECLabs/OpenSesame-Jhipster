@@ -140,19 +140,25 @@ export class DirectorEventsComponent implements OnInit {
             eventAfterRender: (event: any, element) => {
                 const object = $(getParentEvent(element)).find('#document-id');
 
-                if (object.length !== 0) {
+				if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                     document.duedate = {
-                          year: event.end.year(),
-                          month: event.end.month() + 1,
-                          day: event.end.date() - 1,
-                      }
+                    const newDueDate = moment(event.start).add(1, 'day');
+                    const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                      // Change local duedate to for document
-                      // Local due date object prevents entire re-render of the page on a due date change
-                       this.duedates[document.id] = event.end;
-                      // Change due date in database
-                      this.documentService.update(document).subscribe();
+                    // Checks if the new due date is different from the old one to prevent unecessary updates
+                    
+                        document.duedate = {
+                            year: event.start.year(),
+                            month: event.start.month() + 1,
+                            day: event.start.date(),   
+                        }
+
+                        // Change local duedate to for document
+                        // Local due date object prevents entire re-render of the page on a due date change
+                        this.duedates[document.id] = newDueDate;
+                        // Change due date in database
+                        this.documentService.update(document).subscribe();
+                    
                 }
             },
             drop() {
