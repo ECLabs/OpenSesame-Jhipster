@@ -50,7 +50,11 @@ export class DirectorEventsComponent implements OnInit {
         this.loadAll();
     }
 
+
     loadEvents() {
+        /****************************************************************************
+        *                         External Event Elements                           *
+        ****************************************************************************/
         const __this = this;
         $('#external-events .fc-event').each(function() {
             // store data so the calendar knows to render an event upon drop
@@ -90,7 +94,21 @@ export class DirectorEventsComponent implements OnInit {
             const color = __this.getColor(currState);
             $(this).find('span.dot').attr('color', color);
             $(this).find('span.dot').attr('style', `background-color:${color}`);
+
+            /*removing items from queue*/
+            const remove_icon = $(this).find('.queue-remove');
+            $(this).mouseenter(function() {
+                if ($(this).css('backgroundColor') === 'rgb(255, 255, 255)') {
+                    remove_icon.show();
+                }
+            }).mouseleave(function() {
+                remove_icon.hide();
+            });
         });
+
+        /****************************************************************************
+        *                         Calendar Elements                                 *
+        ****************************************************************************/
 
         const containerEl: JQuery = $('#calendar');
         // Get the event in the calendar associated with the parameter queue element
@@ -113,7 +131,7 @@ export class DirectorEventsComponent implements OnInit {
             events: this.getEvents(),
             eventRender: (event, element) => {
                 const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
-                
+
                 icon.css({
                     'color': 'white',
                     'border-right': '1px solid white',
@@ -122,7 +140,7 @@ export class DirectorEventsComponent implements OnInit {
                 }).hide();
 
                 // Attach remove icon with click event handler on event render
-                icon.on('click', () => {  
+                icon.on('click', () => {
                     let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
                     this.duedates[document.id] = '';
                     document.duedate = null;
@@ -141,7 +159,7 @@ export class DirectorEventsComponent implements OnInit {
             eventAfterRender: (event: any, element) => {
                 const object = $(getParentEvent(element)).find('#document-id');
 
-                if (object.length !== 0) {
+				if (object.length !== 0) {
                     const document = JSON.parse(object.text());
                     const newDueDate = moment(event.start).add(1, 'day');                    
                     const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
@@ -153,7 +171,7 @@ export class DirectorEventsComponent implements OnInit {
                             month: event.start.month() + 1,
                             day: event.start.date(),   
                         }
-    
+                      
                         // Change local duedate to for document
                         // Local due date object prevents entire re-render of the page on a due date change
                         this.duedates[document.id] = newDueDate;
@@ -175,6 +193,10 @@ export class DirectorEventsComponent implements OnInit {
 
     openDocPreview(document) {
         this.modalRef = this.documentModalSerivce.open(document);
+    }
+
+    removeQueue(document) {
+        this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
     }
 
     getEvents() {

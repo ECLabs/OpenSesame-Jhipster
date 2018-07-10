@@ -173,9 +173,8 @@ label:before {
   margin-right: 10px;
 }
 
-
-label[for*='1']:before { content: '\f086'; }
-label[for*='2']:before { content: '\f1c2'; }
+label[for*='1']:before { content: '\f1c2'; }
+label[for*='2']:before { content: '\f086'; }
 
 label:hover {
   color: #888;
