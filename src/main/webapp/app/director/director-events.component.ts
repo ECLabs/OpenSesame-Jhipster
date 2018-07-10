@@ -71,17 +71,18 @@ export class DirectorEventsComponent implements OnInit {
 
                 $(this).mouseenter(function() {
                     $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).hide();
+                        $(element).css('visibility', 'hidden');
                     });
                 }).mouseleave(function() {
                     $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).show();
+                        $(element).css('visibility', 'visible');
                     });
                 });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
-                $(this).off('hover', '**');
+                $(this).off('mouseenter');
+                $(this).off('mouseleave');
             }
 
             /* document color keying */
@@ -142,18 +143,23 @@ export class DirectorEventsComponent implements OnInit {
 
                 if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    if (!event.end) {
-                        event.end = moment(event.start).add(1, 'day');
-                    }
-                
-                    document.duedate = {
-                        year: event.end.year(),
-                        month: event.end.month() + 1,
-                        day: event.end.date() - 1,   
-                    }
+                    const newDueDate = moment(event.start).add(1, 'day');                    
+                    const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                    this.duedates[document.id] = event.end;
-                    this.documentService.update(document).subscribe();
+                    // Checks if the new due date is different from the old one to prevent unecessary updates
+                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
+                        document.duedate = {
+                            year: event.start.year(),
+                            month: event.start.month() + 1,
+                            day: event.start.date(),   
+                        }
+    
+                        // Change local duedate to for document
+                        // Local due date object prevents entire re-render of the page on a due date change
+                        this.duedates[document.id] = newDueDate;
+                        // Change due date in database
+                        this.documentService.update(document).subscribe();
+                    }
                 }
             },
             displayEventEnd: true,
@@ -174,11 +180,9 @@ export class DirectorEventsComponent implements OnInit {
     getEvents() {
         let events = [];
         for (const document of this.documents) {
-            const duedate = new Date(document.duedate);
             events.push({
                 title: document.name,
-                start: moment(document.duedate),
-                end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
+                start: document.duedate,
                 color: this.getColor(document.currstate),
                 eventStartEditable: true,
                 allDay: true
