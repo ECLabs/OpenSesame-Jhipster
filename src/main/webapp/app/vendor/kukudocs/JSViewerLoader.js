@@ -36,16 +36,17 @@ $(document).ready(function(){
 
         if (fileType) {
             if (fileType == 'docx') {
-                instance = window.docxJS = window.createDocxJS();
+                instance = window.docxJS = window.createDocxJS ? window.createDocxJS() : new window.DocxJS();
 
             } else if (fileType == 'xlsx') {
-                instance = window.cellJS = window.createCellJS();
+                instance = window.cellJS = window.createCellJS ? window.createCellJS() : new window.CellJS();
 
             } else if (fileType == 'pptx') {
-                instance = window.slideJS = window.createSlideJS();
+                instance = window.slideJS = window.createSlideJS ? window.createSlideJS() : new window.SlideJS();
 
             } else if (fileType == 'pdf') {
-                instance = window.pdfJS = window.createPdfJS();
+                instance = window.pdfJS = window.createPdfJS ? window.createPdfJS() : new window.PdfJS();
+                instance.setCMapUrl('./cmaps/');
             }
 
 
