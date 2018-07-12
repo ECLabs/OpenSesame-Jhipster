@@ -72,9 +72,21 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
+
+                $(this).mouseenter(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).css('visibility', 'hidden');
+                    });
+                }).mouseleave(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).css('visibility', 'visible');
+                    });
+                });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
+                $(this).off('mouseenter');
+                $(this).off('mouseleave');
             }
 
             /* document color keying */
@@ -102,6 +114,13 @@ export class DirectorEventsComponent implements OnInit {
         ****************************************************************************/
 
         const containerEl: JQuery = $('#calendar');
+        // Get the event in the calendar associated with the parameter queue element
+        const getOtherEvents = function(element) {
+            return $('.fc-event-container').filter(function() {
+                return element.find('.title').text().trim() !== $(this).text().trim();
+            });
+        };
+        // Get the element in the queue associated with the parameter event
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
                 return $(this).text().trim().includes(event.text());
@@ -145,28 +164,24 @@ export class DirectorEventsComponent implements OnInit {
 
 				if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    const newDueDate = moment(event.start).add(1, 'day');
+                    const newDueDate = moment(event.start).add(1, 'day');                    
                     const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
                     // Checks if the new due date is different from the old one to prevent unecessary updates
-                    
+                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
                         document.duedate = {
                             year: event.start.year(),
                             month: event.start.month() + 1,
                             day: event.start.date(),   
                         }
-
+                      
                         // Change local duedate to for document
                         // Local due date object prevents entire re-render of the page on a due date change
                         this.duedates[document.id] = newDueDate;
                         // Change due date in database
                         this.documentService.update(document).subscribe();
-                    
+                    }
                 }
-            },
-            drop() {
-                $(this).draggable('disable');
-                $(this).css('background-color', '#99ff99');
             },
             displayEventEnd: true,
             eventLimit: false,
