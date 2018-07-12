@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { OpenSesameSharedModule } from '../shared';
 
-import { DIRECTOR_ROUTE, DirectorComponent, DirectorEventsComponent } from './';
+import { DIRECTOR_ROUTE, DirectorComponent, DirectorEventsComponent, DirectorEventsFilterComponent} from './';
 
 @NgModule({
     imports: [
@@ -13,6 +13,7 @@ import { DIRECTOR_ROUTE, DirectorComponent, DirectorEventsComponent } from './';
     declarations: [
         DirectorComponent,
         DirectorEventsComponent,
+        DirectorEventsFilterComponent,
     ],
     entryComponents: [
     ],

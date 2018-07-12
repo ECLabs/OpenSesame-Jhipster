@@ -11,7 +11,6 @@ import { JhiDataUtils } from 'ng-jhipster';
 })
 
 export class JhiDocumentModalComponent implements AfterViewInit {
-    docName: string;
 
     constructor(
         private elementRef: ElementRef,

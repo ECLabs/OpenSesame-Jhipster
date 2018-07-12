@@ -50,7 +50,11 @@ export class DirectorEventsComponent implements OnInit {
         this.loadAll();
     }
 
+
     loadEvents() {
+        /****************************************************************************
+        *                         External Event Elements                           *
+        ****************************************************************************/
         const __this = this;
         $('#external-events .fc-event').each(function() {
             // store data so the calendar knows to render an event upon drop
@@ -68,9 +72,21 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
+
+                $(this).mouseenter(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).css('visibility', 'hidden');
+                    });
+                }).mouseleave(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).css('visibility', 'visible');
+                    });
+                });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
+                $(this).off('mouseenter');
+                $(this).off('mouseleave');
             }
 
             /* document color keying */
@@ -78,9 +94,30 @@ export class DirectorEventsComponent implements OnInit {
             const color = __this.getColor(currState);
             $(this).find('span.dot').attr('color', color);
             $(this).find('span.dot').attr('style', `background-color:${color}`);
+
+            /*removing items from queue*/
+            const remove_icon = $(this).find('.queue-remove');
+            $(this).mouseenter(function() {
+                if ($(this).css('backgroundColor') === 'rgb(255, 255, 255)') {
+                    remove_icon.show();
+                }
+            }).mouseleave(function() {
+                remove_icon.hide();
+            });
         });
 
+        /****************************************************************************
+        *                         Calendar Elements                                 *
+        ****************************************************************************/
+
         const containerEl: JQuery = $('#calendar');
+        // Get the event in the calendar associated with the parameter queue element
+        const getOtherEvents = function(element) {
+            return $('.fc-event-container').filter(function() {
+                return element.find('.title').text().trim() !== $(this).text().trim();
+            });
+        };
+        // Get the element in the queue associated with the parameter event
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
                 return $(this).text().trim().includes(event.text());
@@ -94,7 +131,7 @@ export class DirectorEventsComponent implements OnInit {
             events: this.getEvents(),
             eventRender: (event, element) => {
                 const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
-                
+
                 icon.css({
                     'color': 'white',
                     'border-right': '1px solid white',
@@ -103,7 +140,7 @@ export class DirectorEventsComponent implements OnInit {
                 }).hide();
 
                 // Attach remove icon with click event handler on event render
-                icon.on('click', () => {  
+                icon.on('click', () => {
                     let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
                     this.duedates[document.id] = '';
                     document.duedate = null;
@@ -122,25 +159,26 @@ export class DirectorEventsComponent implements OnInit {
             eventAfterRender: (event: any, element) => {
                 const object = $(getParentEvent(element)).find('#document-id');
 
-                if (object.length !== 0) {
+				if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    if (!event.end) {
-                        event.end = moment(event.start).add(1, 'day');
-                    }
-                
-                    document.duedate = {
-                        year: event.end.year(),
-                        month: event.end.month() + 1,
-                        day: event.end.date() - 1,   
-                    }
+                    const newDueDate = moment(event.start).add(1, 'day');                    
+                    const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                    this.duedates[document.id] = event.end;
-                    this.documentService.update(document).subscribe();
+                    // Checks if the new due date is different from the old one to prevent unecessary updates
+                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
+                        document.duedate = {
+                            year: event.start.year(),
+                            month: event.start.month() + 1,
+                            day: event.start.date(),   
+                        }
+                      
+                        // Change local duedate to for document
+                        // Local due date object prevents entire re-render of the page on a due date change
+                        this.duedates[document.id] = newDueDate;
+                        // Change due date in database
+                        this.documentService.update(document).subscribe();
+                    }
                 }
-            },
-            drop() {
-                $(this).draggable('disable');
-                $(this).css('background-color', '#99ff99');
             },
             displayEventEnd: true,
             eventLimit: false,
@@ -157,14 +195,16 @@ export class DirectorEventsComponent implements OnInit {
         this.modalRef = this.documentModalSerivce.open(document);
     }
 
+    removeQueue(document) {
+        this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
+    }
+
     getEvents() {
         let events = [];
         for (const document of this.documents) {
-            const duedate = new Date(document.duedate);
             events.push({
                 title: document.name,
-                start: moment(document.duedate),
-                end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
+                start: document.duedate,
                 color: this.getColor(document.currstate),
                 eventStartEditable: true,
                 allDay: true

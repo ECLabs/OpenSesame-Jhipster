@@ -31,17 +31,20 @@
         <div class='fc-event' id="{{document.currstate}}">
             <div hidden id="document-id">{{document | json}}</div>
             <div class="row">
-                <div class="col-md-9">
-                    <a class="title" (click)="openDocPreview(document)" title="Preview Document">{{document.name}}</a>
+                <div class="col-md-7">
+                  <a class="title" (click)="openDocPreview(document)" title="Preview Document">{{document.name}}</a>
                 </div>
-                <div class="col-md-3 float-right">
+                <div class="col-md-3">
                     <span class="dot" color="brown" style=""></span>
                 </div>
+                <div class="col-md-2 float-right">
+                      <div class="queue-remove"><i class="fa fa-times icon" (click)='removeQueue(document)'></i></div>
+                </div>
             </div>
-        <table class="table">
+        <table class="table" style="width: 100%">
             <div class="fc-events-lg">
-                <thead>
-                    <tr>
+                <thead >
+                    <tr >
                         <th>Due Date</th>
                         <th>Created By</th>
                         <th>Current State</th>
