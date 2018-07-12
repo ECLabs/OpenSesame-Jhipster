@@ -14,6 +14,11 @@ import { Account, LoginModalService, Principal } from '../shared';
 })
 export class HomeComponent implements OnInit {
     account: Account;
+    user: Object = {
+        firstName: '',
+        lastName: '',
+        role: ''
+    };
     modalRef: NgbModalRef;
     closeResult: string;
 
@@ -28,6 +33,13 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
+            if (account) {
+                this.user = {
+                    firstName: account.firstName,
+                    lastName: account.lastName,
+                    role: this.getRole(account.authorities)
+                };
+            }
         });
         this.registerAuthenticationSuccess();
     }
@@ -36,6 +48,11 @@ export class HomeComponent implements OnInit {
         this.eventManager.subscribe('authenticationSuccess', (message) => {
             this.principal.identity().then((account) => {
                 this.account = account;
+                this.user = {
+                    firstName: account.firstName,
+                    lastName: account.lastName,
+                    role: this.getRole(account.authorities)
+                };
             });
         });
     }
@@ -55,6 +72,29 @@ export class HomeComponent implements OnInit {
     redirect() {
       this.modalRef.close();
       this.router.navigate(['doc']);
+    }
+
+    getRole(rolesArray) {
+        switch(rolesArray[rolesArray.length - 1]) {
+            case 'ROLE_USER':
+                return 'User';
+            case 'ROLE_ADMIN': 
+                return 'Administrator';
+            case 'ROLE_MANAGER':
+                return 'Manager';
+            case 'ROLE_SIO':
+                return 'Senior Intel Officer';
+            case 'ROLE_ER':
+                return 'Executive Reviewer';
+            case 'ROLE_AUTHOR':
+                return 'Author';
+            case 'ROLE_TE':
+                return 'Tech Editor';
+            case 'ROLE_CR':
+                return 'Content Reviewer';
+            case 'ROLE_PCO':
+                return 'PCO';
+        }
     }
 
 }

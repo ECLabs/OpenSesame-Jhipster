@@ -1,7 +1,7 @@
 <div [hidden]="!isAuthenticated()">
 	<div class="row" style="margin-bottom:20px">
 		<div class="col-mid-12">
-			<h2>John Doe <small>Tech Editor</small></h2>
+			<h2>{{user.firstName}} {{user.lastName}} <small>{{user.role}}</small></h2>
 		</div>
 	</div>
 	<div class="row">
