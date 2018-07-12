@@ -72,9 +72,20 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
+
+                $(this).mouseenter(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).hide();
+                    });
+                }).mouseleave(function() {
+                    $.each(getOtherEvents($(this)), function(i, element) {
+                        $(element).show();
+                    });
+                });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
+                $(this).off('hover', '**');
             }
 
             /* document color keying */
@@ -99,6 +110,13 @@ export class DirectorEventsComponent implements OnInit {
         ****************************************************************************/
 
         const containerEl: JQuery = $('#calendar');
+        // Get the event in the calendar associated with the parameter queue element
+        const getOtherEvents = function(element) {
+            return $('.fc-event-container').filter(function() {
+                return element.find('.title').text().trim() !== $(this).text().trim();
+            });
+        };
+        // Get the element in the queue associated with the parameter event
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
                 return $(this).text().trim().includes(event.text());
@@ -160,10 +178,6 @@ export class DirectorEventsComponent implements OnInit {
                         this.documentService.update(document).subscribe();
                     
                 }
-            },
-            drop() {
-                $(this).draggable('disable');
-                $(this).css('background-color', '#99ff99');
             },
             displayEventEnd: true,
             eventLimit: false,
