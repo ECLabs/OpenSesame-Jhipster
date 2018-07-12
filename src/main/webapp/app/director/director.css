@@ -47,7 +47,6 @@ html, body {
     cursor: move;
     color: #0d2242;
     background-color: white;
-    padding-bottom: 20px;
 }
 
 .fc-event span {
@@ -57,6 +56,16 @@ html, body {
 
 .popover-header {
     background-color: blue;
+}
+
+#button-preview {
+    background-color: white;
+    border: 1px solid #45668e;
+}
+
+#button-remove {
+    background-color: white;
+    border: 1px solid #a82400;
 }
 
 /* ==========================================================================

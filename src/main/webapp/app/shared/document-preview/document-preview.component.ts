@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiDataUtils } from 'ng-jhipster';
 
@@ -11,12 +12,12 @@ import { JhiDataUtils } from 'ng-jhipster';
 })
 
 export class JhiDocumentModalComponent implements AfterViewInit {
-    docName: string;
 
     constructor(
         private elementRef: ElementRef,
         private dataUtils: JhiDataUtils,
         private renderer: Renderer,
+        private router: Router,
         public activeModal: NgbActiveModal
     ) {}
 
@@ -30,5 +31,10 @@ export class JhiDocumentModalComponent implements AfterViewInit {
 
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
+    }
+
+    goToDocument(documentId) {
+        this.router.navigateByUrl(`/document-open-sesame/${documentId}`);
+        this.activeModal.dismiss();
     }
 }

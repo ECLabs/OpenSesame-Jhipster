@@ -28,7 +28,7 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
-        private documentModalSerivce: DocumentModalService,
+        private documentModalService: DocumentModalService,
     ) {}
 
     getContent() {
@@ -82,6 +82,9 @@ export class DirectorEventsComponent implements OnInit {
             const color = __this.getColor(currState);
             $(this).find('span.dot').attr('color', color);
             $(this).find('span.dot').attr('style', `background-color:${color}`);
+            $(this).find('span.dot').on('hover', function(e) {
+                console.log($(e));
+            });
 
             /*removing items from queue*/
             const remove_icon = $(this).find('.queue-remove');
@@ -177,7 +180,7 @@ export class DirectorEventsComponent implements OnInit {
     }
 
     openDocPreview(document) {
-        this.modalRef = this.documentModalSerivce.open(document);
+        this.modalRef = this.documentModalService.open(document);
     }
 
     removeQueue(document) {

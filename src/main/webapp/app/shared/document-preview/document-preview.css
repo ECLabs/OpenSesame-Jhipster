@@ -1,12 +1,5 @@
-#document-preview {
-    border: 1px solid black;
+#doc-preview {
     float: left;
-    height: 500px;
-    width: 45%;
-    margin: 15px;
-}
-
-#document-info {
-    float: left;
-    width: 50%;
+    height: 550px;
+    width: 100%;
 }
