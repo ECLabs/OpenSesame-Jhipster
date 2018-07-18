@@ -24,11 +24,11 @@
         </button>
           </div>
           <div class='btn-group mr-2' role="group">
-              <button *jhiHasAnyAuthority = "getAuthority()" [disabled]="isDone()" (click)="approve()" type='button' class='btn btn-success'>Approve</button>
+              <button *jhiHasAnyAuthority = "['ROLE_ADMIN',getAuthority()]" [disabled]="isDone()" (click)="approve()" type='button' class='btn btn-success'>Approve</button>
           </div>
           <div  class='btn-group mr-2' role="group">
             <div ngbDropdown class="d-inline-block">
-            <button *jhiHasAnyAuthority = "getAuthority()" [hidden]='isAuthor()' [disabled]="denyShow(0)" class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle>Deny</button>
+            <button *jhiHasAnyAuthority = "['ROLE_ADMIN',getAuthority()]" [hidden]='isAuthor()' [disabled]="denyShow(0)" class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle>Deny</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button *ngFor='let value of enumValues; let i = index;' (click)='deny(value)' [hidden]="denyShow(i)" class="dropdown-item" >{{statusDictionary(value)}}</button>
             </div>
