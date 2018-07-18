@@ -98,7 +98,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
-      // this.modalRef = this.denyModalSerivce.open();
+       this.modalRef = this.denyModalSerivce.open();
 
     }
 
