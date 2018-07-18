@@ -26,6 +26,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
     modalRef: NgbModalRef;
+    dueCountdown: String;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
@@ -144,13 +145,20 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         return this.principal.isAuthenticated();
     }
 
+    setDueCountdown() {
+        const timeDiff = this.document.duedate.getTime() - new Date().getTime();
+        const oneDay = 24 * 60 * 60 * 1000;
+        const duration = Math.round(Math.abs((timeDiff) / (oneDay)));
+        this.dueCountdown = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
+    }
+
     load(id) {
         this.documentService.find(id)
             .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
                 this.document = documentResponse.body;
                 this.window = new WindowRef();
 
-
+                this.setDueCountdown();
 
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
 
