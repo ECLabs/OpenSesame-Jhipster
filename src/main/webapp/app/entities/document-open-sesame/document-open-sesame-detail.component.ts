@@ -8,7 +8,6 @@ import { DocumentOpenSesame, Status } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { DenyModalService } from '../../shared';
 
 
 
@@ -18,7 +17,6 @@ import { DenyModalService } from '../../shared';
     styleUrls: [
       "doc.css"
     ],
-    providers: [NgbPopoverConfig]
 })
 
 
@@ -54,7 +52,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private documentService: DocumentOpenSesameService,
         private route: ActivatedRoute,
-        private denyModalSerivce: DenyModalService
     ) {
     }
 
@@ -65,7 +62,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
-
     }
 
     statusDictionary(status:string){
@@ -85,7 +81,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
-      this.modalRef = this.denyModalSerivce.open();
     }
     denyShow(dIndex:number){
       if(this.document.currstate != this.document.laststate)
