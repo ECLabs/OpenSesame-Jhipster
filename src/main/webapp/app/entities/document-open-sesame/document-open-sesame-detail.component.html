@@ -30,7 +30,12 @@
             <div ngbDropdown class="d-inline-block">
             <button [hidden]='isAuthor()' [disabled]="denyShow(0)" class="btn btn-danger" id="dropdownBasic1" ngbDropdownToggle >Deny</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <button *ngFor='let value of enumValues; let i = index;' (click)='deny(value)' [hidden]="denyShow(i)" class="dropdown-item jh-create-entity create-comment-open-sesame" [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]" >{{statusDictionary(value)}}</button>
+              <button *ngFor='let value of enumValues; let i = index;'
+              (click)='deny(value)'
+              [hidden]="denyShow(i)"
+              class="dropdown-item"
+              [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]"
+              [queryParams]="{ docId: document.id }">{{statusDictionary(value)}}</button>
             </div>
           </div>
   </div>
