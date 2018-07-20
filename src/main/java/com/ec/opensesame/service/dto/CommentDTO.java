@@ -24,6 +24,8 @@ public class CommentDTO implements Serializable {
 
     private Long documentId;
 
+    private String reason;
+
     public Long getId() {
         return id;
     }
@@ -64,6 +66,14 @@ public class CommentDTO implements Serializable {
         this.documentId = documentId;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -92,6 +102,7 @@ public class CommentDTO implements Serializable {
             ", createdon='" + getCreatedon() + "'" +
             ", comment='" + getComment() + "'" +
             ", createdby='" + getCreatedby() + "'" +
+            ", reason='" + getReason() + "'" +
             "}";
     }
 }
