@@ -124,18 +124,25 @@ export class DirectorEventsComponent implements OnInit {
 
                 if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    if (!event.end) {
-                        event.end = moment(event.start).add(1, 'day');
-                    }
-                
-                    document.duedate = {
-                        year: event.end.year(),
-                        month: event.end.month() + 1,
-                        day: event.end.date() - 1,   
-                    }
+                    const newDueDate = moment(event.start).add(1, 'day');
+                    const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                    this.duedates[document.id] = event.end;
-                    this.documentService.update(document).subscribe();
+                    // Checks if the new due date is different from the old one to prevent unecessary updates
+                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
+                        // Duedate has to be formatted like this for angular datepipe
+                        document.duedate = {
+                            year: event.start.year(),
+                            month: event.start.month() + 1,
+                            day: event.start.date(),   
+                        }
+                      
+                        // Change local duedate to for document
+                        // Local due date object prevents entire re-render of the page on a due date change
+                        this.duedates[document.id] = newDueDate;
+                        // Change due date in database
+                        console.log(document);
+                        this.documentService.update(document).subscribe();
+                    }
                 }
             },
             drop() {
@@ -164,7 +171,6 @@ export class DirectorEventsComponent implements OnInit {
             events.push({
                 title: document.name,
                 start: moment(document.duedate),
-                end: moment().year(duedate.getFullYear()).month(duedate.getMonth()).date(duedate.getDate() + 1),
                 color: this.getColor(document.currstate),
                 eventStartEditable: true,
                 allDay: true

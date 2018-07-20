@@ -148,8 +148,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     setDueCountdown() {
         const timeDiff = this.document.duedate.getTime() - new Date().getTime();
         const oneDay = 24 * 60 * 60 * 1000;
-        const duration = Math.round(Math.abs((timeDiff) / (oneDay)));
-        this.dueCountdown = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
+        const duration = Math.round((timeDiff) / (oneDay));
+        if (duration > 0) {
+            this.dueCountdown = `(${duration} ${duration === 1 ? 'Day' : 'Days'} Remaining)`;
+        }
     }
 
     load(id) {
