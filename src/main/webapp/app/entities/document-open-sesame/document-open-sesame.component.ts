@@ -128,7 +128,7 @@ currentAccount: any;
         for (const document of this.documents) {
             const timeDiff = new Date().getTime() - document.createdon.getTime();
             const oneDay = 24 * 60 * 60 * 1000;
-            const duration = Math.round(Math.abs((timeDiff) / (oneDay)));
+            const duration = Math.floor((timeDiff) / (oneDay));
             this.documentTimes[document.id] = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
         }
     }
