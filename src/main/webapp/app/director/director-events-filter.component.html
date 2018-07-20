@@ -1,0 +1,15 @@
+<div class="input-group mb-3" style="width:80%">
+    <input type="text" id="search-term" class="form-control" placeholder="Search for document" aria-label="Recipient's username" aria-describedby="basic-addon2" (input)="search()">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="search()"><i class="fa fa-search"></i></button>
+    </div>
+</div>
+
+<div class='btn-group mr-2' role="group">
+    <div ngbDropdown class="d-inline-block">
+        <button id="dropdownBasic1" class="btn btn-light" ngbDropdownToggle>Status: {{currFiltStatus}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button *ngFor='let status of getStatuses()' class="dropdown-item" (click)="filterByStatus(status.status)">{{status.name}}</span></button>
+        </div>
+    </div>
+</div>

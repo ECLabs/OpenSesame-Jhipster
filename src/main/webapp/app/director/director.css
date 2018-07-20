@@ -23,7 +23,7 @@ html, body {
 }
 
 .fc-event .fc-events-lg {
-    margin: 1em 0;
+    margin: 1em 0
 }
 
 .fc-event.fc-events-sm {
@@ -47,7 +47,6 @@ html, body {
     cursor: move;
     color: #0d2242;
     background-color: white;
-    padding-bottom: 20px;
 }
 
 .fc-event span {
@@ -57,6 +56,16 @@ html, body {
 
 .popover-header {
     background-color: blue;
+}
+
+#button-preview {
+    background-color: white;
+    border: 1px solid #45668e;
+}
+
+#button-remove {
+    background-color: white;
+    border: 1px solid #a82400;
 }
 
 /* ==========================================================================
@@ -93,7 +102,7 @@ Legend
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    margin-right: 5px;
+    /* margin-right: 5px; */
     margin-bottom: 7px;
     display: block;
 }
@@ -102,7 +111,16 @@ Legend
     font-size: 14px;
 }
 
+.queue-remove {
+  display:none;
+  float: right;
+  font-size: 15px;
+  /* margin-right: 5px; */
+}
 
+.queue-remove:hover {
+  cursor: pointer;
+}
 
 @media only screen and (max-width: 1500px) {
     .fc-events-lg {
