@@ -15,7 +15,7 @@ export class DocumentModalService {
             return;
         }
         this.isOpen = true;
-        const modalRef = this.modalService.open(JhiDocumentModalComponent, { size: 'lg' });
+        const modalRef = this.modalService.open(JhiDocumentModalComponent);
         modalRef.componentInstance.document = document;
         modalRef.result.then((result) => {
             this.isOpen = false;

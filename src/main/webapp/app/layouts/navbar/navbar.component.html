@@ -141,8 +141,32 @@
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                   <span *ngIf="!getImageUrl()">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <span>
-                      Account
+                    <span *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                      Admin
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_MANAGER'">
+                      Managing Editor
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_TE'">
+                      Technical Editor
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_CR'">
+                      Content Reviewer
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_SIO'">
+                      Senior Intel Officer
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_ER'">
+                      Executive Reviewer
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_RO'">
+                      Read Off
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_PCO'">
+                      PCO
+                    </span>
+                    <span *jhiHasAnyAuthority="'ROLE_AUTHOR'">
+                      Author
                     </span>
                   </span>
                   <span *ngIf="getImageUrl()">

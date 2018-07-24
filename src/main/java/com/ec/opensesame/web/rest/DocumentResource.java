@@ -58,7 +58,7 @@ public class DocumentResource {
         documentDTO.setLaststate(Status.AUTHOR);
         documentDTO.setCurrstate(Status.AUTHOR);
         documentDTO.setCreatedon(LocalDate.now());
-        
+    
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -152,7 +152,7 @@ public class DocumentResource {
      */
     @PostMapping("/documents/{id}/deny")
     @Timed
-    public ResponseEntity<DocumentDTO> denyDocument(@PathVariable Long id,@RequestBody String status) {
+    public ResponseEntity<DocumentDTO> denyDocument(@PathVariable Long id, @RequestBody String status) {
         log.debug("REST request to get Document : {}", id);
         DocumentDTO documentDTO = documentService.findOne(id);
         //In a real system, we would make sure that this isn't a bad enum value
