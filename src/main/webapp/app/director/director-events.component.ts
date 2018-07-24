@@ -200,10 +200,6 @@ export class DirectorEventsComponent implements OnInit {
         this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
     }
 
-    removeQueue(document) {
-        this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
-    }
-
     getEvents() {
         let events = [];
         for (const document of this.documents) {
