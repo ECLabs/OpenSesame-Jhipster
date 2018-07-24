@@ -34,7 +34,7 @@
 
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button *ngFor='let value of enumValues; let i = index;'
-              (click)='deny(value)'
+              (click)='deny(value, i)'
               [hidden]="denyShow(i)"
               class="dropdown-item"
               [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]"
@@ -45,8 +45,8 @@
           </div>
         </div>
          <h2>{{document.name}}</h2>
-         <h4 *ngIf="!document.duedate">Publish Date Not Set</h4>
-          <h4 *ngIf="document.duedate">Publish Date - {{document.duedate | date:'mediumDate'}}</h4>
+         <h4 *ngIf="!document.duedate">Due Date Not Set</h4>
+          <h4 *ngIf="document.duedate">Due Date - {{document.duedate | date:'mediumDate'}} {{dueCountdown}}</h4>
 
     </div>
 </div>
