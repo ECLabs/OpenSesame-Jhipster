@@ -49,6 +49,16 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       "DONE": "Done"
     };
 
+    private enumUserRoleDict: any = {
+      "AUTHOR" : "ROLE_AUTHOR",
+      "TE1" : "ROLE_TE",
+      "CR" : "ROLE_CR",
+      "SIO" : "ROLE_SIO",
+      "ER" : "ROLE_ER",
+      "RO" : "ROLE_RO",
+      "TE2" : "ROLE_PCO",
+    }
+
     constructor(
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
@@ -69,6 +79,12 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           });
     }
 
+    getAuthority(){
+      return this.enumUserRoleDict[this.document.currstate];
+
+    }
+
+
     statusDictionary(status:string){
       return this.enumDictionary[status];
     }
@@ -86,7 +102,9 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
+       this.modalRef = this.denyModalSerivce.open();
     }
+
     denyShow(dIndex:number){
       if(this.document.currstate != this.document.laststate)
         return true;
