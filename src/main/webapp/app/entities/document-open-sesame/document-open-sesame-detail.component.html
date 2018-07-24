@@ -114,14 +114,19 @@
           <section id="content2">
   					<div class="container">
   						<div class="dialogbox">
-  							<div class="body">
-          				<span><b>Author</b>: I just made a comment about this document.</span>
-        				</div>
+                <tr *ngFor="let comment of comments ;trackBy: trackId">
+                  <div *ngIf = "document.id == comment.documentId">
+                    <div class="body">
+                      <span><b>{{comment.createdby}}</b>: {{comment.comment}}</span>
+                    </div>
+                  </div>
+                </tr>
   						</div>
   					</div>
-  					<textarea rows="3" cols="50" name="comment" form="#"></textarea>
   					<br><br>
-  					<button class="btn btn-primary" type="submit" form="#">Submit</button>
+  					<button class="btn btn-primary" type="submit"
+            [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]"
+            [queryParams]="{ docId: document.id }">Make Comment</button>
     			</section>
   			</main>
   		</div>

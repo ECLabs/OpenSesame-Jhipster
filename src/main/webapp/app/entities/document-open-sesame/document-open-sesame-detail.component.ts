@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiDataUtils, JhiAlertService } from 'ng-jhipster';
 import { WindowRef , Account, Principal} from '../../shared';
 import { DocumentOpenSesame, Status } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+
+import { CommentOpenSesame } from '../comment-open-sesame/comment-open-sesame.model';
+import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 
 
 
@@ -23,6 +26,7 @@ import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
+    comments: CommentOpenSesame[];
     modalRef: NgbModalRef;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
@@ -50,6 +54,8 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private dataUtils: JhiDataUtils,
         private principal: Principal,
         private documentService: DocumentOpenSesameService,
+        private commentService: CommentOpenSesameService,
+        private jhiAlertService: JhiAlertService,
         private route: ActivatedRoute,
     ) {
     }
@@ -112,8 +118,17 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       return {"none": true}
     }
 
-    ngOnInit() {
+    loadAll() {
+        this.commentService.query().subscribe(
+            (res: HttpResponse<CommentOpenSesame[]>) => {
+                this.comments = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
 
+    ngOnInit() {
+      this.loadAll();
       this.principal.identity().then((account) => {
           this.account = account;
       });
@@ -200,5 +215,9 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             'documentListModification',
             (response) => this.load(this.document.id)
         );
+    }
+
+    private onError(error) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 }
