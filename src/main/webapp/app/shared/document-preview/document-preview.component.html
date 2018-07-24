@@ -1,11 +1,10 @@
 <div id="doc-preview">
-    <a id="document-preview" href="#/document-open-sesame/{{document.id}}" (click)="activeModal.dismiss()" title="View Document">{{document.name}} PREVIEW</a>
-    <button aria-label="Close" style="position:absolute;right:10px;" class="close" type="button" (click)="activeModal.dismiss()"><span aria-hidden="true">x</span></button>
+    <button aria-label="Close" style="position:absolute;right:7px;top:-2px;" class="close" type="button" (click)="activeModal.dismiss()"><span aria-hidden="true">x</span></button>
     <div id="document-info">
-        <h2 style="margin-top:12px">{{document.name}}</h2>
+        <h2 style="margin-top:10px; text-align:center;">{{document.name}}</h2>
         <hr style="margin:10px 0;">
         <jhi-alert-error></jhi-alert-error>
-        <dl class="row-md jh-entity-details">
+        <dl class="row-md jh-entity-details" style="margin-left:15px;">
             <dt><span>Name</span></dt>
             <dd>
                 <span>{{document.name}}</span>
@@ -42,5 +41,8 @@
                 <span>{{document.currversionId}}</span>
             </dd>
         </dl>
+    </div>
+    <div style="text-align:center; clear:both; margin-bottom:15px;">
+        <button class="btn btn-primary" (click)="goToDocument(document.id)">Go to document &#8594;</button>
     </div>
 </div>
