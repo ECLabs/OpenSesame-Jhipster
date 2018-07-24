@@ -11,9 +11,6 @@ import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CommentOpenSesame } from '../comment-open-sesame/comment-open-sesame.model';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 
-
-
-
 @Component({
     selector: 'jhi-document-open-sesame-detail',
     templateUrl: './document-open-sesame-detail.component.html',
@@ -102,7 +99,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
               this.document = documentResponse.body;
           });
-       this.modalRef = this.denyModalSerivce.open();
     }
 
     denyShow(dIndex:number){
