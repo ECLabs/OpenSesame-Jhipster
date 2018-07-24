@@ -15,7 +15,9 @@
             <button class='btn btn-warning' (click)="openFile(document.fileContentType, document.file)"> <span class="fa fa-download"></span>&nbsp;<span>Download</button>
           </div>
           <div  class='btn-group mr-2' role="group">
-                <button type="button"
+                <button
+                *jhiHasAnyAuthority = "['ROLE_ADMIN',getAuthority()]"
+                type="button"
                 [routerLink]="['/', { outlets: { popup: 'document-open-sesame/'+ document.id + '/edit'} }]"
                 replaceUrl="true"
                 queryParamsHandling="merge"
