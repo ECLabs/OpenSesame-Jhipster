@@ -24,6 +24,9 @@ public class Comment implements Serializable {
     private LocalDate createdon;
 
     @Lob
+    @Column(name = "jhi_reason")
+    private String reason;
+
     @Column(name = "jhi_comment")
     private String comment;
 

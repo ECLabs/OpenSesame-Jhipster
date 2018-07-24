@@ -22,6 +22,7 @@ export class CommentOpenSesameDialogComponent implements OnInit {
 
     documents: DocumentOpenSesame[];
     createdonDp: any;
+    denialReasons = ["Grammar", "Citations", "Lack of detail", "Word choice"];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -36,7 +37,8 @@ export class CommentOpenSesameDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.documentService.query()
-            .subscribe((res: HttpResponse<DocumentOpenSesame[]>) => { this.documents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<DocumentOpenSesame[]>) => {
+              this.documents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {

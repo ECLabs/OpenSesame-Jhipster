@@ -1,7 +1,7 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myCommentLabel">Create or edit a Comment</h4>
+        <h4 class="modal-title" id="myCommentLabel">Comment</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
@@ -23,6 +23,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" for="field_reason">Reason for denial</label>
+            <select class="form-control" id="field_reason" name="reason" [(ngModel)]="comment.reason">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="denialReason" *ngFor="let denialReason of denialReasons;">{{denialReason}}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" for="field_comment">Comment</label>
             <textarea class="form-control" name="comment" id="field_comment"
                 [(ngModel)]="comment.comment" ></textarea>
@@ -37,7 +44,7 @@
             <label class="form-control-label" for="field_document">Document</label>
             <select class="form-control" id="field_document" name="document" [(ngModel)]="comment.documentId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="documentOption.id" *ngFor="let documentOption of documents; trackBy: trackDocumentById">{{documentOption.id}}</option>
+                <option [ngValue]="documentOption.id" *ngFor="let documentOption of documents; trackBy: trackDocumentById">{{documentOption.name}}</option>
             </select>
         </div>
     </div>

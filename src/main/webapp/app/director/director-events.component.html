@@ -1,31 +1,3 @@
-<!-- <ng-template #documentsTemp let-document="curr_doc">
-    <div class='fc-event' id="{{document.currstate}}">
-        <div hidden id="document.id">{{document | json}}</div>
-        <div class="row">
-            <div class="col-md-8">
-                <a class="title" (click)="openDocPreview(document)" title="Preview Document" class="title">{{document.name}}</a>
-            </div>
-            <div class="col-md-4 float-right">
-                <span class="dot" color="white" style=""></span>
-            </div>
-        </div>
-        <ul class='list-group'>
-            <li class='list-group-item'>
-                Created: {{document.createdon | date: 'MMM dd yyyy'}}
-            </li>
-            <li class='list-group-item'>
-                Due: {{duedates[document.id] | date: 'MMM dd yyyy'}}
-            </li>
-            <li class='list-group-item'> By: {{document.createdby}} </li>
-            <li class='list-group-item'> Currstate: {{document.currstate}}</li>
-
-        </ul>
-    </div>
-
-
-</ng-template> -->
-
-
     <h2>Database Items</h2>
     <ng-container *ngFor="let document of documents; let last = last">
         <div class='fc-event' id="{{document.currstate}}">
@@ -45,7 +17,7 @@
             <div class="fc-events-lg">
                 <thead >
                     <tr >
-                        <th>Due Date</th>
+                        <th>Publish Date</th>
                         <th>Created By</th>
                         <th>Current State</th>
                     </tr>
@@ -61,7 +33,7 @@
             <div class="fc-events-sm">
                 <tbody>
                     <tr>
-                        <th>Due</th>
+                        <th>Publish</th>
                         <td class="due-date">{{duedates[document.id] | date: 'EE MMM d yyyy'}}</td>
                     </tr>
                     <tr>
