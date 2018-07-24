@@ -28,7 +28,7 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
-        private documentModalSerivce: DocumentModalService,
+        private documentModalService: DocumentModalService,
     ) {}
 
     getContent() {
@@ -166,6 +166,7 @@ export class DirectorEventsComponent implements OnInit {
 
                     // Checks if the new due date is different from the old one to prevent unecessary updates
                     if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
+                        // Duedate has to be formatted like this for angular datepipe
                         document.duedate = {
                             year: event.start.year(),
                             month: event.start.month() + 1,
@@ -192,7 +193,11 @@ export class DirectorEventsComponent implements OnInit {
     }
 
     openDocPreview(document) {
-        this.modalRef = this.documentModalSerivce.open(document);
+        this.modalRef = this.documentModalService.open(document);
+    }
+
+    removeQueue(document) {
+        this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
     }
 
     removeQueue(document) {

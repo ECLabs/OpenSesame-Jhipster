@@ -85,6 +85,18 @@ export class DocumentOpenSesameService {
      */
     private convert(document: DocumentOpenSesame): DocumentOpenSesame {
         const copy: DocumentOpenSesame = Object.assign({}, document);
+        
+        // Need to format createdon for angular datepipe
+        if (typeof document.createdon !== 'object') {
+            const newDate = new Date(document.createdon);
+            if (document.createdon) {
+                document.createdon = {
+                    year: newDate.getFullYear(),
+                    month: newDate.getMonth() + 1,
+                    day: newDate.getDate()
+                }
+            }
+        }
         copy.createdon = this.dateUtils
             .convertLocalDateToServer(document.createdon);
         copy.duedate = this.dateUtils

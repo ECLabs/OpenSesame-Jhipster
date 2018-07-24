@@ -18,10 +18,9 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="duedate"><span>Publish Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="laststate"><span>Latest Status</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="currstate"><span>Current Status</span> <span class="fa fa-sort"></span></th>
-
+            <th jhiSortBy="duedate"><span>Due Date</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="laststate"><span>Status</span> <span class="fa fa-sort"></span></th>
+            <th><span>Time in Queue</span> <span class="fa fa-sort"></span></th>
             <!--<th jhiSortBy="createdon"><span>Createdon</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createdby"><span>Createdby</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="file"><span>File</span> <span class="fa fa-sort"></span></th>
@@ -40,7 +39,7 @@
                 <td>{{document.name}}</td>
                 <td>{{document.duedate | date:'mediumDate'}}</td>
                 <td>{{document.laststate}}</td>
-                <td>{{document.currstate}}</td>
+                <td>{{documentTimes[document.id]}}</td>
                 <!-- <td>{{document.createdon | date:'mediumDate'}}</td>
                 <td>{{document.createdby}}</td>
                 <td>

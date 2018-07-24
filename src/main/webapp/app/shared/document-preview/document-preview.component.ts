@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
@@ -18,6 +19,7 @@ export class JhiDocumentModalComponent implements AfterViewInit {
         private router: Router,
         private dataUtils: JhiDataUtils,
         private renderer: Renderer,
+        private router: Router,
         public activeModal: NgbActiveModal
     ) {}
 

@@ -28,6 +28,7 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    documentTimes: Object = {};
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -123,6 +124,13 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.documents = data;
+
+        for (const document of this.documents) {
+            const timeDiff = new Date().getTime() - document.createdon.getTime();
+            const oneDay = 24 * 60 * 60 * 1000;
+            const duration = Math.floor((timeDiff) / (oneDay));
+            this.documentTimes[document.id] = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
+        }
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
