@@ -62,6 +62,10 @@ Main page styles
     left: 510px;
 }
 
+.list-group-item .document-currstatus {
+    display: inline;
+}
+
 .list-group-item .document-name {
     display: inline;
     position: absolute;

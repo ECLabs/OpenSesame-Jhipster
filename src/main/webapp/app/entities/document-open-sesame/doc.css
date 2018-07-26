@@ -198,10 +198,10 @@ input:checked + label {
 ========================================================================== */
 .dialogbox .body {
   position: relative;
-  max-width: 600px;
+  width: 670px;
   height: auto;
   padding: 5px;
-  background-color: #DADADA;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  background-color: #fdf7f4;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }

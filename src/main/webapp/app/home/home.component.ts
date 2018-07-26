@@ -25,7 +25,10 @@ export class HomeComponent implements OnInit {
     };
     modalRef: NgbModalRef;
     closeResult: string;
-    documents: DocumentOpenSesame[];
+    documentsRoleSpecific: DocumentOpenSesame[];
+    dueWeekDocuments: DocumentOpenSesame[];
+    nextSaturday: Date = this.getDateForDay(6, true);
+    prevSunday: Date = this.getDateForDay(0, false);
 
     constructor(
         private principal: Principal,
@@ -65,11 +68,27 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    // Helper function to find the date for the next x day from today's date (ex: date of the next sunday)
+    // Days of the week are 0 (Sunday) - 6 (Saturday)
+    // Next is a boolean - if it's true it means you want the next date for that day of the week
+    // If it's false it means you want the previous date for that day of the week
+    getDateForDay(dayOfWeek, next) {
+        const today = new Date();
+        const date = new Date(today.getTime());
+        date.setDate(today.getDate() + ((next ? 7 : -7) + dayOfWeek - today.getDay()) % 7);
+        return date;
+    }
+
     getDocuments() {
         this.documentService.query({
         }).subscribe(
             (res: HttpResponse<DocumentOpenSesame[]>) => {
-                this.documents = res.body.filter((doc) => {
+                this.dueWeekDocuments = res.body.filter((doc) => {
+                    const dueDate = new Date(doc.duedate).getDate();
+                    return dueDate >= this.prevSunday.getDate() && dueDate <= this.nextSaturday.getDate();
+                });
+
+                this.documentsRoleSpecific = res.body.filter((doc) => {
                     const status = this.getRole(this.account.authorities, false);
                     return status === 'ADMIN' ? true : String(doc.currstate) === status;
                 });
