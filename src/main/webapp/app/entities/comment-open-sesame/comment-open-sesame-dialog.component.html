@@ -25,8 +25,10 @@
         <div class="form-group">
             <label class="form-control-label" for="field_reason">Reason for denial</label>
             <select class="form-control" id="field_reason" name="reason" [(ngModel)]="comment.reason">
-                <option [ngValue]="null"></option>
-                <option [ngValue]="denialReason" *ngFor="let denialReason of denialReasons;">{{denialReason}}</option>
+                <option [ngValue]="'Grammar'">Grammar</option>
+                <option [ngValue]="'Citations'">Citations</option>
+                <option [ngValue]="'Lack of Detail'">Lack of Detail</option>
+                <option [ngValue]="'Word Choice'">Word Choice</option>
             </select>
         </div>
         <div class="form-group">

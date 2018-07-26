@@ -120,7 +120,8 @@
                 <tr *ngFor="let comment of comments ;trackBy: trackId">
                   <div *ngIf = "document.id == comment.documentId">
                     <div class="body">
-                      <span><b>{{comment.createdby}}</b>: {{comment.comment}}</span>
+                      <span><b>Reason: {{comment.reason}}</b></span><br>
+                      <span><b>[{{comment.createdon | date: "short"}}] {{comment.createdby}}</b>: {{comment.comment}}</span>
                     </div>
                   </div>
                 </tr>
