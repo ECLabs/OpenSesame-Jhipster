@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiDataUtils } from 'ng-jhipster';
 
 @Component({

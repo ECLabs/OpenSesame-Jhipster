@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 /**
  * REST controller for managing Document.
@@ -56,7 +57,8 @@ public class DocumentResource {
         }
         documentDTO.setLaststate(Status.AUTHOR);
         documentDTO.setCurrstate(Status.AUTHOR);
-
+        documentDTO.setCreatedon(LocalDate.now());
+    
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
