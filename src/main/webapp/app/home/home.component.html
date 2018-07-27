@@ -6,19 +6,13 @@
 	</div>
 	<div class="row">
 		<div class='col-md-6'>
-			<div class="docs-header">
+			<div id="docs-header">
 				<h2>Your Documents</h2>
-				<div class="input-group mb-3">
-					<input type="text" id="search-term" class="form-control" placeholder="Search for document" aria-label="Recipient's username" aria-describedby="basic-addon2" (input)="search()">
-					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button" (click)="search()"><i class="fa fa-search"></i></button>
-					</div>
-				</div>
 			</div>
 				<ul class="list-group" id="your-documents">
-				<li *ngFor="let document of documentsRoleSpecific;" class="list-group-item" (click)="goToDoc(document.id)">
-					<div class="document-id"><b>ID:</b> {{document.id}}</div>
-					<div class="document-name"><b>Name:</b> {{document.name}}</div>
+				<li *ngFor="let document of documentsRoleSpecific;" class="row list-group-item" (click)="goToDoc(document.id)">
+					<div class="document-id" style="width:15%;"><b>ID:</b> <span>{{document.id}}</span></div>
+					<div class="document-name" style="width:50%;"><b>Name:</b> <span>{{document.name}}</span></div>
 					<div class="document-due"><b>Due Date: </b>
 						<span *ngIf="document.duedate">{{document.duedate | date: 'EE MMM d'}}</span>
 						<span *ngIf="!document.duedate">Not Set</span>
@@ -27,12 +21,12 @@
 			</ul>
 		</div>
 		<div class='col-md-6'>
-			<h2>Documents Due This Week ({{prevSunday | date: 'M/d/yy'}} - {{nextSaturday | date: 'M/d/yy'}})</h2>
+			<h2>All Documents Due This Week ({{prevSunday | date: 'M/d/yy'}} - {{nextSaturday | date: 'M/d/yy'}})</h2>
 			<ul class="list-group" id="your-documents">
 				<li *ngFor="let document of dueWeekDocuments;" class="list-group-item">
-					<div class="document-id"><b>ID:</b> {{document.id}}</div>
-					<div class="document-name"><b>Name:</b> {{document.name}}</div>
-					<div class="document-currstatus"><b>Status: </b>{{document.currstate}}</div>
+					<div class="document-id" style="width:10%;"><b>ID:</b> <span>{{document.id}}</span></div>
+					<div class="document-name" style="width:30%;"><b>Name:</b> <span>{{document.name}}</span></div>
+					<div class="document-currstatus" style="width:30%;"><b>Status: </b><span>{{document.currstate}}</span></div>
 					<div class="document-due"><b>Due Date: </b>
 						<span *ngIf="document.duedate">{{document.duedate | date: 'EE MMM d'}}</span>
 						<span *ngIf="!document.duedate">Not Set</span>
