@@ -197,11 +197,16 @@ input:checked + label {
  Dialog Box CSS
 ========================================================================== */
 .dialogbox .body {
-  position: relative;
-  width: 670px;
   height: auto;
   padding: 5px;
-  background-color: #fdf7f4;
-  margin-bottom: 10px;
-  border-radius: 5px;
+}
+
+#comment-createdby {
+  font-size: 25px;
+  font-weight: 400;
+}
+
+#comment-createdon {
+  font-size: 13px;
+  color: grey;
 }

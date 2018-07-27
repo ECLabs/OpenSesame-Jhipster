@@ -117,14 +117,17 @@
           <section id="content2">
   					<div class="container">
   						<div class="dialogbox">
-                <tr *ngFor="let comment of comments ;trackBy: trackId">
-                  <div *ngIf = "document.id == comment.documentId">
-                    <div class="body">
-                      <span><b>Reason: {{comment.reason}}</b></span><br>
-                      <span><b>[{{comment.createdon | date: "short"}}] {{comment.createdby}}</b>: {{comment.comment}}</span>
-                    </div>
-                  </div>
-                </tr>
+                <ngb-accordion #acc="ngbAccordion">
+                  <ngb-panel *ngFor="let commentReason of commentKeys();" [disabled]="comments[commentReason].length === 0">
+                    <ng-template ngbPanelTitle><span>{{commentReason}} ({{comments[commentReason].length}})</span></ng-template>
+                    <ng-template ngbPanelContent>
+                      <div class="body" *ngFor="let comment of comments[commentReason];">
+                        <span id="comment-createdby">{{comment.createdby}}</span> <span id="comment-createdon">{{comment.createdon | date: 'M/d/yy \'at\' h:mm a'}}</span><br>
+                        <span style="font-size:15px;">{{comment.comment}}</span>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
   						</div>
   					</div>
   					<br><br>
