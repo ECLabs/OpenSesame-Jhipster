@@ -23,12 +23,7 @@ import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-se
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
-    comments = {
-			"Grammar": [],
-			"Citations": [],
-			"Lack of Detail": [],
-			"Word Choice": []
-		};
+    comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
     private subscription: Subscription;
@@ -138,22 +133,32 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       return {"none": true}
     }
 
+    initComments() {
+        this.comments = {
+            "Grammar": [],
+			"Citations": [],
+			"Lack of Detail": [],
+            "Word Choice": []
+        }
+    }
+
     loadAll() {
         this.commentService.query().subscribe(
             (res: HttpResponse<CommentOpenSesame[]>) => {
-							res.body
-									.filter((comment) => this.document.id === comment.documentId)
-									.forEach((comment: any) => {
-										this.comments[comment.reason].push(comment);
-									});
+                this.initComments();
+                res.body
+                    .filter((comment) => this.document.id === comment.documentId)
+                    .forEach((comment: any) => {
+                        this.comments[comment.reason].push(comment);
+                    });
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-		}
+	}
 		
-		commentKeys() {
-			return Object.keys(this.comments);
-		}
+    commentKeys() {
+        return Object.keys(this.comments);
+    }
 
     ngOnInit() {
       this.subscription = this.route.params.subscribe((params) => {
@@ -163,9 +168,9 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       this.principal.identity().then((account) => {
           this.account = account;
       });
-      var that = this.order;
 
       this.registerChangeInDocuments();
+      this.registerChangeInComments();
 
       this.registerAuthenticationSuccess();
     }
@@ -253,6 +258,13 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe(
             'documentListModification',
             (response) => this.load(this.document.id)
+        );
+    }
+
+    registerChangeInComments() {
+        this.eventSubscriber = this.eventManager.subscribe(
+            'commentListModification',
+            (response) => this.loadAll()
         );
     }
 

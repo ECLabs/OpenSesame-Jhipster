@@ -23,7 +23,7 @@
 		<div class='col-md-6'>
 			<h2>All Documents Due This Week ({{prevSunday | date: 'M/d/yy'}} - {{nextSaturday | date: 'M/d/yy'}})</h2>
 			<ul class="list-group" id="your-documents">
-				<li *ngFor="let document of dueWeekDocuments;" class="list-group-item">
+				<li *ngFor="let document of dueWeekDocuments;" class="list-group-item" (click)="goToDoc(document.id)">
 					<div class="document-id" style="width:10%;"><b>ID:</b> <span>{{document.id}}</span></div>
 					<div class="document-name" style="width:30%;"><b>Name:</b> <span>{{document.name}}</span></div>
 					<div class="document-currstatus" style="width:30%;"><b>Status: </b><span>{{document.currstate}}</span></div>
