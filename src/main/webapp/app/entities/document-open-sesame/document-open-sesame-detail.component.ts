@@ -10,6 +10,7 @@ import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { CommentOpenSesame } from '../comment-open-sesame/comment-open-sesame.model';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
+import { resolve } from 'path';
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
@@ -136,15 +137,15 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     loadAll() {
         this.commentService.query().subscribe(
             (res: HttpResponse<CommentOpenSesame[]>) => {
-				this.comments = this.initComments();
+                this.comments = this.initComments();
                 res.body
-                .filter((comment) => this.document.id === comment.documentId)
-                .forEach((comment: any) => {
-					this.comments[comment.reason].push(comment);
-				});
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+                    .filter((comment) => this.document.id === comment.documentId)
+                    .forEach((comment: any) => {
+                        this.comments[comment.reason].push(comment);
+                    });
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
 	}
 
 	initComments() {
@@ -155,17 +156,16 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 			"Word Choice": []
 		};
 	}
-    
+
     commentKeys() {
 		this.comments = this.comments || this.initComments();
         return Object.keys(this.comments);
     }
-    
+
     ngOnInit() {
 		this.subscription = this.route.params.subscribe((params) => {
 			this.load(params['id']);
 		});
-		this.loadAll();
 		this.principal.identity().then((account) => {
 			this.account = account;
 		});
@@ -204,14 +204,15 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
                 this.document = documentResponse.body;
                 this.window = new WindowRef();
-
+                
                 this.setDueCountdown();
-
+                this.loadAll();
+                
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
-
+                
                 const docxJS = new this.window.nativeWindow.DocxJS();
                 const fileURL = `${this.document.file}`;
-
+                
                 const bs = atob(fileURL);
                 const buffer = new ArrayBuffer(bs.length);
                 const ba = new Uint8Array(buffer);
@@ -219,7 +220,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                     ba[i] = bs.charCodeAt(i);
                 }
                 const file = new Blob([ba], { type: this.document.fileContentType });
-
+                
                 // File Parsing
                 docxJS.parse(
                     file,
@@ -238,7 +239,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                 );
             });
     }
-
+            
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
