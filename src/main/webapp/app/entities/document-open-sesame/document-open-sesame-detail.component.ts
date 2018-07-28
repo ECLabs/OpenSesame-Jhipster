@@ -133,46 +133,47 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
       return {"none": true}
     }
 
-    initComments() {
-        this.comments = {
-            "Grammar": [],
-			"Citations": [],
-			"Lack of Detail": [],
-            "Word Choice": []
-        }
-    }
-
     loadAll() {
         this.commentService.query().subscribe(
             (res: HttpResponse<CommentOpenSesame[]>) => {
-                this.initComments();
+				this.comments = this.initComments();
                 res.body
-                    .filter((comment) => this.document.id === comment.documentId)
-                    .forEach((comment: any) => {
-                        this.comments[comment.reason].push(comment);
-                    });
+                .filter((comment) => this.document.id === comment.documentId)
+                .forEach((comment: any) => {
+					this.comments[comment.reason].push(comment);
+				});
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
 	}
-		
+
+	initComments() {
+		return {
+			"Grammar": [],
+			"Citations": [],
+			"Lack of Detail": [],
+			"Word Choice": []
+		};
+	}
+    
     commentKeys() {
+		this.comments = this.comments || this.initComments();
         return Object.keys(this.comments);
     }
-
+    
     ngOnInit() {
-      this.subscription = this.route.params.subscribe((params) => {
-        this.load(params['id']);
-    	});
-      this.loadAll();
-      this.principal.identity().then((account) => {
-          this.account = account;
-      });
+		this.subscription = this.route.params.subscribe((params) => {
+			this.load(params['id']);
+		});
+		this.loadAll();
+		this.principal.identity().then((account) => {
+			this.account = account;
+		});
 
-      this.registerChangeInDocuments();
-      this.registerChangeInComments();
+		this.registerChangeInDocuments();
+		this.registerChangeInComments();
 
-      this.registerAuthenticationSuccess();
+		this.registerAuthenticationSuccess();
     }
 
     registerAuthenticationSuccess() {
