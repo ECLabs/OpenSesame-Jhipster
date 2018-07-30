@@ -26,11 +26,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_reason" type="varchar(35)">
+            <column name="jhi_reason" type="clob">
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_comment" type="clob">
+            <column name="jhi_comment" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

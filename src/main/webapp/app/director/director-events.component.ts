@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentOpenSesame } from '../entities/document-open-sesame/document-open-sesame.model';
 import { DocumentOpenSesameService } from '../entities/document-open-sesame/document-open-sesame.service';
-
+import { CommentOpenSesameService } from '../entities/comment-open-sesame/comment-open-sesame.service';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'jqueryui';
@@ -28,6 +28,7 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
+        private commentService: CommentOpenSesameService,
         private documentModalService: DocumentModalService,
     ) {}
 
@@ -161,7 +162,7 @@ export class DirectorEventsComponent implements OnInit {
 
 				if (object.length !== 0) {
                     const document = JSON.parse(object.text());
-                    const newDueDate = moment(event.start).add(1, 'day');                    
+                    const newDueDate = moment(event.start).add(1, 'day');
                     const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
                     // Checks if the new due date is different from the old one to prevent unecessary updates
@@ -170,9 +171,9 @@ export class DirectorEventsComponent implements OnInit {
                         document.duedate = {
                             year: event.start.year(),
                             month: event.start.month() + 1,
-                            day: event.start.date(),   
+                            day: event.start.date(),
                         }
-                      
+
                         // Change local duedate to for document
                         // Local due date object prevents entire re-render of the page on a due date change
                         this.duedates[document.id] = newDueDate;
@@ -197,7 +198,35 @@ export class DirectorEventsComponent implements OnInit {
     }
 
     removeQueue(document) {
-        this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
+      var deleteComment = (comments) => {
+        var doneDeleting = false;
+        for(let comment_id in comments){
+          if(document.id == comments[comment_id].documentId){
+            // console.log(comments)
+             this.commentService.delete(comments[comment_id].id).subscribe((res)=>{
+             // callback after deleting
+           });
+          }
+        }
+          doneDeleting = true;
+          return new Promise((resolve, reject)=>{
+            if(doneDeleting){
+              resolve('Done Deleting!');
+            }else{
+              var reason = new Error('did not finish deleting comments');
+              reject(reason);
+            }
+          })
+    }
+        this.commentService.query().subscribe((res) => {
+            deleteComment(res.body)
+            .then((fullfilled) => {
+              this.documentService.delete(document.id).subscribe(res => this.ngOnInit());
+            })
+            .catch(function(err){
+              console.log(err);
+            })
+        });
     }
 
     getEvents() {
