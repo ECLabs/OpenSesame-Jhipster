@@ -10,6 +10,7 @@ import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { CommentOpenSesame } from '../comment-open-sesame/comment-open-sesame.model';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
+import * as mammoth from 'mammoth';
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
@@ -29,7 +30,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
-    private docxJS: any;
+	private docHTML: String = "<p>Loading</p>";
     private files: any;
     private order: any[];
     private test: any;
@@ -64,7 +65,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private documentService: DocumentOpenSesameService,
         private commentService: CommentOpenSesameService,
         private jhiAlertService: JhiAlertService,
-        private route: ActivatedRoute,
+        private route: ActivatedRoute
     ) {
     }
 
@@ -143,6 +144,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+	  this.docHTML = "";
       this.loadAll();
       this.principal.identity().then((account) => {
           this.account = account;
@@ -177,45 +179,41 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             this.dueCountdown = `(${duration} ${duration === 1 ? 'Day' : 'Days'} Remaining)`;
         }
     }
-
+ 
+ 
     load(id) {
         this.documentService.find(id)
             .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
                 this.document = documentResponse.body;
                 this.window = new WindowRef();
 
-                this.setDueCountdown();
+               
 
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
 
-                const docxJS = new this.window.nativeWindow.DocxJS();
-                const fileURL = `${this.document.file}`;
+             
+ 
 
-                const bs = atob(fileURL);
-                const buffer = new ArrayBuffer(bs.length);
-                const ba = new Uint8Array(buffer);
-                for (let i = 0; i < bs.length; i++) {
-                    ba[i] = bs.charCodeAt(i);
-                }
-                const file = new Blob([ba], { type: this.document.fileContentType });
+                const bs = atob(this.document.file);
+				                const buffer = new ArrayBuffer(bs.length);
+				                const ba = new Uint8Array(buffer);
+				                for (let i = 0; i < bs.length; i++) {
+				                    ba[i] = bs.charCodeAt(i);
+				                }
+               
+			   var that = this;
 
-                // File Parsing
-                docxJS.parse(
-                    file,
-                    function() {
-                        // After Rendering
-                        docxJS.render($('#docxjs-wrapper')[0], function(result) {
-                            if (result.isError) {
-                                console.log(result.msg);
-                            } else {
-                                console.log('Success Render');
-                            }
-                        });
-                    }, function(e) {
-                        console.log('Error!', e);
-                    }
-                );
-            });
+			    mammoth.convertToHtml({arrayBuffer: ba})
+			                   .then(function(result){
+							   
+							  that.docHTML = result.value;
+							   
+							   })
+			                   .done();
+			           });
+				
+				 this.setDueCountdown();
+		 
     }
 
     byteSize(field) {
