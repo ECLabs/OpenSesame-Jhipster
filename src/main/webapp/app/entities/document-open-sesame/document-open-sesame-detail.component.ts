@@ -234,9 +234,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 							   })
 			                   .done();
 			           });
-				
-				 this.setDueCountdown();
-		 
     }
             
     byteSize(field) {
