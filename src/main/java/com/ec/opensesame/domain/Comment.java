@@ -96,6 +96,14 @@ public class Comment implements Serializable {
     public void setDocument(Document document) {
         this.document = document;
     }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

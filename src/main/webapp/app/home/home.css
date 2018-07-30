@@ -48,6 +48,39 @@ Main page styles
     margin: 0 auto;
 }
 
+#docs-header {
+    width: 100%;
+}
+
+#docs-header h2 {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#docs-header .search-bar {
+    white-space: nowrap;
+}
+
+.list-group-item {
+    margin: auto 0;
+}
+
+.document-id {
+    float: left;
+}
+
+.document-name {
+    float: left;
+}
+
+.document-due {
+    float: left;
+}
+
+.list-group-item .document-currstatus {
+    float: left;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and ( min--moz-device-pixel-ratio: 2), only screen and ( -o-min-device-pixel-ratio: 2/1), only screen and ( min-device-pixel-ratio: 2), only screen and ( min-resolution: 192dpi), only screen and ( min-resolution: 2dppx) {

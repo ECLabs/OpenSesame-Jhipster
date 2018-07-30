@@ -22,7 +22,6 @@ export class CommentOpenSesameDialogComponent implements OnInit {
 
     documents: DocumentOpenSesame[];
     createdonDp: any;
-    denialReasons = ["Grammar", "Citations", "Lack of detail", "Word choice"];
 
     constructor(
         public activeModal: NgbActiveModal,
