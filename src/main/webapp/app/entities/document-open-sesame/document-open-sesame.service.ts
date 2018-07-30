@@ -6,6 +6,7 @@ import { SERVER_API_URL } from '../../app.constants';
 import { JhiDateUtils } from 'ng-jhipster';
 
 import { DocumentOpenSesame, Status} from './document-open-sesame.model';
+import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<DocumentOpenSesame>;
@@ -15,7 +16,7 @@ export class DocumentOpenSesameService {
 
     private resourceUrl =  SERVER_API_URL + 'api/documents';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils, private commentService: CommentOpenSesameService,) { }
 
     create(document: DocumentOpenSesame): Observable<EntityResponseType> {
         const copy = this.convert(document);
@@ -51,8 +52,9 @@ export class DocumentOpenSesameService {
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'})
     }
+
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: DocumentOpenSesame = this.convertItemFromServer(res.body);

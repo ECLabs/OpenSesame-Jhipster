@@ -28,7 +28,7 @@ export class DirectorEventsFilterComponent implements OnInit {
         { color: 'violet', name: 'Executive Reviewer', status: 'ER' },
         { color: 'purple', name: 'Read Off', status: 'RO' },
         { color: 'grey', name: 'Tech Editor/Graphics/PCO', status: 'TE2' },
-        { color: 'black', name: 'Done' }
+        { color: 'black', name: 'Done', status: 'DONE' }
     ];
     documents: any[];
     private currFiltStatus: string;

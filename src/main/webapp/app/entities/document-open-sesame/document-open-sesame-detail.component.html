@@ -34,7 +34,7 @@
 
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button *ngFor='let value of enumValues; let i = index;'
-              (click)='deny(value)'
+              (click)='deny(value, i)'
               [hidden]="denyShow(i)"
               class="dropdown-item"
               [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]"
