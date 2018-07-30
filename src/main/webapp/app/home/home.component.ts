@@ -86,11 +86,7 @@ export class HomeComponent implements OnInit {
             (res: HttpResponse<DocumentOpenSesame[]>) => {
                 this.dueWeekDocuments = res.body.filter((doc) => {
                     const dueDate = new Date(doc.duedate);
-                    console.log(dueDate);
-                    console.log(this.prevSunday);
-                    console.log(this.nextSaturday);
                     return dueDate >= this.prevSunday && dueDate <= this.nextSaturday;
-                    // dueDate >= this.prevSunday.getDate() || dueDate <= this.nextSaturday.getDate();
                 });
 
                 this.documentsRoleSpecific = res.body.filter((doc) => {
