@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit {
         const today = new Date();
         const date = new Date(today.getTime());
         date.setDate(today.getDate() + ((next ? 7 : -7) + dayOfWeek - today.getDay()) % 7);
+        date.setHours(0, 0, 0, 0);
         return date;
     }
 
@@ -84,8 +85,12 @@ export class HomeComponent implements OnInit {
         }).subscribe(
             (res: HttpResponse<DocumentOpenSesame[]>) => {
                 this.dueWeekDocuments = res.body.filter((doc) => {
-                    const dueDate = new Date(doc.duedate).getDate();
-                    return dueDate >= this.prevSunday.getDate() && dueDate <= this.nextSaturday.getDate();
+                    const dueDate = new Date(doc.duedate);
+                    console.log(dueDate);
+                    console.log(this.prevSunday);
+                    console.log(this.nextSaturday);
+                    return dueDate >= this.prevSunday && dueDate <= this.nextSaturday;
+                    // dueDate >= this.prevSunday.getDate() || dueDate <= this.nextSaturday.getDate();
                 });
 
                 this.documentsRoleSpecific = res.body.filter((doc) => {
