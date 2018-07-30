@@ -212,7 +212,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 			                   .done();
 			           });
 				
-				 this.setDueCountdown();
+				 //this.setDueCountdown();
 		 
     }
 
