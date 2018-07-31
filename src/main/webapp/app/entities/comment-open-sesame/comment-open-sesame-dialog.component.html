@@ -13,16 +13,6 @@
                    [(ngModel)]="comment.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_createdon">Createdon</label>
-            <div class="input-group">
-                <input id="field_createdon" type="text" class="form-control" name="createdon" ngbDatepicker  #createdonDp="ngbDatepicker" [(ngModel)]="comment.createdon"
-                />
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="createdonDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" for="field_reason">Reason for denial</label>
             <select class="form-control" id="field_reason" name="reason" [(ngModel)]="comment.reason">
                 <option [ngValue]="'Grammar'">Grammar</option>
@@ -35,19 +25,6 @@
             <label class="form-control-label" for="field_comment">Comment</label>
             <textarea class="form-control" name="comment" id="field_comment"
                 [(ngModel)]="comment.comment" ></textarea>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_createdby">Createdby</label>
-            <input type="text" class="form-control" name="createdby" id="field_createdby"
-                [(ngModel)]="comment.createdby" />
-        </div>
-
-        <div class="form-group">
-            <label class="form-control-label" for="field_document">Document</label>
-            <select class="form-control" id="field_document" name="document" [(ngModel)]="comment.documentId" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="documentOption.id" *ngFor="let documentOption of documents; trackBy: trackDocumentById">{{documentOption.name}}</option>
-            </select>
         </div>
     </div>
     <div class="modal-footer">
