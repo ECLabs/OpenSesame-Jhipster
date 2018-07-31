@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { JhiAlertService } from 'ng-jhipster';
 
+
 @Component({
-    selector: 'jhi-alert',
+    selector: 'my-alert',
     template: `
         <div class="alerts" role="alert">
             <div *ngFor="let alert of alerts" [ngClass]="{\'alert.position\': true, \'toast\': alert.toast}">
@@ -10,9 +11,14 @@ import { JhiAlertService } from 'ng-jhipster';
                     <pre [innerHTML]="alert.msg"></pre>
                 </ngb-alert>
             </div>
-        </div>`
+        </div>`,
+
+    styleUrls: [
+        'my-alert.css'
+    ]
 })
-export class JhiAlertComponent implements OnInit, OnDestroy {
+
+export class MyAlertComponent implements OnInit, OnDestroy {
     alerts: any[];
 
     constructor(private alertService: JhiAlertService) { }

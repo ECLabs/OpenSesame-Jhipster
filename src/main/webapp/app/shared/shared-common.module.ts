@@ -7,6 +7,7 @@ import { WindowRef } from './tracker/window.service';
 import {
     OpenSesameSharedLibsModule,
     JhiAlertComponent,
+    MyAlertComponent,
     JhiAlertErrorComponent
 } from './';
 
@@ -16,6 +17,7 @@ import {
     ],
     declarations: [
         JhiAlertComponent,
+        MyAlertComponent,
         JhiAlertErrorComponent
     ],
     providers: [
@@ -29,6 +31,7 @@ import {
     exports: [
         OpenSesameSharedLibsModule,
         JhiAlertComponent,
+        MyAlertComponent,
         JhiAlertErrorComponent
     ]
 })
