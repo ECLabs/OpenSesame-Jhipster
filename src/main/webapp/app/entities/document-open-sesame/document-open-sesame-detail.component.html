@@ -125,7 +125,7 @@
                     <ng-template ngbPanelTitle><span>{{commentReason}} ({{comments[commentReason].length}})</span></ng-template>
                     <ng-template ngbPanelContent>
                       <div class="body" *ngFor="let comment of comments[commentReason];">
-                        <span id="comment-createdby">{{comment.createdby}}</span> <span id="comment-createdon">{{comment.createdon | date: 'M/d/yy \'at\' h:mm a'}}</span><br>
+                        <span id="comment-createdby">{{comment.createdby}}</span> <span id="comment-createdon">on {{comment.createdon | date: 'EEE, MMM d'}}</span><br>
                         <span style="font-size:15px;">{{comment.comment}}</span>
                       </div>
                     </ng-template>
