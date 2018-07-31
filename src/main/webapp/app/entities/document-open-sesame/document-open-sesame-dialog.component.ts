@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
@@ -16,13 +15,12 @@ import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-ses
     templateUrl: './document-open-sesame-dialog.component.html'
 })
 export class DocumentOpenSesameDialogComponent implements OnInit {
-
     document: DocumentOpenSesame;
     isSaving: boolean;
-
     currversions: VersionOpenSesame[];
     createdonDp: any;
     duedateDp: any;
+    countries: any;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -30,7 +28,8 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private documentService: DocumentOpenSesameService,
         private versionService: VersionOpenSesameService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        // public countries = require('./countries.json'),
     ) {
     }
 
@@ -49,6 +48,9 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
+
+            this.countries = require('./countries.json');
+            this.document.country = this.countries[0].name;
     }
 
     byteSize(field) {

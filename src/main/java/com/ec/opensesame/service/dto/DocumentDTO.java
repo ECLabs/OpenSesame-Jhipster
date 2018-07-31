@@ -33,6 +33,8 @@ public class DocumentDTO implements Serializable {
 
     private Status laststate;
 
+    private String country;
+
     private Long currversionId;
 
     public Long getId() {
@@ -111,6 +113,14 @@ public class DocumentDTO implements Serializable {
         return currversionId;
     }
 
+    public void setCountry(String country) {
+      this.country = country;
+    }
+    
+    public String getCountry() {
+      return country;
+    }
+
     public void setCurrversionId(Long versionId) {
         this.currversionId = versionId;
     }
@@ -147,6 +157,7 @@ public class DocumentDTO implements Serializable {
             ", duedate='" + getDuedate() + "'" +
             ", currstate='" + getCurrstate() + "'" +
             ", laststate='" + getLaststate() + "'" +
+            ", country='" + getCountry() + "'" +
             "}";
     }
 }
