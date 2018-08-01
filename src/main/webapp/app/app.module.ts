@@ -24,6 +24,7 @@ import {
     JhiMainComponent,
     NavbarComponent,
     FooterComponent,
+    AlertComponent,
     ProfileService,
     PageRibbonComponent,
     ErrorComponent,
@@ -50,6 +51,7 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         FooterComponent,
+        AlertComponent,
         ClassificationComponent,
     ],
     providers: [

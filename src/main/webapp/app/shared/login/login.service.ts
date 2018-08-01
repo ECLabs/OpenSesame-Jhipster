@@ -20,6 +20,7 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe((data) => {
                 this.principal.identity(true).then((account) => {
                     this.trackerService.sendActivity();
+                    this.trackerService.subscribe();
                     resolve(data);
                 });
                 return cb();
@@ -37,6 +38,7 @@ export class LoginService {
 
     logout() {
         this.authServerProvider.logout().subscribe();
+        this.trackerService.unsubscribe();
         this.principal.authenticate(null);
     }
 }

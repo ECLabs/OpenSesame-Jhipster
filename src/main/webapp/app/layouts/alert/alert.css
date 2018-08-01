@@ -1,6 +1,6 @@
 .alerts {
-  width: 35%;
   bottom: 100px;
   right: 20px;
   position: fixed;
+  z-index: 100000;
 }
