@@ -10,7 +10,7 @@ export class LoginService {
     constructor(
         private principal: Principal,
         private trackerService: JhiTrackerService,
-        private authServerProvider: AuthServerProvider
+        private authServerProvider: AuthServerProvider,
     ) {}
 
     login(credentials, callback?) {
@@ -20,6 +20,7 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe((data) => {
                 this.principal.identity(true).then((account) => {
                     this.trackerService.sendActivity();
+                    this.trackerService.subscribe();
                     resolve(data);
                 });
                 return cb();
@@ -36,6 +37,7 @@ export class LoginService {
     }
 
     logout() {
+        this.trackerService.unsubscribe();
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
     }

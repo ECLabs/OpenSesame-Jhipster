@@ -4,7 +4,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
-
+import { JhiTrackerService } from '../../shared';
 import { DocumentOpenSesame } from './document-open-sesame.model';
 import { DocumentOpenSesamePopupService } from './document-open-sesame-popup.service';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
@@ -29,7 +29,7 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
         private documentService: DocumentOpenSesameService,
         private versionService: VersionOpenSesameService,
         private eventManager: JhiEventManager,
-        // public countries = require('./countries.json'),
+        private trackerService: JhiTrackerService
     ) {
     }
 
@@ -86,6 +86,7 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: DocumentOpenSesame) {
+        this.trackerService.sendDocumentActivity("Document " + result.name + " was modified");
         this.eventManager.broadcast({ name: 'documentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

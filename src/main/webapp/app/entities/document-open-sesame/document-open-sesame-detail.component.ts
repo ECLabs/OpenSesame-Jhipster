@@ -164,6 +164,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 	  this.docHTML = "";
+      this.loadAll();
       this.principal.identity().then((account) => {
           this.account = account;
       });

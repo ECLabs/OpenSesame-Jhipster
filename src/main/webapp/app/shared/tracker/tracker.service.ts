@@ -81,10 +81,20 @@ export class JhiTrackerService {
         if (this.stompClient !== null && this.stompClient.connected) {
             this.stompClient.send(
                 '/topic/activity', // destination
-                JSON.stringify({'page': this.router.routerState.snapshot.url}), // body
+                JSON.stringify({'page': this.router.routerState.snapshot.url, }), // body
                 {} // header
             );
         }
+    }
+
+    sendDocumentActivity(alertMsg) {
+
+            this.stompClient.send(
+                '/topic/activity', // destination
+                JSON.stringify({'message': alertMsg }), // body
+                {} // header
+            );
+
     }
 
     subscribe() {
