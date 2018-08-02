@@ -8,7 +8,7 @@ import { DocumentOpenSesame } from './document-open-sesame.model';
 import { DocumentOpenSesamePopupService } from './document-open-sesame-popup.service';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
-
+import { JhiTrackerService } from '../../shared';
 
 @Component({
     selector: 'jhi-document-open-sesame-delete-dialog',
@@ -22,7 +22,8 @@ export class DocumentOpenSesameDeleteDialogComponent {
         private documentService: DocumentOpenSesameService,
         private commentService: CommentOpenSesameService,
         public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private trackerService: JhiTrackerService,
     ) {
     }
 
@@ -61,6 +62,7 @@ export class DocumentOpenSesameDeleteDialogComponent {
                   });
                   this.activeModal.dismiss(true);
               });
+              this.trackerService.sendDocumentActivity("Document with ID " + id + " was Deleted");
             })
             .catch(function(err){
               console.log(err);

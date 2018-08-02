@@ -21,7 +21,6 @@ export class JhiAlertComponent implements OnInit, OnDestroy {
         this.alerts = this.alertService.get();
     }
 
-
     ngOnDestroy() {
         this.alerts = [];
     }

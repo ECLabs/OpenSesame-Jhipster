@@ -19,12 +19,13 @@ import { OpenSesameAccountModule } from './account/account.module';
 import { OpenSesameEntityModule } from './entities/entity.module';
 import { OpenSesameDocModule } from './doc-temp/doc.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { MyAlertService } from './layouts/alert/alert.service';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {
     JhiMainComponent,
     NavbarComponent,
     FooterComponent,
-    AlertComponent,
+    MyAlertComponent,
     ProfileService,
     PageRibbonComponent,
     ErrorComponent,
@@ -51,13 +52,14 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         FooterComponent,
-        AlertComponent,
+        MyAlertComponent,
         ClassificationComponent,
     ],
     providers: [
         ProfileService,
         PaginationConfig,
         UserRouteAccessService,
+        MyAlertService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

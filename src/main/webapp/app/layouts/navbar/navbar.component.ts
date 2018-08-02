@@ -5,6 +5,7 @@ import { ProfileService } from '../profiles/profile.service';
 import { Principal, LoginModalService, LoginService } from '../../shared';
 import { JhiAlertService } from 'ng-jhipster';
 import { VERSION } from '../../app.constants';
+import { MyAlertService } from '../alert/alert.service'
 
 @Component({
     selector: 'jhi-navbar',
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit {
         private profileService: ProfileService,
         private router: Router,
         private alertService: JhiAlertService,
+        private myAlertService: MyAlertService,
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -46,6 +48,14 @@ export class NavbarComponent implements OnInit {
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
+    }
+
+    newNotifcation() {
+      return this.myAlertService.getAlertStatus();
+    }
+
+    toggleAlertStatus() {
+      this.myAlertService.setAlertStatus(false);
     }
 
     login() {
