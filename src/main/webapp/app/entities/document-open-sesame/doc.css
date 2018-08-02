@@ -211,6 +211,17 @@ input:checked + label {
   color: grey;
 }
 
+[id^="options-"] {
+  float: right;
+  cursor: pointer;
+  margin-top: 12px;
+  display: none;
+}
+
+.dropdown-toggle::after {
+  display:none;
+}
+
 :host ::ng-deep #mammoth-wrapper {
 	width:100%;
 	height:400px;
