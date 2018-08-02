@@ -21,6 +21,7 @@
             <th jhiSortBy="duedate"><span>Due Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="laststate"><span>Status</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="currstate"><span>Current Status</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="country"><span>Country</span> <span class="fa fa-sort"></span></th>
             <th><span>Time Elapsed</span> <span class="fa fa-sort"></span></th>
             <!--<th jhiSortBy="createdon"><span>Createdon</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createdby"><span>Createdby</span> <span class="fa fa-sort"></span></th>
@@ -41,6 +42,7 @@
                 <td>{{document.duedate | date:'mediumDate'}}</td>
                 <td>{{document.laststate}}</td>
                 <td>{{document.currstate}}</td>
+                <td>{{document.country}}</td>
                 <td>{{documentTimes[document.id]}}</td>
                 <!-- <td>{{document.createdon | date:'mediumDate'}}</td>
                 <td>{{document.createdby}}</td>

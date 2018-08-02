@@ -55,9 +55,14 @@
             <column name="currversion_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
+
+            <column name="country" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
