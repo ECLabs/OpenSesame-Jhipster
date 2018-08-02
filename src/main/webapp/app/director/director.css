@@ -15,8 +15,6 @@ html, body {
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
-    max-height: 80vh;
-    overflow-y: scroll;
 }
 
 .demo-topbar+#external-events {
