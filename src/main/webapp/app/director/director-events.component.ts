@@ -75,21 +75,9 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
-
-                $(this).mouseenter(function() {
-                    $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).css('visibility', 'hidden');
-                    });
-                }).mouseleave(function() {
-                    $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).css('visibility', 'visible');
-                    });
-                });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
-                $(this).off('mouseenter');
-                $(this).off('mouseleave');
             }
 
             /* document color keying */
@@ -114,12 +102,6 @@ export class DirectorEventsComponent implements OnInit {
         ****************************************************************************/
 
         const containerEl: JQuery = $('#calendar');
-        // Get the event in the calendar associated with the parameter queue element
-        const getOtherEvents = function(element) {
-            return $('.fc-event-container').filter(function() {
-                return element.find('.title').text().trim() !== $(this).text().trim();
-            });
-        };
         // Get the element in the queue associated with the parameter event
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
@@ -167,6 +149,9 @@ export class DirectorEventsComponent implements OnInit {
                 if (this.staticEventTitles.includes(event.title)) {
                     element.css('pointer-events', 'none');
                 }
+                
+                // Add title to parent because pointer-events are removed for the static events
+                element.parent().attr('title', event.title);
 
                 const object = $(getParentEvent(element)).find('#document-id');
 
@@ -256,7 +241,7 @@ export class DirectorEventsComponent implements OnInit {
         }
 
         // Add static events to events rendering array
-        staticEvents.forEach((event) => events.push(event));
+        events.push(...staticEvents);
         return events;
     }
 
