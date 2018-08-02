@@ -10,6 +10,7 @@ import { CommentOpenSesame } from './comment-open-sesame.model';
 import { CommentOpenSesamePopupService } from './comment-open-sesame-popup.service';
 import { CommentOpenSesameService } from './comment-open-sesame.service';
 import { DocumentOpenSesame, DocumentOpenSesameService } from '../document-open-sesame';
+import { Principal, Account } from '../../shared';
 
 @Component({
     selector: 'jhi-comment-open-sesame-dialog',
@@ -19,14 +20,17 @@ export class CommentOpenSesameDialogComponent implements OnInit {
 
     comment: CommentOpenSesame;
     isSaving: boolean;
+    documentId: Number;
+    account: Account;
 
-    documents: DocumentOpenSesame[];
+    document: DocumentOpenSesame;
     createdonDp: any;
-    denialReasons = ["Grammar", "Citations", "Lack of detail", "Word choice"];
 
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
+        private principal: Principal,
+        private route: ActivatedRoute,
         private jhiAlertService: JhiAlertService,
         private commentService: CommentOpenSesameService,
         private documentService: DocumentOpenSesameService,
@@ -35,10 +39,17 @@ export class CommentOpenSesameDialogComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.principal.identity().then((account) => {
+            this.account = account;
+        });
         this.isSaving = false;
+        this.route.queryParams.subscribe((params) => {
+            this.documentId = Number(params['docId']);
+        });
         this.documentService.query()
             .subscribe((res: HttpResponse<DocumentOpenSesame[]>) => {
-              this.documents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+                this.document = res.body.filter((document) => document.id === this.documentId)[0];
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -59,12 +70,24 @@ export class CommentOpenSesameDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.setAutomaticFields();
         if (this.comment.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.commentService.update(this.comment));
         } else {
             this.subscribeToSaveResponse(
                 this.commentService.create(this.comment));
+        }
+    }
+
+    setAutomaticFields() {
+        this.comment.documentId = this.document.id;
+        this.comment.createdby = `${this.account.firstName} ${this.account.lastName}`;
+        const today = new Date();
+        this.comment.createdon = {
+            year: today.getFullYear(),
+            month: today.getMonth() + 1,
+            day: today.getDate()
         }
     }
 

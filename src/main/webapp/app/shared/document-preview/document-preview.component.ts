@@ -22,7 +22,7 @@ export class JhiDocumentModalComponent implements AfterViewInit {
     ) {}
 
     ngAfterViewInit() {
-        this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#doc-preview'), 'focus', []);
+        this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#document-info'), 'focus', []);
     }
 
     byteSize(field) {

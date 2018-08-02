@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import 'jqueryui';
 import 'fullcalendar';
 import { Account, DocumentModalService } from '../shared';
+import { staticEvents } from './staticEvents';
 
 @Component({
     selector: 'jhi-director-events',
@@ -25,6 +26,7 @@ export class DirectorEventsComponent implements OnInit {
     modalRef: NgbModalRef;
     documents: DocumentOpenSesame[];
     duedates = {};
+    staticEventTitles: String[] = this.getStaticEventTitles();
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -73,21 +75,9 @@ export class DirectorEventsComponent implements OnInit {
             if ($(this).find($('.due-date')).text()) { // has due date
                 $(this).draggable('disable');
                 $(this).css('background-color', '#99ff99');
-
-                $(this).mouseenter(function() {
-                    $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).css('visibility', 'hidden');
-                    });
-                }).mouseleave(function() {
-                    $.each(getOtherEvents($(this)), function(i, element) {
-                        $(element).css('visibility', 'visible');
-                    });
-                });
             } else {
                 $(this).draggable('enable');
                 $(this).css('background-color', 'white');
-                $(this).off('mouseenter');
-                $(this).off('mouseleave');
             }
 
             /* document color keying */
@@ -112,12 +102,6 @@ export class DirectorEventsComponent implements OnInit {
         ****************************************************************************/
 
         const containerEl: JQuery = $('#calendar');
-        // Get the event in the calendar associated with the parameter queue element
-        const getOtherEvents = function(element) {
-            return $('.fc-event-container').filter(function() {
-                return element.find('.title').text().trim() !== $(this).text().trim();
-            });
-        };
         // Get the element in the queue associated with the parameter event
         const getParentEvent = function(event) {
             return $('#external-events .fc-event').filter(function() {
@@ -131,33 +115,44 @@ export class DirectorEventsComponent implements OnInit {
             droppable: true, // this allows things to be dropped onto the calendar
             events: this.getEvents(),
             eventRender: (event, element) => {
-                const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
+                // Don't add the ability to remove the static events
+                if (!this.staticEventTitles.includes(event.title)) {
+                    const icon = $('<div><i class="fa fa-times icon" style="margin-right:3px;"></i></div>');
 
-                icon.css({
-                    'color': 'white',
-                    'border-right': '1px solid white',
-                    'display': 'inline',
-                    'height': '100%',
-                }).hide();
+                    icon.css({
+                        'color': 'white',
+                        'border-right': '1px solid white',
+                        'display': 'inline',
+                        'height': '100%',
+                    }).hide();
 
-                // Attach remove icon with click event handler on event render
-                icon.on('click', () => {
-                    let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
-                    this.duedates[document.id] = '';
-                    document.duedate = null;
-                    this.documentService.update(document).subscribe();
-                    containerEl.fullCalendar('removeEvents', event._id);
-                });
+                    // Attach remove icon with click event handler on event render
+                    icon.on('click', () => {
+                        let document = JSON.parse($(getParentEvent(element)).find('#document-id').text());
+                        this.duedates[document.id] = '';
+                        document.duedate = null;
+                        this.documentService.update(document).subscribe();
+                        containerEl.fullCalendar('removeEvents', event._id);
+                    });
 
-                element.mouseenter(function() {
-                    icon.show();
-                }).mouseleave(function() {
-                    icon.hide();
-                });
+                    element.mouseenter(function() {
+                        icon.show();
+                    }).mouseleave(function() {
+                        icon.hide();
+                    });
 
-                element.find('.fc-content').prepend(icon);
+                    element.find('.fc-content').prepend(icon);
+                }
             },
             eventAfterRender: (event: any, element) => {
+                // Make static events unclickable/undraggable
+                if (this.staticEventTitles.includes(event.title)) {
+                    element.css('pointer-events', 'none');
+                }
+                
+                // Add title to parent because pointer-events are removed for the static events
+                element.parent().attr('title', event.title);
+
                 const object = $(getParentEvent(element)).find('#document-id');
 
 				if (object.length !== 0) {
@@ -229,6 +224,10 @@ export class DirectorEventsComponent implements OnInit {
         });
     }
 
+    getStaticEventTitles() {
+        return staticEvents.map(event => event.title);
+    }
+
     getEvents() {
         let events = [];
         for (const document of this.documents) {
@@ -240,6 +239,9 @@ export class DirectorEventsComponent implements OnInit {
                 allDay: true
             });
         }
+
+        // Add static events to events rendering array
+        events.push(...staticEvents);
         return events;
     }
 
