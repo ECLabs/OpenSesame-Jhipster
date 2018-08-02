@@ -24,7 +24,7 @@ import * as mammoth from 'mammoth';
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
-    comments: CommentOpenSesame[];
+    comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
     private subscription: Subscription;
@@ -137,10 +137,29 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     loadAll() {
         this.commentService.query().subscribe(
             (res: HttpResponse<CommentOpenSesame[]>) => {
-                this.comments = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+                this.comments = this.initComments();
+                res.body
+                    .filter((comment) => this.document.id === comment.documentId)
+                    .forEach((comment: any) => {
+                        this.comments[comment.reason].push(comment);
+                    });
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+	}
+
+	initComments() {
+		return {
+			"Grammar": [],
+			"Citations": [],
+			"Lack of Detail": [],
+			"Word Choice": []
+		};
+	}
+
+    commentKeys() {
+		this.comments = this.comments || this.initComments();
+        return Object.keys(this.comments);
     }
 
     ngOnInit() {
@@ -154,9 +173,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
           this.load(params['id']);
       });
 
-      this.registerChangeInDocuments();
+		this.registerChangeInDocuments();
+		this.registerChangeInComments();
 
-      this.registerAuthenticationSuccess();
+		this.registerAuthenticationSuccess();
     }
 
     registerAuthenticationSuccess() {
@@ -172,11 +192,13 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     setDueCountdown() {
-        const timeDiff = this.document.duedate.getTime() - new Date().getTime();
-        const oneDay = 24 * 60 * 60 * 1000;
-        const duration = Math.ceil((timeDiff) / (oneDay));
-        if (duration > 0) {
-            this.dueCountdown = `(${duration} ${duration === 1 ? 'Day' : 'Days'} Remaining)`;
+        if (this.document.duedate) {
+            const timeDiff = this.document.duedate.getTime() - new Date().getTime();
+            const oneDay = 24 * 60 * 60 * 1000;
+            const duration = Math.ceil((timeDiff) / (oneDay));
+            if (duration > 0) {
+                this.dueCountdown = `(${duration} ${duration === 1 ? 'Day' : 'Days'} Remaining)`;
+            }
         }
     }
  
@@ -187,6 +209,8 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                 this.document = documentResponse.body;
                 this.window = new WindowRef();
 
+                this.setDueCountdown();
+                this.loadAll();
                
 
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
@@ -211,11 +235,8 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 							   })
 			                   .done();
 			           });
-				
-				 //this.setDueCountdown();
-		 
     }
-
+            
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -236,6 +257,13 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe(
             'documentListModification',
             (response) => this.load(this.document.id)
+        );
+    }
+
+    registerChangeInComments() {
+        this.eventSubscriber = this.eventManager.subscribe(
+            'commentListModification',
+            (response) => this.loadAll()
         );
     }
 
