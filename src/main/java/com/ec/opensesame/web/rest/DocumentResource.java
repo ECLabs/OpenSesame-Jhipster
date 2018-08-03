@@ -58,10 +58,10 @@ public class DocumentResource {
         documentDTO.setLaststate(Status.AUTHOR);
         documentDTO.setCurrstate(Status.AUTHOR);
         documentDTO.setCreatedon(LocalDate.now());
-    
+
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName().toString()))
             .body(result);
     }
 
@@ -83,7 +83,7 @@ public class DocumentResource {
         }
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, documentDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, documentDTO.getName().toString()))
             .body(result);
     }
 

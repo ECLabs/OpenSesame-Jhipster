@@ -52,6 +52,9 @@ public class Document implements Serializable {
     @Column(name = "laststate")
     private Status laststate;
 
+    @Column(name = "country")
+    private String country;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Version currversion;
@@ -268,6 +271,15 @@ public class Document implements Serializable {
     public void setVersions(Set<Version> versions) {
         this.versions = versions;
     }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCountry(){
+        return country;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

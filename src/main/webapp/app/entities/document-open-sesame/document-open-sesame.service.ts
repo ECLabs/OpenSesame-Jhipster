@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
-
 import { DocumentOpenSesame, Status} from './document-open-sesame.model';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 import { createRequestOption } from '../../shared';
+import { JhiTrackerService } from '../../shared';
 
 export type EntityResponseType = HttpResponse<DocumentOpenSesame>;
 
@@ -87,7 +87,7 @@ export class DocumentOpenSesameService {
      */
     private convert(document: DocumentOpenSesame): DocumentOpenSesame {
         const copy: DocumentOpenSesame = Object.assign({}, document);
-        
+
         // Need to format createdon for angular datepipe
         if (typeof document.createdon !== 'object') {
             const newDate = new Date(document.createdon);

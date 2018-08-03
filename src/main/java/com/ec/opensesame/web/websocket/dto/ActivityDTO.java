@@ -15,6 +15,8 @@ public class ActivityDTO {
 
     private String page;
 
+    private String message;
+
     private Instant time;
 
     public String getSessionId() {
@@ -49,6 +51,14 @@ public class ActivityDTO {
         this.page = page;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public Instant getTime() {
         return time;
     }
@@ -64,6 +74,7 @@ public class ActivityDTO {
             ", userLogin='" + userLogin + '\'' +
             ", ipAddress='" + ipAddress + '\'' +
             ", page='" + page + '\'' +
+            ", message='" + message + '\'' +
             ", time='" + time + '\'' +
             '}';
     }

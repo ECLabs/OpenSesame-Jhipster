@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
-
+import { JhiTrackerService } from '../../shared';
 import { DocumentOpenSesame } from './document-open-sesame.model';
 import { DocumentOpenSesamePopupService } from './document-open-sesame-popup.service';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
@@ -16,13 +15,12 @@ import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-ses
     templateUrl: './document-open-sesame-dialog.component.html'
 })
 export class DocumentOpenSesameDialogComponent implements OnInit {
-
     document: DocumentOpenSesame;
     isSaving: boolean;
-
     currversions: VersionOpenSesame[];
     createdonDp: any;
     duedateDp: any;
+    countries: any;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -30,7 +28,8 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private documentService: DocumentOpenSesameService,
         private versionService: VersionOpenSesameService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private trackerService: JhiTrackerService
     ) {
     }
 
@@ -49,6 +48,9 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
+
+            this.countries = require('./countries.json');
+            this.document.country = this.countries[0].name;
     }
 
     byteSize(field) {
@@ -84,6 +86,7 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: DocumentOpenSesame) {
+        this.trackerService.sendDocumentActivity("Document " + result.name + " was modified");
         this.eventManager.broadcast({ name: 'documentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
