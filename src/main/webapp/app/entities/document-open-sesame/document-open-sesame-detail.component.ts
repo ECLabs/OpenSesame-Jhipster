@@ -217,10 +217,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             this.eventManager.broadcast({ name: 'commentListModification', content: 'OK'});
         });
     }
-
-    editComment(comment) {
-        
-    }
  
     load(id) {
         this.documentService.find(id)
