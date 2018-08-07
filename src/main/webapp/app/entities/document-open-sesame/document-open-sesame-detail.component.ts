@@ -166,6 +166,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.trackerService.subscribe();
         this.docHTML = "";
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -183,7 +184,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     registerAuthenticationSuccess() {
-        this.trackerService.subscribe();
         this.eventManager.subscribe('authenticationSuccess', (message) => {
             this.principal.identity().then((account) => {
                 this.account = account;
@@ -254,7 +254,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-        this.trackerService.subscribe();
+        this.trackerService.unsubscribe();
         this.eventManager.destroy(this.eventSubscriber);
     }
 
