@@ -8,6 +8,7 @@ import { Account, LoginModalService, Principal } from '../shared';
 import { DocumentOpenSesameService } from '../entities/document-open-sesame/document-open-sesame.service';
 import { DocumentOpenSesame } from '../entities/document-open-sesame';
 import { JhiTrackerService } from '../shared/tracker/tracker.service';
+
 @Component({
     selector: 'jhi-home',
     templateUrl: './home.component.html',
