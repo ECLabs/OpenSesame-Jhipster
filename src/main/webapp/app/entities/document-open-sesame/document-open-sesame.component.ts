@@ -7,6 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'n
 import { DocumentOpenSesame } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 @Component({
     selector: 'jhi-document-open-sesame',
@@ -38,7 +39,8 @@ currentAccount: any;
         private activatedRoute: ActivatedRoute,
         private dataUtils: JhiDataUtils,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private trackerService: JhiTrackerService,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -89,9 +91,11 @@ currentAccount: any;
             this.currentAccount = account;
         });
         this.registerChangeInDocuments();
+        this.trackerService.subscribe();
     }
 
     ngOnDestroy() {
+        this.trackerService.unsubscribe();
         this.eventManager.destroy(this.eventSubscriber);
     }
 
