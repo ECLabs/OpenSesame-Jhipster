@@ -1,0 +1,19 @@
+#mammoth-wrapper {
+    overflow: hidden;
+}
+
+#box {
+    overflow: hidden;
+    width: 384px;
+    max-height: 470px;
+    margin-top: 15px;
+    border: 1px solid black;
+    margin-left: 15px;
+}
+
+.show-doc-text {
+    color:white;
+    display:none;
+    margin-top: 200px;
+    margin-left: 150px;
+}
