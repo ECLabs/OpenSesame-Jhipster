@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
-import * as $ from 'jquery';
 
 import 'jqueryui';
 import 'fullcalendar';

@@ -4,7 +4,7 @@ import { NgbModalRef, NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-boot
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpResponse } from '@angular/common/http';
 
-import { Account, LoginModalService, Principal } from '../shared';
+import { Account, LoginModalService, Principal, DocumentModalService } from '../shared';
 import { DocumentOpenSesameService } from '../entities/document-open-sesame/document-open-sesame.service';
 import { DocumentOpenSesame } from '../entities/document-open-sesame';
 
@@ -36,7 +36,8 @@ export class HomeComponent implements OnInit {
         private eventManager: JhiEventManager,
         private modalService: NgbModal,
         private router: Router,
-        private documentService: DocumentOpenSesameService
+        private documentService: DocumentOpenSesameService,
+        private documentModalService: DocumentModalService
     ) { }
 
     ngOnInit() {
@@ -96,8 +97,8 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    goToDoc(docId) {
-        this.router.navigateByUrl(`/document-open-sesame/${docId}`);
+    openDocPreview(document) {
+        this.modalRef = this.documentModalService.open(document);
     }
 
     isAuthenticated() {
