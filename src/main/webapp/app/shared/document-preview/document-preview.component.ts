@@ -16,6 +16,7 @@ import * as $ from 'jquery';
 export class JhiDocumentModalComponent implements AfterViewInit {
     @ViewChild('document') document;
     docHTML: String = "";
+    hover: Boolean = false;
     
     constructor(
         private elementRef: ElementRef,
@@ -28,22 +29,8 @@ export class JhiDocumentModalComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.loadPreview();
         this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#document-info'), 'focus', []);
-        $('#box').hover(
-            function() {
-                $(this).css({
-                    'background-color': '#212529',
-                    'cursor': 'pointer'
-                });
-                $('.show-doc-text').show();
-            },
-            function() {
-                $(this).css({
-                    'background-color': 'white',
-                    'cursor': 'default'
-                });
-                $('.show-doc-text').hide();
-            }
-        )
+
+        $('#box').hover(() => this.hover = !this.hover, () => this.hover = !this.hover);
     }
 
     loadPreview() {

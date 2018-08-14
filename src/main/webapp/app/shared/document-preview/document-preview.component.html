@@ -1,7 +1,9 @@
 <div style="height:500px;" class="row">
     <div class="col-sm-6" id="mammoth-wrapper">
-        <div id="box" (click)="goToDocument(document.id)">
-            <div class="show-doc-text">Go to document</div>
+        <div id="box">
+            <div [hidden]="!hover" class="show-doc-text">
+                <button class="btn view-doc-btn" (click)="goToDocument(document.id)">View Document</button>
+            </div>
             <div style="padding:10px;" id="output" [innerHTML]="docHTML"></div>
         </div>
     </div>
