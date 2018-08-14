@@ -16,7 +16,9 @@ import {
     JhiTrackerService,
     HasAnyAuthorityDirective,
     DocumentModalService,
+    MetricsModalService,
     JhiDocumentModalComponent,
+    JhiMetricsModalComponent,
     DenyModalService,
     JhiDenyModalComponent
 } from './';
@@ -29,12 +31,14 @@ import {
     declarations: [
         JhiLoginModalComponent,
         JhiDocumentModalComponent,
+        JhiMetricsModalComponent,
         JhiDenyModalComponent,
         HasAnyAuthorityDirective
     ],
     providers: [
         DenyModalService,
         DocumentModalService,
+        MetricsModalService,
         LoginService,
         LoginModalService,
         AccountService,
@@ -49,11 +53,13 @@ import {
     entryComponents: [
         JhiLoginModalComponent,
         JhiDocumentModalComponent,
+        JhiMetricsModalComponent,
         JhiDenyModalComponent
     ],
     exports: [
         OpenSesameSharedCommonModule,
         JhiDocumentModalComponent,
+        JhiMetricsModalComponent,
         JhiLoginModalComponent,
         JhiDenyModalComponent,
         HasAnyAuthorityDirective,

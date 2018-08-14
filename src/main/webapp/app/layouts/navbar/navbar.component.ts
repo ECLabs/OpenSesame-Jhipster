@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileService } from '../profiles/profile.service';
-import { Principal, LoginModalService, LoginService } from '../../shared';
+import { Principal, LoginModalService, LoginService, MetricsModalService } from '../../shared';
 import { JhiAlertService } from 'ng-jhipster';
 import { VERSION } from '../../app.constants';
 import { MyAlertService } from '../alert/alert.service'
@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
         private router: Router,
         private alertService: JhiAlertService,
         private myAlertService: MyAlertService,
+        private metricModal: MetricsModalService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -40,6 +41,10 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
+    }
+
+    openMetrics() {
+        this.modalRef = this.metricModal.open();
     }
 
     collapseNavbar() {

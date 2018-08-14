@@ -15,6 +15,8 @@ export * from './login/login-modal.service';
 export * from './login/login.service';
 export * from './document-preview/document-preview.service';
 export * from './document-preview/document-preview.component';
+export * from './metrics/metrics.service';
+export * from './metrics/metrics.component';
 export * from './deny/deny-modal.service';
 export * from './deny/deny-modal.component';
 export * from './user/account.model';
