@@ -28,7 +28,6 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
-    documentTimes: Object = {};
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -129,7 +128,7 @@ currentAccount: any;
             const timeDiff = new Date().getTime() - document.createdon.getTime();
             const oneDay = 24 * 60 * 60 * 1000;
             const duration = Math.floor((timeDiff) / (oneDay));
-            this.documentTimes[document.id] = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
+            document.timeelapsed = duration;
         }
     }
     private onError(error) {
