@@ -1,4 +1,5 @@
     <h2>Database Items</h2>
+    <span *ngIf="documents?.length == 0">{{this.loadEvents()}}</span>
     <ng-container *ngFor="let document of documents; let last = last">
         <div class='fc-event' id="{{document.currstate}}">
             <div hidden id="document-id">{{document | json}}</div>
@@ -51,10 +52,3 @@
 
     <span *ngIf='last'>{{loadEvents()}}</span>
 </ng-container>
-
-
-
-<div>
-
-
-</div>
