@@ -29,7 +29,6 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
-    documentTimes: Object = {};
 
     constructor(
         private documentService: DocumentOpenSesameService,
@@ -128,12 +127,15 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.documents = data;
-
+        
+        const today = new Date().getTime();
         for (const document of this.documents) {
-            const timeDiff = new Date().getTime() - document.createdon.getTime();
-            const oneDay = 24 * 60 * 60 * 1000;
-            const duration = Math.floor((timeDiff) / (oneDay));
-            this.documentTimes[document.id] = `${duration} ${duration === 1 ? 'Day' : 'Days'}`;
+            if (today <= document.duedate.getTime()) {
+                const timeDiff = today - document.createdon.getTime();
+                const oneDay = 24 * 60 * 60 * 1000;
+                const duration = Math.floor((timeDiff) / (oneDay));
+                document.timeelapsed = duration;
+            }
         }
     }
     private onError(error) {

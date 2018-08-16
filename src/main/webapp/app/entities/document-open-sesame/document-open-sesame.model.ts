@@ -21,6 +21,7 @@ export class DocumentOpenSesame implements BaseEntity {
         public file?: any,
         public duedate?: any,
         public country? : string,
+        public timeelapsed?: number,
         public currstate?: Status,
         public laststate?: Status,
         public currversionId?: number,
