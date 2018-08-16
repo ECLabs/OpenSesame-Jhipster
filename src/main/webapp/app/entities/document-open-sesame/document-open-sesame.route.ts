@@ -7,6 +7,7 @@ import { DocumentOpenSesameComponent } from './document-open-sesame.component';
 import { DocumentOpenSesameDetailComponent } from './document-open-sesame-detail.component';
 import { DocumentOpenSesamePopupComponent } from './document-open-sesame-dialog.component';
 import { DocumentOpenSesameDeletePopupComponent } from './document-open-sesame-delete-dialog.component';
+import { DocumentOpenSesameMockPopupComponent } from './document-open-sesame-mock.component';
 
 @Injectable()
 export class DocumentOpenSesameResolvePagingParams implements Resolve<any> {
@@ -77,5 +78,16 @@ export const documentPopupRoute: Routes = [
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
+    },
+    {
+        path: 'document-open-sesame-mock',
+        component: DocumentOpenSesameMockPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Documents'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     }
+
 ];

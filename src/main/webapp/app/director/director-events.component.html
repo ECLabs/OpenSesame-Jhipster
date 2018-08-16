@@ -1,10 +1,11 @@
     <h2>Database Items</h2>
+    <span *ngIf="documents?.length == 0">{{this.loadEvents()}}</span>
     <ng-container *ngFor="let document of documents; let last = last">
         <div class='fc-event' id="{{document.currstate}}">
             <div hidden id="document-id">{{document | json}}</div>
             <div class="row">
                 <div class="col-md-7">
-                  <a class="title" (click)="openDocPreview(document)" title="Preview Document">{{document.name}}</a>
+                  <h2 class="title" title="Preview Document">{{document.name}}</h2>
                 </div>
                 <div class="col-md-3">
                     <span class="dot" color="brown" style=""></span>
@@ -51,10 +52,3 @@
 
     <span *ngIf='last'>{{loadEvents()}}</span>
 </ng-container>
-
-
-
-<div>
-
-
-</div>

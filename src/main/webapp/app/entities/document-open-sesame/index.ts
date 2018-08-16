@@ -6,3 +6,4 @@ export * from './document-open-sesame-delete-dialog.component';
 export * from './document-open-sesame-detail.component';
 export * from './document-open-sesame.component';
 export * from './document-open-sesame.route';
+export * from './document-open-sesame-mock.component';

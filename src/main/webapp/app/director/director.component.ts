@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
+import { JhiTrackerService } from '../shared/tracker/tracker.service';
 import * as $ from 'jquery';
-
 import 'jqueryui';
 import 'fullcalendar';
 import { Account, LoginModalService, Principal } from '../shared';
@@ -16,7 +16,7 @@ import { Account, LoginModalService, Principal } from '../shared';
     ],
     providers: [NgbPopoverConfig]
 })
-export class DirectorComponent implements OnInit {
+export class DirectorComponent implements OnInit, OnDestroy {
     account: Account;
     modalRef: NgbModalRef;
 
@@ -24,10 +24,11 @@ export class DirectorComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private config: NgbPopoverConfig
+        private config: NgbPopoverConfig,
+        private trackerService: JhiTrackerService,
     ) {
-      config.placement = 'right';
-      config.triggers = 'hover';
+        config.placement = 'right';
+        config.triggers = 'hover';
     }
 
     ngOnInit() {
@@ -37,7 +38,12 @@ export class DirectorComponent implements OnInit {
         this.registerAuthenticationSuccess();
     }
 
+    ngOnDestroy() {
+      this.trackerService.unsubscribe();
+    }
+
     registerAuthenticationSuccess() {
+        this.trackerService.subscribe();
         this.eventManager.subscribe('authenticationSuccess', (message) => {
             this.principal.identity().then((account) => {
                 this.account = account;
