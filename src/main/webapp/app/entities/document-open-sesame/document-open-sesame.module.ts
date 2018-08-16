@@ -14,6 +14,8 @@ import {
     documentRoute,
     documentPopupRoute,
     DocumentOpenSesameResolvePagingParams,
+    DocumentOpenSesameMockComponent,
+    DocumentOpenSesameMockPopupComponent,
 } from './';
 
 const ENTITY_STATES = [
@@ -33,6 +35,9 @@ const ENTITY_STATES = [
         DocumentOpenSesameDeleteDialogComponent,
         DocumentOpenSesamePopupComponent,
         DocumentOpenSesameDeletePopupComponent,
+        DocumentOpenSesameMockComponent,
+        DocumentOpenSesameMockPopupComponent,
+
     ],
     entryComponents: [
         DocumentOpenSesameComponent,
@@ -40,6 +45,9 @@ const ENTITY_STATES = [
         DocumentOpenSesamePopupComponent,
         DocumentOpenSesameDeleteDialogComponent,
         DocumentOpenSesameDeletePopupComponent,
+        DocumentOpenSesameMockComponent,
+        DocumentOpenSesameMockPopupComponent,
+
     ],
     providers: [
         DocumentOpenSesameService,
