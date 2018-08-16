@@ -1,6 +1,14 @@
 <div>
     <h2>
         <span>Documents</span>
+
+        <button class="btn btn-secondary float-right jh-create-entity create-document-open-sesame" [routerLink]="['/', { outlets: { popup: ['document-open-sesame-mock'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Import Mock Documents
+            </span>
+        </button>
+
         <button class="btn btn-primary float-right jh-create-entity create-document-open-sesame" [routerLink]="['/', { outlets: { popup: ['document-open-sesame-new'] } }]">
             <span class="fa fa-plus"></span>
             <span >

@@ -68,6 +68,10 @@ export class DirectorEventsComponent implements OnInit {
             // make the event draggable using jQuery UI
             $(this).draggable({
                 zIndex: 999,
+                appendTo: 'body',
+                scroll: false,
+                helper: 'clone',
+                containment: 'widnow',
                 revert: true,      // will cause the event to go back to its
                 revertDuration: 0  //  original position after the drag
             });
@@ -148,7 +152,7 @@ export class DirectorEventsComponent implements OnInit {
                 if (this.staticEventTitles.includes(event.title)) {
                     element.css('pointer-events', 'none');
                 }
-                
+
                 // Add title to parent because pointer-events are removed for the static events
                 element.parent().attr('title', event.title);
 
