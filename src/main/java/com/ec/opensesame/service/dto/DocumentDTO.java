@@ -32,7 +32,7 @@ public class DocumentDTO implements Serializable {
 
     private String country;
 
-    private Long timeElapsed;
+    private Long timeelapsed;
 
     private Long currversionId;
 
@@ -121,11 +121,11 @@ public class DocumentDTO implements Serializable {
     }
 
     public void setTimeElapsed(Long timeElapsed) {
-        this.timeElapsed = timeElapsed;
+        this.timeelapsed = timeElapsed;
     }
 
     public Long getTimeElapsed() {
-        return timeElapsed;
+        return timeelapsed;
     }
 
     public void setCurrversionId(Long versionId) {

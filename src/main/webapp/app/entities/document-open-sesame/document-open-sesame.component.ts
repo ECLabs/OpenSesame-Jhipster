@@ -128,10 +128,10 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.documents = data;
         
-        const today = new Date().getTime();
+        const today = new Date();
         for (const document of this.documents) {
-            if (today <= document.duedate.getTime()) {
-                const timeDiff = today - document.createdon.getTime();
+            if (!document.duedate || today < document.duedate) {
+                const timeDiff = today.getTime() - document.createdon.getTime();
                 const oneDay = 24 * 60 * 60 * 1000;
                 const duration = Math.floor((timeDiff) / (oneDay));
                 document.timeelapsed = duration;
