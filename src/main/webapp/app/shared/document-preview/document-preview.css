@@ -1,0 +1,35 @@
+#mammoth-wrapper {
+    overflow: hidden;
+}
+
+#box {
+    overflow: hidden;
+    width: 384px;
+    min-width: 384px;
+    height: 470px;
+    margin-top: 15px;
+    border: 1px solid black;
+    margin-left: 15px;
+}
+
+.show-doc-text {
+    position: absolute;
+    width: 384px;
+    height: 470px;
+    background-color: #000;
+    opacity: 0.9;
+}
+
+.view-doc-btn {
+    margin-left: 30%;
+    margin-top: 50%;
+    background-color: #000;
+    border: 2px solid white;
+    color: white;
+}
+
+.view-doc-btn:hover {
+    background-color: white;
+    color: black;
+    opacity: 1;
+}

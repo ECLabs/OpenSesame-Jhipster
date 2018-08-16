@@ -3,7 +3,6 @@ import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { JhiTrackerService } from '../shared/tracker/tracker.service';
 import * as $ from 'jquery';
-
 import 'jqueryui';
 import 'fullcalendar';
 import { Account, LoginModalService, Principal } from '../shared';

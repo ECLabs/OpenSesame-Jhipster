@@ -1,7 +1,9 @@
-import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiDataUtils } from 'ng-jhipster';
+import * as mammoth from 'mammoth';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'jhi-document-modal',
@@ -12,7 +14,10 @@ import { JhiDataUtils } from 'ng-jhipster';
 })
 
 export class JhiDocumentModalComponent implements AfterViewInit {
-
+    @ViewChild('document') document;
+    docHTML: String = "";
+    hover: Boolean = false;
+    
     constructor(
         private elementRef: ElementRef,
         private router: Router,
@@ -22,7 +27,23 @@ export class JhiDocumentModalComponent implements AfterViewInit {
     ) {}
 
     ngAfterViewInit() {
+        this.loadPreview();
         this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#document-info'), 'focus', []);
+
+        $('#box').hover(() => this.hover = !this.hover, () => this.hover = !this.hover);
+    }
+
+    loadPreview() {
+        const bs = atob(this.document.file);
+        const buffer = new ArrayBuffer(bs.length);
+        const ba = new Uint8Array(buffer);
+        for (let i = 0; i < bs.length; i++) {
+            ba[i] = bs.charCodeAt(i);
+        }
+
+        mammoth.convertToHtml({arrayBuffer: ba}).then((result) => {
+            this.docHTML = result.value;
+        });
     }
 
     byteSize(field) {
