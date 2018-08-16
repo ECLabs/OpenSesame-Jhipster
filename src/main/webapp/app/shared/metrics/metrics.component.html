@@ -1,28 +1,46 @@
 <div id="metrics">
     <div class="card" id="country-table">
         <h2>Documents per country</h2>
-        <div class="table-responsive" *ngIf="countries">
-            <table class="table table-striped">
-                <thead>
-                    <th><span>Country</span></th>
-                    <th><span>Number of Documents</span></th>
-                </thead>
-                <tbody>
-                <tr *ngFor="let country of countryKeys()">
-                    <td>{{country}}</td>
-                    <td>{{countries[country]}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        <canvas id="countryChart" width="400" height="400"></canvas>
     </div>
-    <div class="card" id="second-row">
-        <div>
-            <h3>Total Average Document Time</h3><br>
-            <span>{{totalAverageTime}}</span>
+    <div id="second-row">
+        <div class="card" id="total-metrics">
+            <h5 id="total-title">All Document Statistics</h5>
+            <div class="cardbody">
+                <dl style="margin-left:15px;">
+                    <dt><span>Average Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{totalMetrics['averageTimeElapsed']}} days</span>
+                    </dd>
+                    <dt><span>Longest Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{totalMetrics['longestTimeElapsed']['time']}} days ({{totalMetrics['longestTimeElapsed']['document']}})</span>
+                    </dd>
+                    <dt><span>Shortest Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{totalMetrics['shortestTimeElapsed']['time']}} days ({{totalMetrics['shortestTimeElapsed']['document']}})
+                    </dd>
+                </dl>
+            </div>
         </div>
-        <div>
-            <h3>Average Document Time for {{currentMonth}}</h3>
+        <div class="card" id="month-metrics">
+            <h5 id="month-title">Document Statistics for {{currentMonth | date: 'LLLL'}}</h5>
+            <div class="cardbody">
+                <dl style="margin-left:15px;">
+                    <dt><span>Average Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{monthMetrics['averageTimeElapsed']}} days</span>
+                    </dd>
+                    <dt><span>Longest Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{monthMetrics['longestTimeElapsed']['time']}} days ({{monthMetrics['longestTimeElapsed']['document']}})</span>
+                    </dd>
+                    <dt><span>Shortest Elapsed Time</span></dt>
+                    <dd>
+                        <span>{{monthMetrics['shortestTimeElapsed']['time']}} days ({{monthMetrics['shortestTimeElapsed']['document']}})
+                    </dd>
+                </dl>
+            </div>
         </div>
     </div>
 </div>

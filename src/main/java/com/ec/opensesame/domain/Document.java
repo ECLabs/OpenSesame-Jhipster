@@ -283,12 +283,17 @@ public class Document implements Serializable {
         return country;
     }
 
-    public void setTimeElapsed(Long timeElapsed) {
-        this.timeelapsed = timeElapsed;
+    public void setTimeElapsed(Long timeelapsed) {
+        this.timeelapsed = timeelapsed;
     }
 
     public Long getTimeElapsed() {
         return this.timeelapsed;
+    }
+
+    public Document timeelapsed(Long timeelapsed) {
+        this.timeelapsed = timeelapsed;
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
