@@ -1,0 +1,14 @@
+#metrics {
+    display: inline;
+}
+
+#country-table {
+    float: left;
+    padding: 20px;
+    width: 50%;
+    margin: 10px;
+}
+
+#second-row {
+    margin: 10px;
+}

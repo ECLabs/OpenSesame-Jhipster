@@ -1,5 +1,23 @@
 <div id="metrics">
-    <div *ngFor="let country of countryKeys()">
-        <span>{{country}}</span> <span>{{countries[country]}}</span>
+    <div class="card" id="country-table">
+        <h2>Documents per country</h2>
+        <div class="table-responsive" *ngIf="countries">
+            <table class="table table-striped">
+                <thead>
+                    <th><span>Country</span></th>
+                    <th><span>Number of Documents</span></th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let country of countryKeys()">
+                    <td>{{country}}</td>
+                    <td>{{countries[country]}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="second-row">
+        <div>one</div>
+        <div>two</div>
     </div>
 </div>

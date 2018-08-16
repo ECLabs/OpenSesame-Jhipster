@@ -15,7 +15,7 @@ export class MetricsModalService {
             return;
         }
         this.isOpen = true;
-        const modalRef = this.modalService.open(JhiMetricsModalComponent);
+        const modalRef = this.modalService.open(JhiMetricsModalComponent, { size : 'lg' });
         modalRef.result.then((result) => {
             this.isOpen = false;
         }, (reason) => {
