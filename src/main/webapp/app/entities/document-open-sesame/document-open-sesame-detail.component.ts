@@ -27,6 +27,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
+    mouseOver: Boolean = false;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
@@ -201,7 +202,21 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    showOptions(comment, show) {
+        const options = $(`#options-${comment.id}`);
+        if (show && this.account && comment.createdby === `${this.account.firstName} ${this.account.lastName}`) {
+            options.show();
+        } else {
+            options.hide();
+        }
+    }
  
+    deleteComment(comment) {
+        this.commentService.delete(comment.id).subscribe((res) => {
+            this.eventManager.broadcast({ name: 'commentListModification', content: 'OK'});
+        });
+    }
  
     load(id) {
         this.documentService.find(id)

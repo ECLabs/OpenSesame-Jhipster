@@ -124,8 +124,20 @@
                   <ngb-panel *ngFor="let commentReason of commentKeys();" [disabled]="comments[commentReason].length === 0">
                     <ng-template ngbPanelTitle><span>{{commentReason}} ({{comments[commentReason].length}})</span></ng-template>
                     <ng-template ngbPanelContent>
-                      <div class="body" *ngFor="let comment of comments[commentReason];">
-                        <span id="comment-createdby">{{comment.createdby}}</span> <span id="comment-createdon">on {{comment.createdon | date: 'EEE, MMM d'}}</span><br>
+                      <div class="body" *ngFor="let comment of comments[commentReason];" (mouseenter)="showOptions(comment, true)" (mouseleave)="showOptions(comment, false)">
+                        <span id="comment-createdby">{{comment.createdby}}</span> <span id="comment-createdon">on {{comment.createdon | date: 'EEE, MMM d'}}</span>
+                        <div ngbDropdown id="options-{{comment.id}}">
+                          <i class="fa fa-ellipsis-v" ngbDropdownToggle></i>
+                          <div ngbDropdownMenu>
+                            <button 
+                              class="btn dropdown-item" 
+                              [routerLink]="['/', { outlets: { popup: 'comment-open-sesame/'+ comment.id + '/edit' } }]"
+                              replaceUrl="true"
+                              queryParamsHandling="merge">Edit</button>
+                            <button class="btn dropdown-item" (click)="deleteComment(comment)">Remove</button>
+                          </div>
+                          </div>
+                        <br>
                         <span style="font-size:15px;">{{comment.comment}}</span>
                       </div>
                     </ng-template>
