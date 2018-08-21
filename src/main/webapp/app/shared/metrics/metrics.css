@@ -27,7 +27,11 @@
 }
 
 #month-title, #total-title {
-    margin: 5px 0 20px 0;
+    margin: 5px 0 0 0;
+}
+
+hr {
+    margin: 5px;
 }
 
 h6 {

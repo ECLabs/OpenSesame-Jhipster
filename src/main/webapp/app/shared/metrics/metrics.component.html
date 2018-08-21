@@ -6,6 +6,7 @@
     <div id="second-row">
         <div class="card" id="total-metrics">
             <h5 id="total-title">All Document Statistics</h5>
+            <hr>
             <div class="cardbody">
                 <dl style="margin-left:15px;">
                     <dt><span>Average Elapsed Time</span></dt>
@@ -24,7 +25,8 @@
             </div>
         </div>
         <div class="card" id="month-metrics">
-            <h5 id="month-title">Document Statistics for {{currentMonth | date: 'LLLL'}}</h5>
+            <h5 id="month-title">Document Statistics for {{currentDate | date: 'LLLL'}}</h5>
+            <hr>
             <div class="cardbody">
                 <dl style="margin-left:15px;">
                     <dt><span>Average Elapsed Time</span></dt>

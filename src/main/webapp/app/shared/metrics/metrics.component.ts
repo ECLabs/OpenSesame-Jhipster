@@ -22,7 +22,7 @@ export class JhiMetricsModalComponent implements AfterViewInit, OnInit {
     countries: Object = {};
     totalMetrics: Object = this.instantiateMetrics();
     monthMetrics: Object = this.instantiateMetrics();
-    currentMonth = new Date();
+    currentDate: Date = new Date();
 
     constructor(
         private elementRef: ElementRef,
@@ -38,22 +38,30 @@ export class JhiMetricsModalComponent implements AfterViewInit, OnInit {
         }).subscribe(
             (res: HttpResponse<DocumentOpenSesame[]>) => {
                 this.documents = res.body;
+                let currentMonthDocuments = 0;
+                const firstOfMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+                const lastOfMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0);
 
                 this.documents.forEach((document: any) => {
                     this.countries[document.country] = this.countries[document.country] + 1 || 1;
                     this.updateMetrics(this.totalMetrics, document.name, document.timeElapsed);
-                    this.updateMetrics(this.monthMetrics, document.name, document.timeElapsed);
+                    if (document.duedate >= firstOfMonth && document.duedate <= lastOfMonth) {
+                        console.log(document.timeElapsed);
+                        this.updateMetrics(this.monthMetrics, document.name, document.timeElapsed);
+                        currentMonthDocuments++;
+                    }
                 });
                 // Calculate average time elapsed for all documents
                 this.totalMetrics['averageTimeElapsed'] /= this.countryKeys().length;
-                console.log(this.totalMetrics);
+                // Calculate average time elapsed only for documents due in the current month
+                this.monthMetrics['averageTimeElapsed'] /= currentMonthDocuments;
     
                 // Generate pie chart
                 new Chart($('#countryChart'), {
                     type: 'pie',
                     data: {
                         datasets: [{
-                            data: Object.keys(this.countries).map((country) => this.countries[country]),
+                            data: this.countryKeys().map((country) => this.countries[country]),
                             backgroundColor: this.generateRandomColorArray()
                         }],
                         labels: this.countryKeys()
@@ -64,18 +72,14 @@ export class JhiMetricsModalComponent implements AfterViewInit, OnInit {
     }
 
     updateMetrics(metricObject, docTitle, timeElapsed) {
-        if (metricObject === this.totalMetrics) {
-            metricObject['averageTimeElapsed'] += timeElapsed;
-        } else if (metricObject === this.monthMetrics) {
+        metricObject['averageTimeElapsed'] += timeElapsed;
 
-        }
-    
         if (timeElapsed < metricObject['shortestTimeElapsed']['time']) {
             metricObject['shortestTimeElapsed'] = { document: docTitle, time: timeElapsed };
         }
         if (timeElapsed > metricObject['longestTimeElapsed']['time']) {
             metricObject['longestTimeElapsed'] = { document: docTitle, time: timeElapsed };
-        };
+        }
     }
 
     // Generate an array of random colors for the different countries in the graph

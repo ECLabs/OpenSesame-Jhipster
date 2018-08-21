@@ -130,11 +130,28 @@ currentAccount: any;
         
         const today = new Date();
         for (const document of this.documents) {
-            if (!document.duedate || today < document.duedate) {
+            if (!document.duedate || (today < document.duedate)) {
                 const timeDiff = today.getTime() - document.createdon.getTime();
                 const oneDay = 24 * 60 * 60 * 1000;
                 const duration = Math.floor((timeDiff) / (oneDay));
-                document.timeelapsed = duration;
+                if (document['timeElapsed'] !== duration) {
+                    document['timeElapsed'] = duration;
+                    if (document.createdon) {
+                        document.createdon = {
+                            year: document.createdon.getFullYear(),
+                            month: document.createdon.getMonth() + 1,
+                            day: document.createdon.getDate()
+                        };
+                    }
+                    if (document.duedate) {
+                        document.duedate = {
+                            year: document.duedate.getFullYear(),
+                            month: document.duedate.getMonth() + 1,
+                            day: document.duedate.getDate()
+                        };
+                    }
+                    this.documentService.update(document).subscribe();
+                }
             }
         }
     }
