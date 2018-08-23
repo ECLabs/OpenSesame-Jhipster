@@ -50,7 +50,9 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
             }, (res: HttpErrorResponse) => this.onError(res.message));
 
             this.countries = require('./countries.json');
-            this.document.country = this.countries[0].name;
+            if(!this.document.country){
+              this.document.country = this.countries[0].name;
+            }
     }
 
     byteSize(field) {
