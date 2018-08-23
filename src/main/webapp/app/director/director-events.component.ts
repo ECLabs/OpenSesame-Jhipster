@@ -8,7 +8,7 @@ import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'jqueryui';
 import 'fullcalendar';
-import { Account, DocumentModalService } from '../shared';
+import { Account } from '../shared';
 import { staticEvents } from './staticEvents';
 
 @Component({
@@ -30,8 +30,7 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
-        private commentService: CommentOpenSesameService,
-        private documentModalService: DocumentModalService,
+        private commentService: CommentOpenSesameService
     ) {}
 
     getContent() {
@@ -190,10 +189,6 @@ export class DirectorEventsComponent implements OnInit {
             },
             eventTextColor: 'white',
         });
-    }
-
-    openDocPreview(document) {
-        this.modalRef = this.documentModalService.open(document);
     }
 
     removeQueue(document) {

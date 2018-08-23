@@ -3,11 +3,8 @@ package com.ec.opensesame.service.dto;
 
 import java.time.LocalDate;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
-import com.ec.opensesame.domain.enumeration.Status;
 import com.ec.opensesame.domain.enumeration.Status;
 
 /**
@@ -34,6 +31,8 @@ public class DocumentDTO implements Serializable {
     private Status laststate;
 
     private String country;
+
+    private Long timeElapsed;
 
     private Long currversionId;
 
@@ -121,6 +120,14 @@ public class DocumentDTO implements Serializable {
       return country;
     }
 
+    public void setTimeElapsed(Long timeElapsed) {
+        this.timeElapsed = timeElapsed;
+    }
+
+    public Long getTimeElapsed() {
+        return timeElapsed;
+    }
+
     public void setCurrversionId(Long versionId) {
         this.currversionId = versionId;
     }
@@ -158,6 +165,7 @@ public class DocumentDTO implements Serializable {
             ", currstate='" + getCurrstate() + "'" +
             ", laststate='" + getLaststate() + "'" +
             ", country='" + getCountry() + "'" +
+            ", time elapsed='" + getTimeElapsed() + "'" +
             "}";
     }
 }
