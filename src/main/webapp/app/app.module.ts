@@ -18,6 +18,7 @@ import { OpenSesameDirectorModule } from './director/director.module';
 import { OpenSesameAccountModule } from './account/account.module';
 import { OpenSesameEntityModule } from './entities/entity.module';
 import { OpenSesameDocModule } from './doc-temp/doc.module';
+import { OpenSesameMetricsModule } from './metrics/metrics.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 import { MyAlertService } from './layouts/alert/alert.service';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -44,6 +45,7 @@ import {
         OpenSesameDirectorModule,
         OpenSesameEntityModule,
         OpenSesameDocModule,
+        OpenSesameMetricsModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

@@ -186,6 +186,12 @@
                             <span>Settings</span>
                         </a>
                     </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
+                            <span>Document Metrics</span>
+                        </a>
+                    </li>
                    <!-- <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
