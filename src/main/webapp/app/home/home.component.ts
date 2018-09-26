@@ -17,7 +17,7 @@ import { JhiTrackerService } from '../shared/tracker/tracker.service';
     ]
 
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
     account: Account;
     user: Object = {
         firstName: '',
@@ -97,14 +97,33 @@ export class HomeComponent implements OnInit {
                     const dueDate = new Date(doc.duedate);
                     return dueDate >= this.prevSunday && dueDate <= this.nextSaturday;
                 });
+                  this.dueWeekDocuments = this.sort(this.dueWeekDocuments);
 
                 this.documentsRoleSpecific = res.body.filter((doc) => {
                     const status = this.getRole(this.account.authorities, false);
                     return status === 'ADMIN' ? true : String(doc.currstate) === status;
                 });
+                    this.documentsRoleSpecific = this.sort(this.documentsRoleSpecific);
             });
     }
 
+    sort(documents) {
+      documents.sort(function(a,b) {
+        a = a.duedate;
+        b = b.duedate;
+        return a-b;
+      });
+      let not_set = [];
+      for(let document in documents){
+        if(documents[document].duedate == null){
+          not_set.push(documents[document]);
+        }
+      }
+      documents.splice(0,not_set.length);
+      documents = documents.concat(not_set);
+      return documents;
+
+    }
     openDocPreview(document) {
         this.modalRef = this.documentModalService.open(document);
     }
