@@ -55,6 +55,9 @@ public class Document implements Serializable {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "timeelapsed")
+    private Long timeElapsed;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Version currversion;
@@ -278,6 +281,14 @@ public class Document implements Serializable {
 
     public String getCountry(){
         return country;
+    }
+
+    public void setTimeElapsed(Long timeElapsed) {
+        this.timeElapsed = timeElapsed;
+    }
+
+    public Long getTimeElapsed() {
+        return this.timeElapsed;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

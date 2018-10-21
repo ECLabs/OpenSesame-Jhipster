@@ -1,44 +1,53 @@
-<button aria-label="Close" style="position:absolute;right:10px;" class="close" type="button" (click)="activeModal.dismiss()"><span aria-hidden="true">x</span></button>
-<div id="document-info">
-    <h2 style="margin-top:10px;text-align:center;">{{document.name}}</h2>
-    <hr style="margin:10px 0;">
-    <jhi-alert-error></jhi-alert-error>
-    <dl style="margin-left:15px;" class="row-md jh-entity-details">
-        <dt><span>Name</span></dt>
-        <dd>
-            <span>{{document.name}}</span>
-        </dd>
-        <dt><span>Created On</span></dt>
-        <dd>
-            <span>{{document.createdon | date: 'EEE MMM dd yyyy'}}</span>
-        </dd>
-        <dt><span>Created By</span></dt>
-        <dd>
-            <span>{{document.createdby}}</span>
-        </dd>
-        <dt><span>File</span></dt>
-        <dd>
-            <div *ngIf="document.file">
-                Size: {{byteSize(document.file)}}
-                <a (click)="openFile(document.fileContentType, document.file)">open</a>
+<div style="height:500px;" class="row">
+    <div class="col-sm-6" id="mammoth-wrapper">
+        <div id="box">
+            <div [hidden]="!hover" class="show-doc-text">
+                <button class="btn view-doc-btn" (click)="goToDocument(document.id)">View Document</button>
             </div>
-        </dd>
-        <dt><span>Due Date</span></dt>
-        <dd>
-            <span>{{document.duedate | date: 'EEE MMM dd yyyy'}}</span>
-        </dd>
-        <dt><span>Current State</span></dt>
-        <dd>
-            <span>{{document.currstate}}</span>
-        </dd>
-        <dt><span>Last State</span></dt>
-        <dd>
-            <span>{{document.laststate}}</span>
-        </dd>
-        <dt><span>Current Version</span></dt>
-        <dd>
-            <span>{{document.currversionId}}</span>
-        </dd>
-    </dl>
+            <div style="padding:10px;" id="output" [innerHTML]="docHTML"></div>
+        </div>
+    </div>
+    <div class="col-sm-6" id="document-info">
+        <h2 style="margin-top:10px;text-align:center;overflow-wrap:break-word;">{{document.name}}</h2>
+        <hr style="margin:10px 0;">
+        <jhi-alert-error></jhi-alert-error>
+        <dl style="margin-left:15px;" class="row-md jh-entity-details">
+            <dt><span>Name</span></dt>
+            <dd>
+                <span>{{document.name}}</span>
+            </dd>
+            <dt><span>Created On</span></dt>
+            <dd>
+                <span>{{document.createdon | date: 'EEE MMM dd yyyy'}}</span>
+            </dd>
+            <dt><span>Created By</span></dt>
+            <dd>
+                <span>{{document.createdby}}</span>
+            </dd>
+            <dt><span>File</span></dt>
+            <dd>
+                <div *ngIf="document.file">
+                    Size: {{byteSize(document.file)}}
+                    <a (click)="openFile(document.fileContentType, document.file)">open</a>
+                </div>
+            </dd>
+            <dt><span>Due Date</span></dt>
+            <dd>
+                <span>{{document.duedate | date: 'EEE MMM dd yyyy'}}</span>
+            </dd>
+            <dt><span>Current State</span></dt>
+            <dd>
+                <span>{{document.currstate}}</span>
+            </dd>
+            <dt><span>Last State</span></dt>
+            <dd>
+                <span>{{document.laststate}}</span>
+            </dd>
+            <dt><span>Current Version</span></dt>
+            <dd>
+                <span>{{document.currversionId}}</span>
+            </dd>
+        </dl>
+    </div>
+    <button aria-label="Close" style="position:absolute;right:10px;" class="close" type="button" (click)="activeModal.dismiss()"><span aria-hidden="true">x</span></button>
 </div>
-<div style="width:100%;text-align:center;margin-bottom:15px;"><button class="btn btn-primary" (click)="goToDocument(document.id)">Go to document &#8594;</button></div>

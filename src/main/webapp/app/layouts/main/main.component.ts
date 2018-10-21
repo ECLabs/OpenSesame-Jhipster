@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 @Component({
     selector: 'jhi-main',
     templateUrl: './main.component.html'
 })
-export class JhiMainComponent implements OnInit {
+export class JhiMainComponent implements OnInit, OnDestroy {
 
     constructor(
         private titleService: Title,
-        private router: Router
+        private router: Router,
+        private trackerService: JhiTrackerService,
     ) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -27,5 +29,9 @@ export class JhiMainComponent implements OnInit {
                 this.titleService.setTitle(this.getPageTitle(this.router.routerState.snapshot.root));
             }
         });
+    }
+
+    ngOnDestroy() {
+      this.trackerService.disconnect();
     }
 }

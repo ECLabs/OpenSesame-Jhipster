@@ -1,9 +1,9 @@
-<nav class="navbar navbar-dark navbar-expand-md jh-navbar">
+<nav class="navbar navbar-dark navbar-expand-md jh-navbar" [hidden]="!isAuthenticated()">
     <div class="jh-logo-container float-left">
         <a class="jh-navbar-toggler d-lg-none float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
             <i class="fa fa-bars"></i>
         </a>
-        <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
+        <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar(); toggleAlertStatus()">
             <span class="logo-img"></span>
             <span class="navbar-title">OpenSesame</span> <span class="navbar-version">{{version}}</span>
         </a>
@@ -184,6 +184,12 @@
                         <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span>Settings</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
+                            <span>Document Metrics</span>
                         </a>
                     </li>
                    <!-- <li *ngSwitchCase="true">

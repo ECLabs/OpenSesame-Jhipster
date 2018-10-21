@@ -8,7 +8,7 @@ import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'jqueryui';
 import 'fullcalendar';
-import { Account, DocumentModalService } from '../shared';
+import { Account } from '../shared';
 import { staticEvents } from './staticEvents';
 
 @Component({
@@ -30,8 +30,7 @@ export class DirectorEventsComponent implements OnInit {
 
     constructor(
         private documentService: DocumentOpenSesameService,
-        private commentService: CommentOpenSesameService,
-        private documentModalService: DocumentModalService,
+        private commentService: CommentOpenSesameService
     ) {}
 
     getContent() {
@@ -69,6 +68,10 @@ export class DirectorEventsComponent implements OnInit {
             // make the event draggable using jQuery UI
             $(this).draggable({
                 zIndex: 999,
+                appendTo: 'body',
+                scroll: false,
+                helper: 'clone',
+                containment: 'widnow',
                 revert: true,      // will cause the event to go back to its
                 revertDuration: 0  //  original position after the drag
             });
@@ -149,7 +152,7 @@ export class DirectorEventsComponent implements OnInit {
                 if (this.staticEventTitles.includes(event.title)) {
                     element.css('pointer-events', 'none');
                 }
-                
+
                 // Add title to parent because pointer-events are removed for the static events
                 element.parent().attr('title', event.title);
 
@@ -160,21 +163,17 @@ export class DirectorEventsComponent implements OnInit {
                     const newDueDate = moment(event.start).add(1, 'day');
                     const dueDateFormatted = new Date(new Date(newDueDate.toString()).setHours(0));
 
-                    // Checks if the new due date is different from the old one to prevent unecessary updates
-                    if (new Date(document.duedate).getTime() !== dueDateFormatted.getTime()) {
                         // Duedate has to be formatted like this for angular datepipe
                         document.duedate = {
                             year: event.start.year(),
                             month: event.start.month() + 1,
                             day: event.start.date(),
                         }
-
                         // Change local duedate to for document
                         // Local due date object prevents entire re-render of the page on a due date change
                         this.duedates[document.id] = newDueDate;
                         // Change due date in database
                         this.documentService.update(document).subscribe();
-                    }
                 }
             },
             displayEventEnd: true,
@@ -186,10 +185,6 @@ export class DirectorEventsComponent implements OnInit {
             },
             eventTextColor: 'white',
         });
-    }
-
-    openDocPreview(document) {
-        this.modalRef = this.documentModalService.open(document);
     }
 
     removeQueue(document) {

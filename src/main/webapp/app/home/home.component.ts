@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef, NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpResponse } from '@angular/common/http';
 
-import { Account, LoginModalService, Principal } from '../shared';
+import { Account, LoginModalService, Principal, DocumentModalService } from '../shared';
 import { DocumentOpenSesameService } from '../entities/document-open-sesame/document-open-sesame.service';
 import { DocumentOpenSesame } from '../entities/document-open-sesame';
+import { JhiTrackerService } from '../shared/tracker/tracker.service';
 
 @Component({
     selector: 'jhi-home',
@@ -16,7 +17,7 @@ import { DocumentOpenSesame } from '../entities/document-open-sesame';
     ]
 
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
     account: Account;
     user: Object = {
         firstName: '',
@@ -36,13 +37,16 @@ export class HomeComponent implements OnInit {
         private eventManager: JhiEventManager,
         private modalService: NgbModal,
         private router: Router,
-        private documentService: DocumentOpenSesameService
+        private documentService: DocumentOpenSesameService,
+        private documentModalService: DocumentModalService,
+        private trackerService: JhiTrackerService
     ) { }
 
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
             if (account) {
+                this.trackerService.subscribe();
                 this.user = {
                     firstName: account.firstName,
                     lastName: account.lastName,
@@ -53,6 +57,11 @@ export class HomeComponent implements OnInit {
         });
         this.registerAuthenticationSuccess();
     }
+
+    ngOnDestroy() {
+      this.trackerService.unsubscribe();
+    }
+
 
     registerAuthenticationSuccess() {
         this.eventManager.subscribe('authenticationSuccess', (message) => {
@@ -88,16 +97,35 @@ export class HomeComponent implements OnInit {
                     const dueDate = new Date(doc.duedate);
                     return dueDate >= this.prevSunday && dueDate <= this.nextSaturday;
                 });
+                  this.dueWeekDocuments = this.sort(this.dueWeekDocuments);
 
                 this.documentsRoleSpecific = res.body.filter((doc) => {
                     const status = this.getRole(this.account.authorities, false);
                     return status === 'ADMIN' ? true : String(doc.currstate) === status;
                 });
+                    this.documentsRoleSpecific = this.sort(this.documentsRoleSpecific);
             });
     }
 
-    goToDoc(docId) {
-        this.router.navigateByUrl(`/document-open-sesame/${docId}`);
+    sort(documents) {
+      documents.sort(function(a,b) {
+        a = a.duedate;
+        b = b.duedate;
+        return a-b;
+      });
+      let not_set = [];
+      for(let document in documents){
+        if(documents[document].duedate == null){
+          not_set.push(documents[document]);
+        }
+      }
+      documents.splice(0,not_set.length);
+      documents = documents.concat(not_set);
+      return documents;
+
+    }
+    openDocPreview(document) {
+        this.modalRef = this.documentModalService.open(document);
     }
 
     isAuthenticated() {
@@ -121,7 +149,7 @@ export class HomeComponent implements OnInit {
         switch(rolesArray[rolesArray.length - 1]) {
             case 'ROLE_USER':
                 return 'User';
-            case 'ROLE_ADMIN': 
+            case 'ROLE_ADMIN':
                 return formatted ? 'Administrator' : 'ADMIN';
             case 'ROLE_MANAGER':
                 return formatted ? 'Manager' : 'ADMIN';

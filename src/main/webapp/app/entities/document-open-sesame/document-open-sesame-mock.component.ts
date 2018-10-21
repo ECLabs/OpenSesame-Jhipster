@@ -9,18 +9,21 @@ import { DocumentOpenSesame } from './document-open-sesame.model';
 import { DocumentOpenSesamePopupService } from './document-open-sesame-popup.service';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-sesame';
+import { mock_documents } from './mock-documents';
+
 
 @Component({
-    selector: 'jhi-document-open-sesame-dialog',
-    templateUrl: './document-open-sesame-dialog.component.html'
+    selector: 'jhi-document-open-sesame-mock',
+    templateUrl: './document-open-sesame-mock.component.html'
 })
-export class DocumentOpenSesameDialogComponent implements OnInit {
+export class DocumentOpenSesameMockComponent implements OnInit {
     document: DocumentOpenSesame;
+    documents: DocumentOpenSesame[];
     isSaving: boolean;
     currversions: VersionOpenSesame[];
     createdonDp: any;
     duedateDp: any;
-    countries: any;
+    inputEvent: any;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -48,11 +51,6 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
-
-            this.countries = require('./countries.json');
-            if(!this.document.country){
-              this.document.country = this.countries[0].name;
-            }
     }
 
     byteSize(field) {
@@ -65,6 +63,19 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 
     setFileData(event, entity, field, isImage) {
         this.dataUtils.setFileData(event, entity, field, isImage);
+    }
+
+
+    generate_mock(){
+      let curr_doc: DocumentOpenSesame;
+      for(let mock_document in mock_documents){
+        curr_doc = mock_documents[mock_document];
+        this.setFileData(this.inputEvent, curr_doc, 'file', false);
+        this.document = curr_doc;
+        if(this.document.name){
+          this.save();
+        }
+      }
     }
 
     clear() {
@@ -108,10 +119,10 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-document-open-sesame-popup',
+    selector: 'jhi-document-open-sesame-mock-popup',
     template: ''
 })
-export class DocumentOpenSesamePopupComponent implements OnInit, OnDestroy {
+export class DocumentOpenSesameMockPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -124,10 +135,10 @@ export class DocumentOpenSesamePopupComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.documentPopupService
-                    .open(DocumentOpenSesameDialogComponent as Component, params['id']);
+                    .open(DocumentOpenSesameMockComponent as Component, params['id']);
             } else {
                 this.documentPopupService
-                    .open(DocumentOpenSesameDialogComponent as Component);
+                    .open(DocumentOpenSesameMockComponent as Component);
             }
         });
     }

@@ -1,0 +1,37 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="generate_mock()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDocumentLabel">Import Mock Documents</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="form-control-label" for="field_file">Sample document</label>
+            <div>
+                <div *ngIf="document.file" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(document.fileContentType, document.file)">open</a><br>
+                    <span class="pull-left">{{document.fileContentType}}, {{byteSize(document.file)}}</span>
+                    <button type="button" (click)="document.file=null;document.fileContentType=null;"
+                            class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="field_file" (change)="inputEvent = $event"/>
+            </div>
+            <input type="hidden" class="form-control" name="file" id="field_file"
+                [(ngModel)]="document.file" />
+            <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                [(ngModel)]="document.fileContentType" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

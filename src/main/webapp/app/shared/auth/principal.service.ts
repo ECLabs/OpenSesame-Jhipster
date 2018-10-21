@@ -13,7 +13,7 @@ export class Principal {
     constructor(
         private account: AccountService,
         private trackerService: JhiTrackerService
-    ) {}
+    ) { }
 
     authenticate(identity) {
         this.userIdentity = identity;
@@ -41,7 +41,7 @@ export class Principal {
 
     hasAuthority(authority: string): Promise<boolean> {
         if (!this.authenticated) {
-           return Promise.resolve(false);
+            return Promise.resolve(false);
         }
 
         return this.identity().then((id) => {
