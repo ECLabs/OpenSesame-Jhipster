@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
 import com.ec.opensesame.domain.enumeration.Status;
+import com.ec.opensesame.domain.Version;
+import java.util.Set;
 
 /**
  * A DTO for the Document entity.
@@ -34,7 +36,11 @@ public class DocumentDTO implements Serializable {
 
     private Long timeElapsed;
 
-    private Long currversionId;
+    private Version currversion;
+
+    private Long currVersionId;
+
+    private Set<DocumentDTO> versions;
 
     public Long getId() {
         return id;
@@ -108,8 +114,32 @@ public class DocumentDTO implements Serializable {
         this.laststate = laststate;
     }
 
+    public DocumentDTO getCurrversion() {
+        return this;
+    }
+
+    public void setCurrversion(DocumentDTO version) {
+        this.id = version.id;
+        this.name = version.name;
+        this.createdon = version.createdon;
+        this.createdby = version.createdby;
+        this.file = version.file;
+        this.fileContentType = version.fileContentType;
+        this.duedate = version.duedate;
+        this.currstate = version.currstate;
+        this.laststate = version.laststate;
+        this.country = version.country;
+        this.timeElapsed = version.timeElapsed;
+        this.currversion = version.currversion;
+        this.versions = version.versions;
+    }
+
     public Long getCurrversionId() {
-        return currversionId;
+        return currVersionId;
+    }
+
+    public void setCurrversionId(Long id) {
+        this.currVersionId = id;
     }
 
     public void setCountry(String country) {
@@ -126,10 +156,6 @@ public class DocumentDTO implements Serializable {
 
     public Long getTimeElapsed() {
         return timeElapsed;
-    }
-
-    public void setCurrversionId(Long versionId) {
-        this.currversionId = versionId;
     }
 
     @Override

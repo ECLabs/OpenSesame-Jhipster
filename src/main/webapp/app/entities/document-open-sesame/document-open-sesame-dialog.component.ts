@@ -73,6 +73,10 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        console.log("CURR VERSION ID: " + this.document.currversionId);
+        this.versionService.find(this.document.currversionId).subscribe((res) => {
+            console.log(res);
+        });
         if (this.document.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.documentService.update(this.document));

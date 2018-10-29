@@ -72,7 +72,7 @@ public class Document implements Serializable {
 
     @OneToMany(mappedBy = "document")
     @JsonIgnore
-    private Set<Version> versions = new HashSet<>();
+    private Set<Document> versions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -250,28 +250,28 @@ public class Document implements Serializable {
         this.comments = comments;
     }
 
-    public Set<Version> getVersions() {
+    public Set<Document> getVersions() {
         return versions;
     }
 
-    public Document versions(Set<Version> versions) {
+    public Document versions(Set<Document> versions) {
         this.versions = versions;
         return this;
     }
 
-    public Document addVersion(Version version) {
+    public Document addVersion(Document version) {
         this.versions.add(version);
-        version.setDocument(this);
+        // version.setDocument(this);
         return this;
     }
 
-    public Document removeVersion(Version version) {
+    public Document removeVersion(Document version) {
         this.versions.remove(version);
-        version.setDocument(null);
+        // version.setDocument(null);
         return this;
     }
 
-    public void setVersions(Set<Version> versions) {
+    public void setVersions(Set<Document> versions) {
         this.versions = versions;
     }
 
