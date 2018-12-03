@@ -59,7 +59,6 @@ public class DocumentResource {
         documentDTO.setCurrstate(Status.AUTHOR);
         documentDTO.setCreatedon(LocalDate.now());
         documentDTO.setTimeElapsed(0L);
-        // documentDTO.addVersion(documentDTO);
 
         DocumentDTO result = documentService.save(documentDTO);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))

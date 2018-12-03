@@ -260,12 +260,13 @@ public class Document implements Serializable {
     }
 
     public Document addVersion(Version version) {
-        //this.versions.add(version);
+        this.versions.add(version);
         version.setDocument(this);
         return this;
     }
 
     public Document removeVersion(Version version) {
+        this.versions.remove(version);
         version.setDocument(null);
         return this;
     }

@@ -16,6 +16,7 @@ import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-ses
 })
 export class DocumentOpenSesameDialogComponent implements OnInit {
     document: DocumentOpenSesame;
+    tempDocument: DocumentOpenSesame;
     isSaving: boolean;
     currversions: VersionOpenSesame[];
     createdonDp: any;
@@ -53,6 +54,7 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
             if(!this.document.country){
               this.document.country = this.countries[0].name;
             }
+        this.tempDocument = Object.assign({}, this.document);
     }
 
     byteSize(field) {
@@ -74,9 +76,6 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         console.log(this.document);
-        this.versionService.find(this.document.currversionId).subscribe((res) => {
-            console.log(res);
-        });
         if (this.document.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.documentService.update(this.document));
@@ -86,14 +85,26 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
         }
     }
 
+    private checkEquality(oldDocument, currDocument) {
+        return JSON.stringify(oldDocument) === JSON.stringify(currDocument);
+    }
+
     private subscribeToSaveResponse(result: Observable<HttpResponse<DocumentOpenSesame>>) {
-        result.subscribe((res: HttpResponse<DocumentOpenSesame>) =>
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe((res: HttpResponse<DocumentOpenSesame>) => {
+            this.onSaveSuccess(res.body);
+        }, (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: DocumentOpenSesame) {
         this.trackerService.sendDocumentActivity("Document " + result.name + " was modified");
         this.eventManager.broadcast({ name: 'documentListModification', content: 'OK'});
+        // if (!this.checkEquality(this.tempDocument, this.document)) {
+        //     console.log("here");
+        //     this.versionService.create(this.document);
+        //     this.versionService.query().subscribe((res) => {
+        //         console.log(res);
+        //     });
+        // }
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }

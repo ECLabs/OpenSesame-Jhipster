@@ -129,8 +129,8 @@ currentAccount: any;
         this.documents = data;
         
         const today = new Date().getTime();
-        for (const document of this.documents) {
-            if (today <= document.duedate.getTime()) {
+        for (let document of this.documents) {
+            if ((document.duedate && today <= document.duedate.getTime()) || document.duedate === null) {
                 const timeDiff = today - document.createdon.getTime();
                 const oneDay = 24 * 60 * 60 * 1000;
                 const duration = Math.floor((timeDiff) / (oneDay));
