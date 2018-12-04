@@ -25,6 +25,7 @@ export class DocumentOpenSesame implements BaseEntity {
         public currstate?: Status,
         public laststate?: Status,
         public currversionId?: number,
+        public versionCounter?: number,
         public histories?: BaseEntity[],
         public comments?: BaseEntity[],
         public versions?: BaseEntity[],

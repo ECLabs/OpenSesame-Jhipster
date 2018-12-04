@@ -14,7 +14,6 @@ import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 import * as mammoth from 'mammoth';
 import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-sesame';
-import { version } from 'fullcalendar';
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
@@ -29,6 +28,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
     versions: VersionOpenSesame[];
+    notCurrentVersion: Boolean = false;
     comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
@@ -157,6 +157,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 
         this.versionService.query().subscribe((res) => {
             this.versions = res.body.filter((version) => this.document && version.documentId === this.document.id);
+            this.versions.sort((a, b) => a.createdon.getTime() - b.createdon.getTime());
         });
     }
 
@@ -270,6 +271,12 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             ba[i] = bs.charCodeAt(i);
         }
 
+        if (this.document.file !== versionFile) {
+            this.notCurrentVersion = true;
+        } else {
+            this.notCurrentVersion = false;
+        }
+
         var that = this;
 
         mammoth.convertToHtml({ arrayBuffer: ba })
@@ -277,6 +284,13 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                 that.docHTML = result.value;
             })
             .done();
+    }
+
+    makeCurrentVersion(version) {
+        this.document.file = version.file;
+        this.document.fileContentType = version.fileContentType;
+
+        this.registerChangeInDocuments();
     }
 
     byteSize(field) {

@@ -16,12 +16,16 @@ public class VersionDTO implements Serializable {
     private LocalDate createdon;
 
     private String createdby;
+    
+    private Long versionNumber;
 
     @Lob
     private byte[] file;
     private String fileContentType;
 
     private Long documentId;
+
+    private String name;
 
     public Long getId() {
         return id;
@@ -69,6 +73,22 @@ public class VersionDTO implements Serializable {
 
     public void setDocumentId(Long documentId) {
         this.documentId = documentId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setVersionNumber(Long versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public Long getVersionNumber() {
+        return this.versionNumber;
     }
 
     @Override
