@@ -9,6 +9,8 @@ import { DocumentOpenSesamePopupService } from './document-open-sesame-popup.ser
 import { DocumentOpenSesameService } from './document-open-sesame.service';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 import { JhiTrackerService } from '../../shared';
+import { VersionOpenSesameService } from '../version-open-sesame';
+import { resolve } from 'url';
 
 @Component({
     selector: 'jhi-document-open-sesame-delete-dialog',
@@ -21,6 +23,7 @@ export class DocumentOpenSesameDeleteDialogComponent {
     constructor(
         private documentService: DocumentOpenSesameService,
         private commentService: CommentOpenSesameService,
+        private versionService: VersionOpenSesameService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
         private trackerService: JhiTrackerService,
@@ -52,22 +55,43 @@ export class DocumentOpenSesameDeleteDialogComponent {
             }
           })
     }
-        this.commentService.query().subscribe((res) => {
-            deleteComment(res.body)
-            .then((fullfilled) => {
-              this.documentService.delete(id).subscribe((response) => {
-                  this.eventManager.broadcast({
-                      name: 'documentListModification',
-                      content: 'Deleted an document'
-                  });
-                  this.activeModal.dismiss(true);
-              });
-              this.trackerService.sendDocumentActivity("Document with ID " + id + " was Deleted");
-            })
-            .catch(function(err){
-              console.log(err);
-            })
+
+        this.versionService.query().subscribe((res) => {
+            let promises = [];
+
+            for (let version of res.body) {
+                if (version.documentId === id) {
+                    promises.push(new Promise((resolve, reject) => {
+                        this.versionService.delete(version.id).subscribe((res) => {
+                            resolve('Delete complete');
+                        }, (err) => {
+                            reject(err);
+                        });
+                    }));
+                }
+            }
+
+            Promise.all(promises).then(() => {
+                this.commentService.query().subscribe((res) => {
+                    deleteComment(res.body)
+                    .then((fullfilled) => {
+                        this.documentService.delete(id).subscribe((response) => {
+                            this.eventManager.broadcast({
+                                name: 'documentListModification',
+                                content: 'Deleted an document'
+                            });
+                            this.activeModal.dismiss(true);
+                        });
+                        this.trackerService.sendDocumentActivity("Document with ID " + id + " was Deleted");
+                        })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+                });
+            });
         });
+
+        this.versionService.query().subscribe((res) => { console.log(res.body) });
     }
 }
 

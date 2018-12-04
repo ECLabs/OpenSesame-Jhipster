@@ -73,6 +73,16 @@ export class VersionOpenSesameService {
      */
     private convert(version: VersionOpenSesame): VersionOpenSesame {
         const copy: VersionOpenSesame = Object.assign({}, version);
+        // Need to format createdon for angular datepipe
+        const newDate = new Date(version.createdon);
+        if (version.createdon) {
+            version.createdon = {
+                year: newDate.getFullYear(),
+                month: newDate.getMonth() + 1,
+                day: newDate.getDate()
+            }
+        }
+        console.log(version.createdon);
         copy.createdon = this.dateUtils
             .convertLocalDateToServer(version.createdon);
         return copy;

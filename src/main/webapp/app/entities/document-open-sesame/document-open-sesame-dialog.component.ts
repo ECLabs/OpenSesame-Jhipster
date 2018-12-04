@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Version } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -75,7 +75,6 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        console.log(this.document);
         if (this.document.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.documentService.update(this.document));
@@ -85,26 +84,34 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
         }
     }
 
-    private checkEquality(oldDocument, currDocument) {
-        return JSON.stringify(oldDocument) === JSON.stringify(currDocument);
-    }
-
     private subscribeToSaveResponse(result: Observable<HttpResponse<DocumentOpenSesame>>) {
         result.subscribe((res: HttpResponse<DocumentOpenSesame>) => {
             this.onSaveSuccess(res.body);
         }, (res: HttpErrorResponse) => this.onSaveError());
     }
 
+    private subscribeVersionResponse(result: Observable<HttpResponse<VersionOpenSesame>>) {
+        result.subscribe((res: HttpResponse<VersionOpenSesame>) => {
+            this.versionService.query().subscribe((res) => { console.log(res); });
+        }, (res: HttpErrorResponse) => this.onSaveError());
+    }
+
     private onSaveSuccess(result: DocumentOpenSesame) {
         this.trackerService.sendDocumentActivity("Document " + result.name + " was modified");
         this.eventManager.broadcast({ name: 'documentListModification', content: 'OK'});
-        // if (!this.checkEquality(this.tempDocument, this.document)) {
-        //     console.log("here");
-        //     this.versionService.create(this.document);
-        //     this.versionService.query().subscribe((res) => {
-        //         console.log(res);
-        //     });
-        // }
+
+        // If the document has been modified, make a new version
+        if (this.tempDocument.file !== result.file) {
+            const version: VersionOpenSesame = {
+                createdon: result.createdon,
+                createdby: result.createdby,
+                file: result.file,
+                fileContentType: result.fileContentType,
+                documentId: result.id
+            }
+            this.subscribeVersionResponse(this.versionService.create(version));
+        }
+
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
