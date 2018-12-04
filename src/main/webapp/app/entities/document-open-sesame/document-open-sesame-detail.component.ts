@@ -13,6 +13,8 @@ import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-se
 import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 import * as mammoth from 'mammoth';
+import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-sesame';
+import { version } from 'fullcalendar';
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
@@ -26,6 +28,7 @@ import * as mammoth from 'mammoth';
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
+    versions: VersionOpenSesame[];
     comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
@@ -67,6 +70,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private documentService: DocumentOpenSesameService,
         private commentService: CommentOpenSesameService,
+        private versionService: VersionOpenSesameService,
         private jhiAlertService: JhiAlertService,
         private route: ActivatedRoute,
         private trackerService: JhiTrackerService,
@@ -150,6 +154,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+
+        this.versionService.query().subscribe((res) => {
+            this.versions = res.body.filter((version) => this.document && version.documentId === this.document.id);
+        });
     }
 
     initComments() {
@@ -252,6 +260,23 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                     })
                     .done();
             });
+    }
+
+    loadVersion(versionFile) {
+        const bs = atob(versionFile);
+        const buffer = new ArrayBuffer(bs.length);
+        const ba = new Uint8Array(buffer);
+        for (let i = 0; i < bs.length; i++) {
+            ba[i] = bs.charCodeAt(i);
+        }
+
+        var that = this;
+
+        mammoth.convertToHtml({ arrayBuffer: ba })
+            .then(function(result) {
+                that.docHTML = result.value;
+            })
+            .done();
     }
 
     byteSize(field) {

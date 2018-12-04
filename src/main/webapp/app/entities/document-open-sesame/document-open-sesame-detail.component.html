@@ -110,9 +110,14 @@
     			<label for="tab2">Comments</label>
   				<!-- First Tab contents -->
     			<section id="content1">
-      			<p>
-  						Document: Not Implemented
-      			</p>
+      			<ul>
+              <li *ngFor="let version of versions">
+                  <div *ngIf="document.file">
+                      Size: {{byteSize(version.file)}}
+                      <a (click)="loadVersion(version.file)">open</a>
+                  </div>
+              </li>
+            </ul>
     			</section>
 
 
