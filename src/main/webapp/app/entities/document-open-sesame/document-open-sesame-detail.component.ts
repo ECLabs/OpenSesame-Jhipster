@@ -6,13 +6,14 @@ import { JhiEventManager, JhiDataUtils, JhiAlertService } from 'ng-jhipster';
 import { WindowRef, Account, Principal } from '../../shared';
 import { DocumentOpenSesame, Status } from './document-open-sesame.model';
 import { DocumentOpenSesameService } from './document-open-sesame.service';
-import { NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { CommentOpenSesame } from '../comment-open-sesame/comment-open-sesame.model';
 import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-sesame.service';
 import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 import * as mammoth from 'mammoth';
+import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-sesame';
 
 @Component({
     selector: 'jhi-document-open-sesame-detail',
@@ -30,6 +31,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     dueCountdown: String;
     mouseOver: Boolean = false;
+    versions: VersionOpenSesame[];
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
@@ -67,6 +69,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private documentService: DocumentOpenSesameService,
         private commentService: CommentOpenSesameService,
+        private versionService: VersionOpenSesameService,
         private jhiAlertService: JhiAlertService,
         private route: ActivatedRoute,
         private trackerService: JhiTrackerService,
@@ -150,6 +153,9 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+        this.versionService.query().subscribe((res) => {
+            this.versions = res.body.filter((version) => version.documentId === this.document.id);
+        });
     }
 
     initComments() {

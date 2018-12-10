@@ -110,9 +110,11 @@
     			<label for="tab2">Comments</label>
   				<!-- First Tab contents -->
     			<section id="content1">
-      			<p>
-  						Document: Not Implemented
-      			</p>
+      			<ul class="list-group" id="document-versions">
+              <li *ngFor="let version of versions;" class="list-group-item">
+                <div>Hi there</div>
+              </li>
+            </ul>
     			</section>
 
 
