@@ -33,7 +33,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     dueCountdown: String;
     mouseOver: Boolean = false;
-    versions: VersionOpenSesame[];
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     private window: WindowRef;
