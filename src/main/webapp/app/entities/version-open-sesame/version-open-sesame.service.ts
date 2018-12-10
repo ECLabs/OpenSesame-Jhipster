@@ -82,7 +82,6 @@ export class VersionOpenSesameService {
                 day: newDate.getDate()
             }
         }
-        console.log(version.createdon);
         copy.createdon = this.dateUtils
             .convertLocalDateToServer(version.createdon);
         return copy;

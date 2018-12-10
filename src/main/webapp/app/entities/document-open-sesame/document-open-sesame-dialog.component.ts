@@ -75,6 +75,21 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        if (this.document.id && JSON.stringify(this.tempDocument) !== JSON.stringify(this.document)) {
+            console.log(this.document);
+            // Create a version out of the document that you just changed (Before the changes)
+            const version: VersionOpenSesame = {
+                name: this.tempDocument.name,
+                versionNumber: this.document.versionCounter,
+                createdon: new Date(),
+                createdby: this.tempDocument.createdby,
+                file: this.tempDocument.file,
+                fileContentType: this.tempDocument.fileContentType,
+                documentId: this.tempDocument.id
+            }
+            this.subscribeVersionResponse(this.versionService.create(version));
+            this.document.versionCounter = this.document.versionCounter + 1;
+        }
         if (this.document.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.documentService.update(this.document));
@@ -99,19 +114,6 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
     private onSaveSuccess(result: DocumentOpenSesame) {
         this.trackerService.sendDocumentActivity("Document " + result.name + " was modified");
         this.eventManager.broadcast({ name: 'documentListModification', content: 'OK'});
-
-        // If the document has been modified, make a new version
-        if (this.tempDocument.file !== result.file) {
-            const version: VersionOpenSesame = {
-                createdon: result.createdon,
-                createdby: result.createdby,
-                file: result.file,
-                fileContentType: result.fileContentType,
-                documentId: result.id
-            }
-            this.subscribeVersionResponse(this.versionService.create(version));
-        }
-
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }

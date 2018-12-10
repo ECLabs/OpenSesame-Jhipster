@@ -58,6 +58,9 @@ public class Document implements Serializable {
     @Column(name = "timeelapsed")
     private Long timeElapsed;
 
+    @Column(name = "versioncounter")
+    private Long versionCounter;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Version currversion;
@@ -94,6 +97,14 @@ public class Document implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getVersionCounter() {
+        return versionCounter;
+    }
+
+    public void setVersionCounter(Long versionCounter) {
+        this.versionCounter = versionCounter;
     }
 
     public LocalDate getCreatedon() {

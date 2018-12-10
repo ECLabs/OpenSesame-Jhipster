@@ -38,6 +38,8 @@ private Long timeElapsed;
 
 private Long currversionId;
 
+private Long versionCounter;
+
 private Set<VersionDTO> versions;
 
 public Long getId() {
@@ -46,6 +48,14 @@ public Long getId() {
 
 public void setId(Long id) {
     this.id = id;
+}
+
+public Long getVersionCounter() {
+    return versionCounter;
+}
+
+public void setVersionCounter(Long versionCounter) {
+    this.versionCounter = versionCounter;
 }
 
 public String getName() {

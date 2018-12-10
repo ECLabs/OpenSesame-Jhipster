@@ -27,6 +27,8 @@ import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-ses
 export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     account: Account;
     document: DocumentOpenSesame;
+    versions: VersionOpenSesame[];
+    notCurrentVersion: Boolean = false;
     comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
@@ -153,8 +155,10 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+
         this.versionService.query().subscribe((res) => {
-            this.versions = res.body.filter((version) => version.documentId === this.document.id);
+            this.versions = res.body.filter((version) => this.document && version.documentId === this.document.id);
+            this.versions.sort((a, b) => a.createdon.getTime() - b.createdon.getTime());
         });
     }
 
@@ -258,6 +262,36 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                     })
                     .done();
             });
+    }
+
+    loadVersion(versionFile) {
+        const bs = atob(versionFile);
+        const buffer = new ArrayBuffer(bs.length);
+        const ba = new Uint8Array(buffer);
+        for (let i = 0; i < bs.length; i++) {
+            ba[i] = bs.charCodeAt(i);
+        }
+
+        if (this.document.file !== versionFile) {
+            this.notCurrentVersion = true;
+        } else {
+            this.notCurrentVersion = false;
+        }
+
+        var that = this;
+
+        mammoth.convertToHtml({ arrayBuffer: ba })
+            .then(function(result) {
+                that.docHTML = result.value;
+            })
+            .done();
+    }
+
+    makeCurrentVersion(version) {
+        this.document.file = version.file;
+        this.document.fileContentType = version.fileContentType;
+
+        this.registerChangeInDocuments();
     }
 
     byteSize(field) {
