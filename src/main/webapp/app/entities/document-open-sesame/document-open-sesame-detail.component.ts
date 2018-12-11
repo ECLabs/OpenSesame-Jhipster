@@ -13,6 +13,7 @@ import { CommentOpenSesameService } from '../comment-open-sesame/comment-open-se
 import { JhiTrackerService } from '../../shared/tracker/tracker.service';
 
 import * as mammoth from 'mammoth';
+import * as moment from 'moment';
 import { VersionOpenSesame, VersionOpenSesameService } from '../version-open-sesame';
 
 @Component({
@@ -29,6 +30,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     document: DocumentOpenSesame;
     versions: VersionOpenSesame[];
     notCurrentVersion: Boolean = false;
+    currViewingVersion: VersionOpenSesame;
     comments: Object;
     modalRef: NgbModalRef;
     dueCountdown: String;
@@ -88,7 +90,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
 
     getAuthority() {
         return this.enumUserRoleDict[this.document.currstate];
-
     }
 
 
@@ -143,6 +144,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
+        console.log(this.document);
         this.commentService.query().subscribe(
             (res: HttpResponse<CommentOpenSesame[]>) => {
                 this.comments = this.initComments();
@@ -238,7 +240,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
                 this.setDueCountdown();
                 this.loadAll();
 
-
                 // this.bar = this.window.nativeWindow.docxJS = this.window.nativeWindow.createDocxJS();
 
 
@@ -263,15 +264,50 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    loadVersion(versionFile) {
-        const bs = atob(versionFile);
+    setAsCurrentVersion(version) {
+        const newVersion = {
+            name: this.document.name,
+            versionNumber: this.document.versionCounter,
+            createdby: this.document.createdby,
+            createdon: new Date(),
+            fileContentType: this.document.fileContentType,
+            file: this.document.file,
+            documentId: this.document.id
+        }
+        if (!this.versions.includes(newVersion)) {
+            this.versionService.create(newVersion).subscribe();
+        }
+        this.document.file = version.file;
+        this.document.fileContentType = version.fileContentType;
+        this.document.name = version.name;
+        this.document.versionCounter = this.document.versionCounter + 1;
+        this.loadVersion(version);
+        this.documentService.update(this.document).subscribe((res) => {
+            this.document = res.body;
+            this.registerChangeInDocuments();
+            this.loadVersion(version);
+            this.removeVersion(version);
+            this.load(this.document.id);
+        })
+    }
+
+    removeVersion(version) {
+        this.versionService.delete(version.id).subscribe((res) => {
+            // Reload versions list
+            this.versions = this.versions.filter((tempVersion) => version.id !== tempVersion.id)
+        })
+    }
+
+    loadVersion(version) {
+        const bs = atob(version.file);
         const buffer = new ArrayBuffer(bs.length);
         const ba = new Uint8Array(buffer);
         for (let i = 0; i < bs.length; i++) {
             ba[i] = bs.charCodeAt(i);
         }
 
-        if (this.document.file !== versionFile) {
+        if (this.document.file !== version.file) {
+            this.currViewingVersion = version;
             this.notCurrentVersion = true;
         } else {
             this.notCurrentVersion = false;

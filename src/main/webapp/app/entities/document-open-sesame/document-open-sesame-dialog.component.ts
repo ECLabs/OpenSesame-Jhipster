@@ -75,8 +75,7 @@ export class DocumentOpenSesameDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.document.id && JSON.stringify(this.tempDocument) !== JSON.stringify(this.document)) {
-            console.log(this.document);
+        if (this.document.id && this.document.file && JSON.stringify(this.tempDocument) !== JSON.stringify(this.document)) {
             // Create a version out of the document that you just changed (Before the changes)
             const version: VersionOpenSesame = {
                 name: this.tempDocument.name,

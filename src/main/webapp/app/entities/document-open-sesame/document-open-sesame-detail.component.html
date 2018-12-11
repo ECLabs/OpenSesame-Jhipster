@@ -11,9 +11,6 @@
     <div class="container">
     <div class='page-header'>
         <div class='btn-toolbar pull-right'>
-          <div class='btn-group mr-2' role='group'>
-            <button *ngIf="notCurrentVersion" class="btn btn-primary" (click)="loadVersion(document.file)">View Current Version</button>
-          </div>
           <div  class='btn-group mr-2' role="group">
             <button class='btn btn-warning' (click)="openFile(document.fileContentType, document.file)"> <span class="fa fa-download"></span>&nbsp;<span>Download</button>
           </div>
@@ -110,17 +107,27 @@
     			<label for="tab1">History</label>
 
     			<input id="tab2" type="radio" name="tabs">
-    			<label for="tab2">Comments</label>
+          <label for="tab2">Comments</label>
+          <button style="float:right;" *ngIf="notCurrentVersion" class="btn btn-info" (click)="loadVersion(document)">
+              <span class="fa fa-eye"></span>
+              <span class="d-none d-md-inline">View Current Version</span>
+          </button>
   				<!-- First Tab contents -->
     			<section id="content1">
-            <div class="table-responsive" *ngIf="versions">
+            <div>
+            <h2 style="float:left;">Currently Viewing:
+              <span *ngIf="!notCurrentVersion">{{document.name}} (Current Version)</span>
+              <span *ngIf="notCurrentVersion">{{currViewingVersion.name}} (Version: {{currViewingVersion.versionNumber}})</span>
+            </h2>
+            </div>
+            <div class="table-responsive" *ngIf="versions.length !== 0">
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th><span>Version Number</span></th>
                     <th><span>Name</span></th>
                     <th><span>Created On</span></th>
-                  <th></th>
+                    <th><span> </span></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -130,10 +137,17 @@
                     <td>{{version.createdon | date:'mediumDate'}}</td>
                     <td class="text-right">
                       <div class="btn-group flex-btn-group-container">
-                        <button (click)="loadVersion(version.file)" class="btn btn-info btn-sm">
+                        <button (click)="setAsCurrentVersion(version)" class="btn btn-sm btn-primary">
+                          <span class="d-none d-md-inline">Set as current</span>
+                        </button>
+                        <button (click)="loadVersion(version)" class="btn btn-info btn-sm">
                           <span class="fa fa-eye"></span>
                           <span class="d-none d-md-inline">View</span>
                         </button>
+                        <button (click)="removeVersion(version)" class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Remove</span>
+                          </button>
                       </div>
                     </td>
                   </tr>
