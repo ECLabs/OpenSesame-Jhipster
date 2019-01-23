@@ -5,7 +5,7 @@
     country: String
     duedate: date
   }
-  
+
 use getDate() to convert strings (YYYY-MM-DD) to formatted ngbDatepicker date and make sure
 the value of country exists in ./countries.json
 */
@@ -14,47 +14,47 @@ export const mock_documents = [
     {
         name: "JCITA RFI",
         country: "United States",
-        duedate: getDate("2018-07-31")
+        duedate: getDate("2019-02-27")
     },
     {
         name: "DIA-01-3107-001_USA_Rockets_AUTH",
         country: "United States",
-        duedate: getDate("2018-08-23")
+        duedate: getDate("2019-02-23")
     },
     {
         name: "DIA-01-3107-001_USA_Ships_AUTH",
         country: "United States",
-        duedate: getDate("2018-07-31")
+        duedate: getDate("2019-03-31")
     },
     {
         name: "DIA-01-3107-001_USA_Boats_AUTH",
         country: "United States",
-        duedate: getDate("2018-08-27")
+        duedate: getDate("2019-02-27")
     },
     {
         name: "DIA-01-3107-001_USA_BiggerRockets_AUTH",
         country: "United States",
-        duedate: getDate("2018-08-26")
+        duedate: getDate("2019-02-26")
     },
     {
         name: "DIA-01-3107-001_USA_Nuke_AUTH",
         country: "United States",
-        duedate: getDate("2018-07-30")
+        duedate: getDate("2019-03-30")
     },
     {
         name: "DIA-01-3107-001_USA_Obama_AUTH",
         country: "United States",
-        duedate: getDate("2018-08-01")
+        duedate: getDate("2019-03-01")
     },
     {
         name: "DIA-01-3107-001_USA_Kelvin_AUTH",
         country: "United States",
-        duedate: getDate("2018-07-26")
+        duedate: getDate("2019-03-26")
     },
     {
         name: "DIA-01-3107-001_USA_Tango_AUTH",
         country: "United States",
-        duedate: getDate("2018-09-01")
+        duedate: getDate("2019-03-01")
     },
 
 ]

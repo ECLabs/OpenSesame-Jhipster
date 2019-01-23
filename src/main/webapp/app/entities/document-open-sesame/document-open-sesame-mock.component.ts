@@ -65,13 +65,13 @@ export class DocumentOpenSesameMockComponent implements OnInit {
         this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
-
     generate_mock(){
       let curr_doc: DocumentOpenSesame;
       for(let mock_document in mock_documents){
         curr_doc = mock_documents[mock_document];
-        this.setFileData(this.inputEvent, curr_doc, 'file', false);
-        this.document = curr_doc;
+        this.document.name = curr_doc.name;
+        this.document.duedate = curr_doc.duedate;
+        this.document.country = curr_doc.country;
         if(this.document.name){
           this.save();
         }
