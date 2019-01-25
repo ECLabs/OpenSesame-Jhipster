@@ -20,6 +20,7 @@ export class CommentOpenSesameDialogComponent implements OnInit {
 
     comment: CommentOpenSesame;
     isSaving: boolean;
+    val: any;
     documentId: Number;
     account: Account;
 
@@ -42,13 +43,16 @@ export class CommentOpenSesameDialogComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+
         this.isSaving = false;
         this.route.queryParams.subscribe((params) => {
+            this.val = (params['val']);
             this.documentId = Number(params['docId']);
         });
         this.documentService.query()
             .subscribe((res: HttpResponse<DocumentOpenSesame[]>) => {
                 this.document = res.body.filter((document) => document.id === this.documentId)[0];
+                this.document.createdby = this.val;
             }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
@@ -68,6 +72,14 @@ export class CommentOpenSesameDialogComponent implements OnInit {
         this.activeModal.dismiss('cancel');
     }
 
+    deny() {
+      this.documentService.deny(this.document.id, this.document.createdby)
+          .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
+              this.document = documentResponse.body;
+          });
+      this.clear();
+    }
+
     save() {
         this.isSaving = true;
         this.setAutomaticFields();
@@ -78,6 +90,7 @@ export class CommentOpenSesameDialogComponent implements OnInit {
             this.subscribeToSaveResponse(
                 this.commentService.create(this.comment));
         }
+        this.deny();
     }
 
     setAutomaticFields() {

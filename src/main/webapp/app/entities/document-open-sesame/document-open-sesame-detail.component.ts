@@ -100,13 +100,6 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
         return this.document.currstate.toString() == "AUTHOR" && this.document.laststate.toString() == "AUTHOR";
     }
 
-    deny(val: any) {
-        this.documentService.deny(this.document.id, val)
-            .subscribe((documentResponse: HttpResponse<DocumentOpenSesame>) => {
-                this.document = documentResponse.body;
-            });
-    }
-
     denyShow(dIndex: number) {
         if (this.document.currstate != this.document.laststate)
             return true;
@@ -214,7 +207,7 @@ export class DocumentOpenSesameDetailComponent implements OnInit, OnDestroy {
             options.hide();
         }
     }
- 
+
     deleteComment(comment) {
         this.commentService.delete(comment.id).subscribe((res) => {
             this.eventManager.broadcast({ name: 'commentListModification', content: 'OK'});
