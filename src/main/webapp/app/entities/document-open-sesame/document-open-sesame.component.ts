@@ -127,7 +127,7 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.documents = data;
-        
+
         const today = new Date().getTime();
         for (const document of this.documents) {
             if (today <= document.duedate.getTime()) {

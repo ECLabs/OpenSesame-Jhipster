@@ -34,11 +34,10 @@
 
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button *ngFor='let value of enumValues; let i = index;'
-              (click)='deny(value, i)'
               [hidden]="denyShow(i)"
               class="dropdown-item"
               [routerLink]="['/', { outlets: { popup: ['comment-open-sesame-new'] } }]"
-              [queryParams]="{ docId: document.id }">{{statusDictionary(value)}}</button>
+              [queryParams]="{ docId: document.id, val: value}">{{statusDictionary(value)}}</button>
             </div>
           </div>
   </div>
@@ -129,8 +128,8 @@
                         <div ngbDropdown id="options-{{comment.id}}">
                           <i class="fa fa-ellipsis-v" ngbDropdownToggle></i>
                           <div ngbDropdownMenu>
-                            <button 
-                              class="btn dropdown-item" 
+                            <button
+                              class="btn dropdown-item"
                               [routerLink]="['/', { outlets: { popup: 'comment-open-sesame/'+ comment.id + '/edit' } }]"
                               replaceUrl="true"
                               queryParamsHandling="merge">Edit</button>
